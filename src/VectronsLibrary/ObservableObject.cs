@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace VectronsLibrary
 {
-    public class ObservableObject : INotifyPropertyChanged
+    public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -18,7 +18,8 @@ namespace VectronsLibrary
         /// </summary>
         protected virtual bool ThrowOnInvalidPropertyName
         {
-            get; private set;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace VectronsLibrary
 
                 if (ThrowOnInvalidPropertyName)
                 {
-                    throw new Exception(msg);
+                    throw new InvalidOperationException(msg);
                 }
                 else
                 {
