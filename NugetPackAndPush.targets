@@ -1,0 +1,33 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <!-- Enables automatic NuGet push after packaging in Release mode. -->
+    <Target Name="GetPackageInfo">
+        <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+            <Output TaskParameter="Assemblies" ItemName="MyAssemblyIdentities"/>
+        </GetAssemblyIdentity>
+        <PropertyGroup>
+            <AssemblyVersion>%(MyAssemblyIdentities.Version)</AssemblyVersion>
+            <PackageVersion>$(AssemblyVersion)</PackageVersion>
+        </PropertyGroup>
+        <Error Condition="$(AssemblyVersion.Split('.').Length) &gt; 4" Text="Assembly version is to long ($(AssemblyVersion))"/>
+        <Error Condition="$(AssemblyVersion.Split('.').Length) &lt; 3" Text="Assembly version is to short ($(AssemblyVersion))"/>
+        <PropertyGroup Condition="$(AssemblyVersion.Split('.').Length) == 4">
+            <PackageVersion>$(AssemblyVersion.Substring(0, $(AssemblyVersion.LastIndexOf('.'))))</PackageVersion>
+        </PropertyGroup>
+        <PropertyGroup>
+            <PackagePath>$(ProjectDir)bin\$(ProjectName).$(PackageVersion).nupkg</PackagePath>
+        </PropertyGroup>
+        <Message Text="Version: $(PackageVersion)"/>
+        <Message Text="Path: $(PackagePath)"/>
+    </Target>
+    <Target
+        Name="PrePackPush"
+        AfterTargets="AfterBuild"
+        DependsOnTargets="GetPackageInfo"
+        Condition="'$(Configuration)' == 'Release' and Exists('nuget.exe')">
+        <CallTarget Condition="!Exists($(PackagePath))" Targets="PackPush"/>
+    </Target>
+    <Target Name="PackPush" DependsOnTargets="GetPackageInfo">
+        <Exec Command="nuget pack &quot;$(ProjectName).csproj&quot; -OutputDirectory bin -Symbols -Properties Configuration=Release" />
+        <Exec Command="dotnet nuget push &quot;$(PackagePath)&quot; -s &quot;https://api.nuget.org/v3/index.json&quot;" />
+    </Target>
+</Project>

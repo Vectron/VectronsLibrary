@@ -114,10 +114,9 @@
       <Version>2.0.20525</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
-  <!-- Enables automatic NuGet push after packaging in Release mode. -->
-  <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-    <Exec Command="dotnet nuget push &quot;$(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot;" />
-  </Target>
+  <ItemGroup>
+    <None Include="VectronsLibrary.Wpf.nuspec" />
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\NugetPackAndPush.targets"/>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
