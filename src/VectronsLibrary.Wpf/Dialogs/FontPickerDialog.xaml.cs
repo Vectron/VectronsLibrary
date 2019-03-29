@@ -98,12 +98,7 @@ namespace VectronsLibrary.Wpf.Dialogs
             set => fontpicker.SelectedFontWeight = value;
         }
 
-        private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
-
-        private void ResetToStartValues()
+        public void ResetToStartValues()
         {
             SelectedFontColor = DefaultFontColor;
             SelectedFontFamily = DefaultFontFamily;
@@ -112,6 +107,11 @@ namespace VectronsLibrary.Wpf.Dialogs
             SelectedFontStyle = DefaultFontStyle;
             SelectedFontWeight = DefaultFontWeight;
             return;
+        }
+
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
         }
     }
 }
