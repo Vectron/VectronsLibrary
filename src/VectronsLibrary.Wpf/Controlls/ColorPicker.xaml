@@ -11,12 +11,15 @@
     x:Name="root">
     <UserControl.Resources>
         <conv:ColorToNameConverter
-            x:Key="colorConverter" />
+            x:Key="colorToNameConverter" />
+        <conv:ReverseConverter
+            Converter="{StaticResource colorToNameConverter}"
+            x:Key="nameToColorConverter" />
     </UserControl.Resources>
     <ComboBox
         Name="colorCombobox"
-        ItemsSource="{Binding ColorPickerColors, ElementName=root, Mode=OneTime}"
-        SelectedItem="{Binding SelectedColor, ElementName=root, Converter={StaticResource colorConverter}}"
+        ItemsSource="{Binding ColorPickerColors, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=OneTime}"
+        SelectedItem="{Binding SelectedColor, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Converter={StaticResource colorToNameConverter}}"
         IsSynchronizedWithCurrentItem="True">
         <ComboBox.ItemTemplate>
             <DataTemplate>
@@ -28,7 +31,7 @@
                         Margin="5">
                         <TextBlock.Background>
                             <SolidColorBrush
-                                Color="{Binding ., Mode=OneWay}" />
+                                Color="{Binding .,Converter={StaticResource nameToColorConverter}, Mode=OneWay}" />
                         </TextBlock.Background></TextBlock>
                     <TextBlock
                         Text="{Binding ., Mode=OneWay}"

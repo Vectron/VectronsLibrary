@@ -14,7 +14,6 @@ namespace VectronsLibrary.Wpf.Controlls
         public LabelledTextBox()
         {
             InitializeComponent();
-            Root.DataContext = this;
         }
 
         public string Label

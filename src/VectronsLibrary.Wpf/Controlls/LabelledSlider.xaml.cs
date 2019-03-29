@@ -26,7 +26,6 @@ namespace VectronsLibrary.Wpf.Controlls
         public LabelledSlider()
         {
             InitializeComponent();
-            Root.DataContext = this;
         }
 
         public bool AllowNegative => Minimum < 0;

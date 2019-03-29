@@ -20,7 +20,6 @@ namespace VectronsLibrary.Wpf.Controlls
         public LabelledNumTextBox()
         {
             InitializeComponent();
-            Root.DataContext = this;
         }
 
         public bool AllowDecimal

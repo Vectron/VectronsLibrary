@@ -14,7 +14,6 @@ namespace VectronsLibrary.Wpf.Controlls
         public LabelledCheckBox()
         {
             InitializeComponent();
-            Root.DataContext = this;
         }
 
         public string IsChecked

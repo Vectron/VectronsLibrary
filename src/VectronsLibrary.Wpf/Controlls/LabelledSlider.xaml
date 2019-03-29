@@ -1,42 +1,48 @@
 ﻿<UserControl
     x:Class="VectronsLibrary.Wpf.Controlls.LabelledSlider"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="clr-namespace:VectronsLibrary.Wpf.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:VectronsLibrary.Wpf.Controlls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:VectronsLibrary.Wpf.Controlls"
+    xmlns:conv="clr-namespace:VectronsLibrary.Wpf.Converters"
     d:DesignHeight="300"
     d:DesignWidth="300"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <conv:StringToInt x:Key="stringToInt" />
+        <conv:StringToInt
+            x:Key="stringToInt" />
     </UserControl.Resources>
-    <Grid x:Name="Root">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="Labels" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition
+                Width="Auto"
+                SharedSizeGroup="Labels" />
+            <ColumnDefinition
+                Width="*" />
+            <ColumnDefinition
+                Width="Auto" />
         </Grid.ColumnDefinitions>
         <TextBlock
             Grid.Column="0"
             Margin="3,0,3,0"
-            Text="{Binding Label}" />
+            VerticalAlignment="Center"
+            Text="{Binding Label, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
         <Slider
             Name="valueSlider"
             Grid.Column="1"
             AutoToolTipPlacement="TopLeft"
-            LargeChange="{Binding LargeChange}"
-            Maximum="{Binding Maximum}"
-            Minimum="{Binding Minimum}"
-            SmallChange="{Binding SmallChange}"
-            Value="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+            LargeChange="{Binding LargeChange, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            Maximum="{Binding Maximum, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            Minimum="{Binding Minimum, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            SmallChange="{Binding SmallChange, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            Value="{Binding Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
         <local:NumericTextBox
             Grid.Column="2"
             MinWidth="40"
             Margin="3,0,3,0"
             AllowDecimal="False"
-            AllowNegative="{Binding AllowNegative, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-            Text="{Binding ElementName=valueSlider, Path=Value, Converter={StaticResource stringToInt}, UpdateSourceTrigger=PropertyChanged}" />
+            AllowNegative="{Binding AllowNegative, Mode=OneWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+            Text="{Binding ElementName=valueSlider, Path=Value, Converter={StaticResource stringToInt}}" />
     </Grid>
 </UserControl>

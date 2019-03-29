@@ -18,7 +18,6 @@ namespace VectronsLibrary.Wpf.Controlls
         public LabelComboBox()
         {
             InitializeComponent();
-            Root.DataContext = this;
         }
 
         public IEnumerable ItemsSource

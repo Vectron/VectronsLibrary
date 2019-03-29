@@ -1,12 +1,13 @@
 ﻿<UserControl
-    x:Class="VectronsLibrary.Wpf.Controlls.LabelledTextBox"
+    x:Class="VectronsLibrary.Wpf.Controlls.LabelledColorPicker"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:VectronsLibrary.Wpf.Controlls"
+    mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="300"
-    mc:Ignorable="d">
+    d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition
@@ -20,8 +21,8 @@
             Margin="3,0,3,0"
             VerticalAlignment="Center"
             Text="{Binding Label, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
-        <TextBox
+        <local:ColorPicker
             Grid.Column="1"
-            Text="{Binding Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
+            SelectedColor="{Binding SelectedColor, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" />
     </Grid>
 </UserControl>

@@ -53,6 +53,9 @@
     <Compile Include="Controlls\LabelledCheckBox.xaml.cs">
       <DependentUpon>LabelledCheckBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controlls\LabelledColorPicker.xaml.cs">
+      <DependentUpon>LabelledColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controlls\LabelledNumTextBox.xaml.cs">
       <DependentUpon>LabelledNumTextBox.xaml</DependentUpon>
     </Compile>
@@ -64,6 +67,7 @@
     </Compile>
     <Compile Include="Converters\ColorToNameConverter.cs" />
     <Compile Include="Converters\FamilyTypefacesFilter.cs" />
+    <Compile Include="Converters\ReverseConverter.cs" />
     <Compile Include="Converters\StringToInt.cs" />
     <Compile Include="Controlls\NumericTextBoxWpf.cs" />
     <Compile Include="Dialogs\FontPickerDialog.xaml.cs">
@@ -92,6 +96,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controlls\LabelledColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controlls\LabelledNumTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +125,6 @@
   <ItemGroup>
     <None Include="VectronsLibrary.Wpf.nuspec" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\NugetPackAndPush.targets"/>
+  <Import Project="$(SolutionDir)\NugetPackAndPush.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
