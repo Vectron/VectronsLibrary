@@ -44,6 +44,6 @@
             <Version>2.2.0</Version>
         </PackageReference>
     </ItemGroup>
-    <Import Project="$(SolutionDir)\NugetPackAndPush.targets"/>
+    <Import Project="..\..\NugetPackAndPush.targets"/>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

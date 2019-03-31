@@ -125,6 +125,6 @@
   <ItemGroup>
     <None Include="VectronsLibrary.Wpf.nuspec" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\NugetPackAndPush.targets" />
+  <Import Project="..\..\NugetPackAndPush.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
