@@ -18,7 +18,7 @@ namespace VectronsLibrary.Wpf.Controlls
                 nameof(SelectedColor),
                 typeof(Color),
                 typeof(ColorPicker),
-                new PropertyMetadata(Colors.Black));
+                new FrameworkPropertyMetadata(Colors.Black, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public ColorPicker()
         {
