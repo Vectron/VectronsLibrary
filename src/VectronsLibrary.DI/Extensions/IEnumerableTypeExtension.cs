@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using VectronsLibrary.DI;
 
 namespace System.Collections.Generic
 {
@@ -7,18 +8,20 @@ namespace System.Collections.Generic
         public static IEnumerable<Type> GetImplementations(this IEnumerable<Type> loadedTypes, Type contractType)
             => loadedTypes
                 .Where(t =>
-                !t.IsInterface &&
-                !t.IsAbstract &&
-                contractType.IsAssignableFrom(t) &&
-                !t.IsGenericTypeDefinition);
+                    !Attribute.IsDefined(t, typeof(IgnoreAttribute))
+                    && !t.IsInterface
+                    && !t.IsAbstract
+                    && contractType.IsAssignableFrom(t)
+                    && !t.IsGenericTypeDefinition);
 
         public static IEnumerable<Type> GetInterfaces(this IEnumerable<Type> loadedTypes)
             => loadedTypes
                 .Where(t => t.IsInterface)
                 .Union(loadedTypes.SelectMany(t => t.GetInterfaces()))
-                .Where(c => !c.IsGenericTypeDefinition &&
-                            !string.IsNullOrWhiteSpace(c.FullName) &&
-                            !c.FullName.StartsWith("System."))
+                .Where(c => !Attribute.IsDefined(c, typeof(IgnoreAttribute))
+                            && !c.IsGenericTypeDefinition
+                            && !string.IsNullOrWhiteSpace(c.FullName)
+                            && !c.FullName.StartsWith("System."))
                 .Distinct()
                 .OrderBy(c => c.FullName);
     }
