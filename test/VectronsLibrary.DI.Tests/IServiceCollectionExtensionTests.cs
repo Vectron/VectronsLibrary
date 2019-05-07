@@ -39,7 +39,7 @@ namespace VectronsLibrary.DI.Tests
             };
 
             // Act
-            collection.AddByAttribute(items, typeof(IAttributeClass));
+            collection.AddByAttribute(typeof(IAttributeClass), items);
 
             // Assert
             Assert.AreEqual(8, collection.Count);
@@ -60,10 +60,10 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.AddByAttribute(typeof(NoAttributeClass), typeof(IAttributeClass));
-            collection.AddByAttribute(typeof(SingletonClass), typeof(IAttributeClass));
-            collection.AddByAttribute(typeof(ScopedClass), typeof(IAttributeClass));
-            collection.AddByAttribute(typeof(TransientClass), typeof(IAttributeClass));
+            collection.AddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            collection.AddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            collection.AddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            collection.AddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
             collection.AddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
             collection.AddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
@@ -139,7 +139,7 @@ namespace VectronsLibrary.DI.Tests
         {
             // Arrange
             var provider = new ServiceCollection()
-                .AddByAttribute(typeof(ScopedClass), typeof(IAttributeClass))
+                .AddByAttribute(typeof(IAttributeClass), typeof(ScopedClass))
                 .BuildServiceProvider();
 
             // Act
@@ -166,7 +166,7 @@ namespace VectronsLibrary.DI.Tests
         {
             // Arrange
             var provider = new ServiceCollection()
-                .AddByAttribute(typeof(SingletonClass), typeof(IAttributeClass))
+                .AddByAttribute(typeof(IAttributeClass), typeof(SingletonClass))
                 .BuildServiceProvider();
 
             // Act
@@ -191,7 +191,7 @@ namespace VectronsLibrary.DI.Tests
         {
             // Arrange
             var provider = new ServiceCollection()
-                .AddByAttribute(typeof(TransientClass), typeof(IAttributeClass))
+                .AddByAttribute(typeof(IAttributeClass), typeof(TransientClass))
                 .BuildServiceProvider();
 
             // Act
@@ -223,20 +223,20 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.TryAddByAttribute(typeof(NoAttributeClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(SingletonClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(ScopedClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(TransientClass), typeof(IAttributeClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
             collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
             collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
             collection.TryAddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
             collection.TryAddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
 
-            collection.TryAddByAttribute(typeof(NoAttributeClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(SingletonClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(ScopedClass), typeof(IAttributeClass));
-            collection.TryAddByAttribute(typeof(TransientClass), typeof(IAttributeClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
             collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
             collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
