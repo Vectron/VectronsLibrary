@@ -15,7 +15,7 @@ namespace VectronsLibrary.DI
         private const string IgnoreMessage = "Ignoring contract type: {0}, with implementation type: {1}";
         private static ILogger logger = NullLogger.Instance;
 
-        public static IServiceCollection Add(this IServiceCollection serviceDescriptors, Type implementation, Type contractType, ServiceLifetime serviceLifetime)
+        public static IServiceCollection Add(this IServiceCollection serviceDescriptors, Type contractType, Type implementation, ServiceLifetime serviceLifetime)
         {
             if (implementation.IsGenericTypeDefinition)
             {
@@ -38,20 +38,19 @@ namespace VectronsLibrary.DI
         }
 
         public static IServiceCollection AddAssemblyResolver(this IServiceCollection serviceDescriptors)
-                    => serviceDescriptors
-                .TryAddByAttribute(typeof(AssemblyResolver), typeof(IAssemblyResolver));
+            => serviceDescriptors.TryAddByAttribute(typeof(IAssemblyResolver), typeof(AssemblyResolver));
 
-        public static IServiceCollection AddByAttribute(this IServiceCollection serviceDescriptors, Type implementation, Type contractType)
+        public static IServiceCollection AddByAttribute(this IServiceCollection serviceDescriptors, Type contractType, Type implementation)
         {
             if (Attribute.IsDefined(implementation, typeof(SingletonAttribute)) ||
                 Attribute.IsDefined(contractType, typeof(SingletonAttribute)))
             {
-                return serviceDescriptors.Add(implementation, contractType, ServiceLifetime.Singleton);
+                return serviceDescriptors.Add(contractType, implementation, ServiceLifetime.Singleton);
             }
             else if (Attribute.IsDefined(implementation, typeof(TransientAttribute)) ||
                      Attribute.IsDefined(contractType, typeof(TransientAttribute)))
             {
-                return serviceDescriptors.Add(implementation, contractType, ServiceLifetime.Transient);
+                return serviceDescriptors.Add(contractType, implementation, ServiceLifetime.Transient);
             }
             else if (Attribute.IsDefined(implementation, typeof(IgnoreAttribute)) ||
                      Attribute.IsDefined(contractType, typeof(IgnoreAttribute)))
@@ -60,16 +59,16 @@ namespace VectronsLibrary.DI
                 return serviceDescriptors;
             }
 
-            return serviceDescriptors.Add(implementation, contractType, ServiceLifetime.Scoped);
+            return serviceDescriptors.Add(contractType, implementation, ServiceLifetime.Scoped);
         }
 
-        public static IServiceCollection AddByAttribute(this IServiceCollection serviceDescriptors, IEnumerable<Type> implementations, Type contractType)
+        public static IServiceCollection AddByAttribute(this IServiceCollection serviceDescriptors, Type contractType, IEnumerable<Type> implementations)
         {
             var noImplementations = true;
             foreach (var implementation in implementations)
             {
                 noImplementations = false;
-                _ = serviceDescriptors.AddByAttribute(implementation, contractType);
+                _ = serviceDescriptors.AddByAttribute(contractType, implementation);
             }
 
             if (noImplementations)
@@ -91,7 +90,7 @@ namespace VectronsLibrary.DI
             foreach (var @interface in interfaces)
             {
                 var implementations = loadedTypes.GetImplementations(@interface);
-                _ = serviceDescriptors.AddByAttribute(implementations, @interface);
+                _ = serviceDescriptors.AddByAttribute(@interface, implementations);
             }
 
             return serviceDescriptors;
@@ -104,7 +103,7 @@ namespace VectronsLibrary.DI
         public static IServiceCollection AddRegisteredTypes(this IServiceCollection serviceDescriptors)
             => serviceDescriptors
                 .TryAddSingleton(serviceDescriptors)
-                .TryAddByAttribute(typeof(RegisteredTypes<>), typeof(IRegisteredTypes<>));
+                .TryAddByAttribute(typeof(IRegisteredTypes<>), typeof(RegisteredTypes<>));
 
         public static IServiceCollection SetLogger(this IServiceCollection serviceDescriptors, ILogger logger)
         {
@@ -112,7 +111,7 @@ namespace VectronsLibrary.DI
             return serviceDescriptors;
         }
 
-        public static IServiceCollection TryAdd(this IServiceCollection serviceDescriptors, Type implementation, Type contractType, ServiceLifetime serviceLifetime)
+        public static IServiceCollection TryAdd(this IServiceCollection serviceDescriptors, Type contractType, Type implementation, ServiceLifetime serviceLifetime)
         {
             if (implementation.IsGenericTypeDefinition)
             {
@@ -132,17 +131,17 @@ namespace VectronsLibrary.DI
                 .TryAdd(ServiceDescriptor.Describe(implementation, implementation, serviceLifetime));
         }
 
-        public static IServiceCollection TryAddByAttribute(this IServiceCollection serviceDescriptors, Type implementation, Type contractType)
+        public static IServiceCollection TryAddByAttribute(this IServiceCollection serviceDescriptors, Type contractType, Type implementation)
         {
             if (Attribute.IsDefined(implementation, typeof(SingletonAttribute)) ||
                 Attribute.IsDefined(contractType, typeof(SingletonAttribute)))
             {
-                return serviceDescriptors.TryAdd(implementation, contractType, ServiceLifetime.Singleton);
+                return serviceDescriptors.TryAdd(contractType, implementation, ServiceLifetime.Singleton);
             }
             else if (Attribute.IsDefined(implementation, typeof(TransientAttribute)) ||
                      Attribute.IsDefined(contractType, typeof(TransientAttribute)))
             {
-                return serviceDescriptors.TryAdd(implementation, contractType, ServiceLifetime.Transient);
+                return serviceDescriptors.TryAdd(contractType, implementation, ServiceLifetime.Transient);
             }
             else if (Attribute.IsDefined(implementation, typeof(IgnoreAttribute)) ||
                      Attribute.IsDefined(contractType, typeof(IgnoreAttribute)))
@@ -151,7 +150,7 @@ namespace VectronsLibrary.DI
                 return serviceDescriptors;
             }
 
-            return serviceDescriptors.TryAdd(implementation, contractType, ServiceLifetime.Scoped);
+            return serviceDescriptors.TryAdd(contractType, implementation, ServiceLifetime.Scoped);
         }
     }
 }
