@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using VectronsLibrary.DI.Abstraction;
 
 namespace VectronsLibrary.DI.Factory
 {
