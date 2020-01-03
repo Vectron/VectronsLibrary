@@ -1,26 +1,27 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 
 namespace VectronsLibrary.Ethernet
 {
     public sealed class ReceivedData
     {
-        private readonly string message;
-        private readonly Socket socket;
-
-        public ReceivedData(string text, Socket socket)
+        public ReceivedData(byte[] rawData, Socket socket)
         {
-            message = text;
-            this.socket = socket;
+            RawData = rawData;
+            Sender = socket;
         }
 
-        public string GetMessage()
+        public string Message
+            => Encoding.ASCII.GetString(RawData, 0, RawData.Length);
+
+        public byte[] RawData
         {
-            return message;
+            get;
         }
 
-        public Socket GetSender()
+        public Socket Sender
         {
-            return socket;
+            get;
         }
     }
 }

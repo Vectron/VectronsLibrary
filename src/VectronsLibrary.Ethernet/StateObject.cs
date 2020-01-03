@@ -1,5 +1,5 @@
-﻿using System.Net.Sockets;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Net.Sockets;
 
 namespace VectronsLibrary.Ethernet
 {
@@ -12,13 +12,17 @@ namespace VectronsLibrary.Ethernet
         public StateObject(Socket workSocket)
         {
             WorkSocket = workSocket;
+            RawBytes = new List<byte>(BufferSize);
         }
 
         // Receive buffer.
         public byte[] Buffer { get; set; } = new byte[BufferSize];
 
-        // Received data string.
-        public StringBuilder Sb { get; set; } = new StringBuilder();
+        // Received data.
+        public IList<byte> RawBytes
+        {
+            get;
+        }
 
         // Client socket.
         public Socket WorkSocket

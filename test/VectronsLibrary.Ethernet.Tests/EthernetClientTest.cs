@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 namespace VectronsLibrary.Ethernet.Tests.NetFramework
@@ -44,17 +45,19 @@ namespace VectronsLibrary.Ethernet.Tests.NetFramework
         }
 
         [TestMethod]
-        public void ReceiveDataTest()
+        public async Task ReceiveDataTestAsync()
         {
             var localIp = GetLocalIPAddress();
             string testMessage = "this is a test message";
             var ethernetServer = new EthernetServer(loggerFactory.CreateLogger<EthernetServer>());
             ethernetServer.Open(localIp, 300, System.Net.Sockets.ProtocolType.Tcp);
+            ethernetServer.SessionStream.Where(x => x.IsConnected).Subscribe(x => ethernetServer.Send(x.Value, testMessage));
 
             var ethernetClient = new EthernetClient(loggerFactory.CreateLogger<EthernetClient>());
             ethernetClient.ConnectTo(localIp, 300, System.Net.Sockets.ProtocolType.Tcp);
-            ethernetClient.ReceivedDataStream.Subscribe(x => Assert.AreEqual(testMessage, x.GetMessage()));
-            ethernetServer.Send(ethernetServer.ListClients.First(), testMessage);
+            var first = await ethernetClient.ReceivedDataStream.FirstAsync();
+
+            Assert.AreEqual(testMessage, first.Message);
         }
     }
 }

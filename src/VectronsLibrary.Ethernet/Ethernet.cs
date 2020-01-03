@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -44,17 +45,21 @@ namespace VectronsLibrary.Ethernet
                 if (bytesRead > 0)
                 {
                     // There might be more data, so store the data received so far.
-                    state.Sb.Append(Encoding.ASCII.GetString(state.Buffer, 0, bytesRead));
+                    for (int i = 0; i < bytesRead; i++)
+                    {
+                        state.RawBytes.Add(state.Buffer[i]);
+                    }
 
                     if (socket.Available == 0)
                     {
-                        DataReceived.OnNext(new ReceivedData(state.Sb.ToString(), socket));
-                        logger.LogDebug($"Received: {state.Sb.ToString()} - From: {socket.RemoteEndPoint.ToString()}");
-                        state.Sb.Clear();
+                        var receivedData = new ReceivedData(state.RawBytes.ToArray(), socket);
+                        DataReceived.OnNext(receivedData);
+                        logger.LogDebug($"Received: {receivedData.Message} - From: {socket.RemoteEndPoint.ToString()}");
+                        state.RawBytes.Clear();
                     }
 
                     // Get the rest of the data.
-                    socket.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                    _ = socket.BeginReceive(state.Buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
                 }
                 else
                 {
