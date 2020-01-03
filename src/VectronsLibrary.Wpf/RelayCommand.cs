@@ -103,6 +103,11 @@ namespace VectronsLibrary.Wpf
 
         public bool CanExecute(object parameter)
         {
+            if (parameter == null)
+            {
+                return CanExecute((T)parameter);
+            }
+
             if (parameter.GetType() != typeof(T))
             {
                 throw new ArgumentException("Parameter if of wrong type", nameof(parameter));
@@ -125,6 +130,11 @@ namespace VectronsLibrary.Wpf
 
         public void Execute(object parameter)
         {
+            if (parameter == null)
+            {
+                Execute((T)parameter);
+            }
+
             if (parameter.GetType() != typeof(T))
             {
                 throw new ArgumentException("Parameter if of wrong type", nameof(parameter));
