@@ -25,10 +25,12 @@ namespace VectronsLibrary.Ethernet
         public abstract void Dispose();
 
         public virtual void Send(Socket handler, string data)
+            => Send(handler, Encoding.ASCII.GetBytes(data));
+
+        public virtual void Send(Socket handler, byte[] data)
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-            handler.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), handler);
-            logger.LogDebug($"Sending: {data}  - To: {handler.RemoteEndPoint.ToString()}");
+            logger.LogDebug($"Sending: {data.Length} bytes - To: {handler.RemoteEndPoint.ToString()}");
+            handler.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), handler);
         }
 
         protected virtual void ReceiveCallback(IAsyncResult ar)
