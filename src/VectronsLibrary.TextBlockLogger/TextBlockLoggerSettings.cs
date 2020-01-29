@@ -21,6 +21,12 @@ namespace VectronsLibrary.TextBlockLogger
             get; set;
         }
 
+        public int MaxMessages
+        {
+            get;
+            set;
+        }
+
         public IDictionary<string, LogLevel> Switches { get; set; } = new Dictionary<string, LogLevel>();
 
         public ITextBlockLoggerSettings Reload()

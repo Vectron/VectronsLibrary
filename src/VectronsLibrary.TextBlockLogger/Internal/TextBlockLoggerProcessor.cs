@@ -11,57 +11,58 @@ namespace VectronsLibrary.TextBlockLogger.Internal
     internal class TextBlockLoggerProcessor : Observable, IDisposable
     {
         private const int maxQueuedMessages = 1024;
-        private readonly BlockingCollection<LogMessageEntry> _messageQueue = new BlockingCollection<LogMessageEntry>(maxQueuedMessages);
-        private readonly Thread _outputThread;
+        private readonly MenuItem closeMenu = new MenuItem() { Header = "Clear" };
+        private readonly BlockingCollection<LogMessageEntry> messageQueue = new BlockingCollection<LogMessageEntry>(maxQueuedMessages);
+        private readonly Thread outputThread;
         private readonly TextBlock textBlock;
-        private string logData;
 
-        public TextBlockLoggerProcessor(TextBlock textBlock)
+        public TextBlockLoggerProcessor(TextBlock textBlock, int maxMessages = 100)
         {
             this.textBlock = textBlock ?? throw new ArgumentNullException(nameof(textBlock));
+            MaxMessages = maxMessages;
+            closeMenu.Click += (o, e) => textBlock.Inlines.Clear();
 
-            textBlock.DataContext = this;
-            var textBinding = new Binding()
+            if (textBlock.ContextMenu == null)
             {
-                Path = new PropertyPath(nameof(LogData)),
-                Mode = BindingMode.OneWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-            };
-            BindingOperations.SetBinding(textBlock, TextBlock.TextProperty, textBinding);
+                textBlock.ContextMenu = new ContextMenu();
+            }
+
+            _ = textBlock.ContextMenu.Items.Add(closeMenu);
 
             // Start TextBlock message queue processor
-            _outputThread = new Thread(ProcessLogQueue)
+            outputThread = new Thread(ProcessLogQueue)
             {
                 IsBackground = true,
                 Name = "TextBlock logger queue processing thread"
             };
-            _outputThread.Start();
+            outputThread.Start();
         }
 
-        public string LogData
+        public int MaxMessages
         {
-            get => logData;
-            set => SetField(ref logData, value);
+            get;
+            set;
         }
 
         public void Dispose()
         {
-            _messageQueue.CompleteAdding();
+            messageQueue.CompleteAdding();
+            textBlock?.ContextMenu?.Items?.Remove(closeMenu);
 
             try
             {
-                _outputThread.Join(1500); // with timeout in-case TextBlock is locked by user input
+                outputThread.Join(1500); // with timeout in-case TextBlock is locked by user input
             }
             catch (ThreadStateException) { }
         }
 
         public virtual void EnqueueMessage(LogMessageEntry message)
         {
-            if (!_messageQueue.IsAddingCompleted)
+            if (!messageQueue.IsAddingCompleted)
             {
                 try
                 {
-                    _messageQueue.Add(message);
+                    messageQueue.Add(message);
                     return;
                 }
                 catch (InvalidOperationException) { }
@@ -69,10 +70,6 @@ namespace VectronsLibrary.TextBlockLogger.Internal
 
             // Adding is completed so just log the message
             WriteMessage(message);
-        }
-
-        public void SetTextBlock()
-        {
         }
 
         internal virtual void WriteMessage(LogMessageEntry message)
@@ -86,6 +83,11 @@ namespace VectronsLibrary.TextBlockLogger.Internal
                         Foreground = message.LevelForeground
                     };
 
+                    if (textBlock.Inlines.Count > MaxMessages)
+                    {
+                        _ = textBlock.Inlines.Remove(textBlock.Inlines.FirstInline);
+                    }
+
                     textBlock.Inlines.Add(run1);
                 }
 
@@ -93,6 +95,11 @@ namespace VectronsLibrary.TextBlockLogger.Internal
                 {
                     Foreground = message.LevelForeground
                 };
+
+                if (textBlock.Inlines.Count > MaxMessages)
+                {
+                    _ = textBlock.Inlines.Remove(textBlock.Inlines.FirstInline);
+                }
 
                 textBlock.Inlines.Add(run2);
             });
@@ -102,7 +109,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal
         {
             try
             {
-                foreach (var message in _messageQueue.GetConsumingEnumerable())
+                foreach (var message in messageQueue.GetConsumingEnumerable())
                 {
                     WriteMessage(message);
                 }
@@ -111,7 +118,7 @@ namespace VectronsLibrary.TextBlockLogger.Internal
             {
                 try
                 {
-                    _messageQueue.CompleteAdding();
+                    messageQueue.CompleteAdding();
                 }
                 catch
                 {

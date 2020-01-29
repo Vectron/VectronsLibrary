@@ -41,6 +41,27 @@ namespace VectronsLibrary.TextBlockLogger
             }
         }
 
+        public int MaxMessages
+        {
+            get
+            {
+                var value = _configuration["MaxMessages"];
+                if (string.IsNullOrEmpty(value))
+                {
+                    return 100;
+                }
+                else if (int.TryParse(value, out var maxMessages))
+                {
+                    return maxMessages;
+                }
+                else
+                {
+                    var message = $"Configuration value '{value}' for setting '{nameof(MaxMessages)}' is not supported.";
+                    throw new InvalidOperationException(message);
+                }
+            }
+        }
+
         public ITextBlockLoggerSettings Reload()
         {
             ChangeToken = null;

@@ -1,74 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-    <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{19BF785B-810C-4C44-AE63-234AA28433A6}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>VectronsLibrary.TextBlockLogger</RootNamespace>
-        <AssemblyName>VectronsLibrary.TextBlockLogger</AssemblyName>
-        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <ItemGroup>
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
-        <Reference Include="System" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Numerics" />
-        <Reference Include="WindowsBase" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="ConfigurationTextBlockLoggerSettings.cs" />
-        <Compile Include="Internal\LogMessageEntry.cs" />
-        <Compile Include="Internal\Observable.cs" />
-        <Compile Include="Internal\PropertyChangedEventArgs.cs" />
-        <Compile Include="Internal\TextBlockLoggerProcessor.cs" />
-        <Compile Include="ITextBlockLoggerSettings.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="TextBlockLogger.cs" />
-        <Compile Include="TextBlockLoggerExtensions.cs" />
-        <Compile Include="TextBlockLoggerOptions.cs" />
-        <Compile Include="TextBlockLoggerOptionsSetup.cs" />
-        <Compile Include="TextBlockLoggerProvider.cs" />
-        <Compile Include="TextBlockLoggerSettings.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
-            <Version>2.2.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
-            <Version>2.2.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
-            <Version>2.2.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Logging.Configuration">
-            <Version>2.2.0</Version>
-        </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Options">
-            <Version>2.2.0</Version>
-        </PackageReference>
-    </ItemGroup>
-    <Import Project="..\..\NugetPackAndPush.targets"/>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19BF785B-810C-4C44-AE63-234AA28433A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VectronsLibrary.TextBlockLogger</RootNamespace>
+    <AssemblyName>VectronsLibrary.TextBlockLogger</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigurationTextBlockLoggerSettings.cs" />
+    <Compile Include="Internal\LogMessageEntry.cs" />
+    <Compile Include="Internal\Observable.cs" />
+    <Compile Include="Internal\PropertyChangedEventArgs.cs" />
+    <Compile Include="Internal\TextBlockLoggerProcessor.cs" />
+    <Compile Include="ITextBlockLoggerSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextBlockLogger.cs" />
+    <Compile Include="TextBlockLoggerExtensions.cs" />
+    <Compile Include="TextBlockLoggerOptions.cs" />
+    <Compile Include="TextBlockLoggerOptionsSetup.cs" />
+    <Compile Include="TextBlockLoggerProvider.cs" />
+    <Compile Include="TextBlockLoggerSettings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options">
+      <Version>2.2.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="..\..\NugetPackAndPush.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

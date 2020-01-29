@@ -15,6 +15,11 @@ namespace VectronsLibrary.TextBlockLogger
             get;
         }
 
+        int MaxMessages
+        {
+            get;
+        }
+
         ITextBlockLoggerSettings Reload();
 
         bool TryGetSwitch(string name, out LogLevel level);

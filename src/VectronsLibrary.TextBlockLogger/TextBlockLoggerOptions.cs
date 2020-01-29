@@ -13,5 +13,11 @@
             get;
             set;
         }
+
+        public int MaxMessages
+        {
+            get;
+            set;
+        }
     }
 }

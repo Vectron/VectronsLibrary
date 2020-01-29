@@ -25,21 +25,21 @@ namespace VectronsLibrary.TextBlockLogger
         public TextBlockLoggerProvider(IOptionsMonitor<TextBlockLoggerOptions> options, TextBlock textBlock)
         {
             // Filter would be applied on LoggerFactory level
+            messageQueue = new TextBlockLoggerProcessor(textBlock);
             _filter = trueFilter;
             optionsReloadToken = options.OnChange(ReloadLoggerOptions);
             ReloadLoggerOptions(options.CurrentValue);
-            messageQueue = new TextBlockLoggerProcessor(textBlock);
         }
 
         public TextBlockLoggerProvider(ITextBlockLoggerSettings settings, TextBlock textBlock)
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            messageQueue = new TextBlockLoggerProcessor(textBlock);
 
             if (_settings.ChangeToken != null)
             {
                 _settings.ChangeToken.RegisterChangeCallback(OnConfigurationReload, null);
             }
-            messageQueue = new TextBlockLoggerProcessor(textBlock);
         }
 
         public TextBlockLoggerProvider(Func<string, LogLevel, bool> filter, bool includeScopes, TextBlock textBlock)
@@ -50,9 +50,9 @@ namespace VectronsLibrary.TextBlockLogger
         public TextBlockLoggerProvider(Func<string, LogLevel, bool> filter, bool includeScopes, bool disableColors, TextBlock textBlock)
         {
             _filter = filter ?? throw new ArgumentNullException(nameof(filter));
+            messageQueue = new TextBlockLoggerProcessor(textBlock);
             _includeScopes = includeScopes;
             _disableColors = disableColors;
-            messageQueue = new TextBlockLoggerProcessor(textBlock);
         }
 
         public ILogger CreateLogger(string name)
@@ -134,8 +134,8 @@ namespace VectronsLibrary.TextBlockLogger
                 // The settings object needs to change here, because the old one is probably holding on
                 // to an old change token.
                 _settings = _settings.Reload();
-
                 _includeScopes = _settings?.IncludeScopes ?? false;
+                messageQueue.MaxMessages = _settings.MaxMessages;
 
                 var scopeProvider = GetScopeProvider();
                 foreach (var logger in _loggers.Values)
@@ -162,6 +162,7 @@ namespace VectronsLibrary.TextBlockLogger
         {
             _includeScopes = options.IncludeScopes;
             _disableColors = options.DisableColors;
+            messageQueue.MaxMessages = options.MaxMessages;
             var scopeProvider = GetScopeProvider();
             foreach (var logger in _loggers.Values)
             {
