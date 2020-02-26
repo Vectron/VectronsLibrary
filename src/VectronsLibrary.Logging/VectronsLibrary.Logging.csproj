@@ -14,6 +14,6 @@
 
     <!-- Enables automatic NuGet push after packaging in Release mode. -->
     <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot;" />
+        <Exec Command="dotnet nuget push &quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
     </Target>
 </Project>
