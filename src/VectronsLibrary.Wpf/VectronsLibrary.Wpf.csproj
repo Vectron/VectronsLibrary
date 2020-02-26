@@ -1,130 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4CAB732A-0596-4CD2-80A3-39507EADF4FC}</ProjectGuid>
+    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VectronsLibrary.Wpf</RootNamespace>
-    <AssemblyName>VectronsLibrary.Wpf</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <UseWPF>true</UseWPF>
+    <Version>2.0.0</Version>
+    <Authors>Vectron</Authors>
+    <Company>Vectron</Company>
+    <Description>Common WPF Controls/Functions</Description>
+    <Copyright>Vectron</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="WindowsBase" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Behaviors\ListBoxScrollIntoViewBehavior.cs" />
-    <Compile Include="Controlls\ColorPicker.xaml.cs">
-      <DependentUpon>ColorPicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\FontPicker.xaml.cs">
-      <DependentUpon>FontPicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelComboBox.xaml.cs">
-      <DependentUpon>LabelComboBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelledCheckBox.xaml.cs">
-      <DependentUpon>LabelledCheckBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelledColorPicker.xaml.cs">
-      <DependentUpon>LabelledColorPicker.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelledNumTextBox.xaml.cs">
-      <DependentUpon>LabelledNumTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelledSlider.xaml.cs">
-      <DependentUpon>LabelledSlider.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controlls\LabelledTextBox.xaml.cs">
-      <DependentUpon>LabelledTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Converters\ColorToNameConverter.cs" />
-    <Compile Include="Converters\FamilyTypefacesFilter.cs" />
-    <Compile Include="Converters\ReverseConverter.cs" />
-    <Compile Include="Converters\StringToInt.cs" />
-    <Compile Include="Controlls\NumericTextBoxWpf.cs" />
-    <Compile Include="Dialogs\FontPickerDialog.xaml.cs">
-      <DependentUpon>FontPickerDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
-    <Compile Include="Extensions\IServiceProviderExtension.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelayCommand.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controlls\ColorPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\FontPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelComboBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelledCheckBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelledColorPicker.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelledNumTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelledSlider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controlls\LabelledTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Dialogs\FontPickerDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Windows.Interactivity.WPF">
-      <Version>2.0.20525</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="VectronsLibrary.Wpf.nuspec" />
-  </ItemGroup>
-  <Import Project="..\..\NugetPackAndPush.targets" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+    <!-- Enables automatic NuGet push after packaging in Release mode. -->
+    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
+        <Exec Command="dotnet nuget push &quot;$(ProjectDir)bin\$(Configuration)\$(ProjectName).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot;" />
+    </Target>
 </Project>
