@@ -51,11 +51,11 @@ namespace VectronsLibrary.Ethernet.Tests.NetFramework
             string testMessage = "this is a test message";
             var ethernetServer = new EthernetServer(loggerFactory.CreateLogger<EthernetServer>());
             ethernetServer.Open(localIp, 300, System.Net.Sockets.ProtocolType.Tcp);
-            ethernetServer.SessionStream.Where(x => x.IsConnected).Subscribe(x => ethernetServer.Send(x.Value, testMessage));
+            var subscription = ethernetServer.SessionStream.Where(x => x.IsConnected).Delay(TimeSpan.FromSeconds(1)).Subscribe(x => ethernetServer.Send(x.Value, testMessage));
 
             var ethernetClient = new EthernetClient(loggerFactory.CreateLogger<EthernetClient>());
             ethernetClient.ConnectTo(localIp, 300, System.Net.Sockets.ProtocolType.Tcp);
-            var first = await ethernetClient.ReceivedDataStream.FirstAsync();
+            var first = await ethernetClient.ReceivedDataStream.Timeout(TimeSpan.FromSeconds(2)).FirstAsync();
 
             Assert.AreEqual(testMessage, first.Message);
         }
