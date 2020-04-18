@@ -3,5 +3,6 @@
     "version": "2.0-beta",
     "publicReleaseRefSpec": [
         "^refs/tags/VectronsLibrary.TextBlockLogger-v\\d+(?:\\.\\d+)?$"
-    ]
+    ],
+    "inherit": true // optional. Set to true in secondary version.json files used to tweak settings for subsets of projects.
 }

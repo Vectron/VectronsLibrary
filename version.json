@@ -2,7 +2,8 @@
     "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
     "version": "1.0-beta",
     "publicReleaseRefSpec": [
-        "^refs/tags/VectronsLibrary.Logging-v\\d+(?:\\.\\d+)?$"
+        "^refs/heads/master$",
+        "^refs/heads/v\\d+(?:\\.\\d+)?$"
     ],
-    "inherit": true // optional. Set to true in secondary version.json files used to tweak settings for subsets of projects.
+    "inherit": false // optional. Set to true in secondary version.json files used to tweak settings for subsets of projects.
 }

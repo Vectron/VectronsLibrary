@@ -3,5 +3,6 @@
     "version": "1.1-beta",
     "publicReleaseRefSpec": [
         "^refs/tags/VectronsLibrary.Ethernet-v\\d+(?:\\.\\d+)?$"
-    ]
+    ],
+    "inherit": true // optional. Set to true in secondary version.json files used to tweak settings for subsets of projects.
 }
