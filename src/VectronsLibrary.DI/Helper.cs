@@ -12,7 +12,11 @@ namespace VectronsLibrary.DI
         {
             get
             {
-                var codeBase = Assembly.GetEntryAssembly().CodeBase;
+                var codeBase = Assembly.GetEntryAssembly()?.CodeBase;
+                if (string.IsNullOrEmpty(codeBase))
+                {
+                    codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                }
                 var uri = new UriBuilder(codeBase);
                 var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);

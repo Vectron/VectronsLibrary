@@ -81,7 +81,7 @@ namespace VectronsLibrary.DI
 
         public static IServiceCollection AddFromAssemblies(this IServiceCollection serviceDescriptors, IEnumerable<string> assemblies)
         {
-            var loadedTypes = (Assembly.GetEntryAssembly()?.GetTypes() ?? new Type[0])
+            var loadedTypes = (Assembly.GetEntryAssembly()?.GetTypes() ?? Assembly.GetExecutingAssembly()?.GetTypes() ?? new Type[0])
                 .Concat(assemblies.SelectMany(x => Helper.LoadTypesFromAssemblySafe(x, logger)))
                 .Where(t => !Attribute.IsDefined(t, typeof(IgnoreAttribute)));
 
