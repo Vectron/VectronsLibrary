@@ -11,9 +11,7 @@ namespace VectronsLibrary.Ethernet.Tests.NetFramework
 
         static EthernetTestBase()
         {
-            loggerFactory = new LoggerFactory()
-                .AddDebug(LogLevel.Trace)
-                .AddConsole(LogLevel.Trace);
+            loggerFactory = LoggerFactory.Create(x => x.AddDebug().AddConsole().SetMinimumLevel(LogLevel.Trace));
         }
 
         public static string GetLocalIPAddress()
