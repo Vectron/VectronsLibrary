@@ -12,7 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\VectronsLibrary.DI.Abstraction\VectronsLibrary.DI.Abstraction.csproj" />
       <ProjectReference Include="..\..\src\VectronsLibrary.DI\VectronsLibrary.DI.csproj" />
       <ProjectReference Include="..\VectronsLibrary.DI.TestsAssembly\VectronsLibrary.DI.TestsAssembly.csproj" />
     </ItemGroup>
