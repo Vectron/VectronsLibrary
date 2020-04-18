@@ -3,20 +3,10 @@
     <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <UseWPF>true</UseWPF>
-    <Version>2.0.0</Version>
-    <Authors>Vectron</Authors>
-    <Company>Vectron</Company>
     <Description>Common WPF Controls/Functions</Description>
-    <Copyright>Vectron</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
   </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
-
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
 </Project>

@@ -3,14 +3,9 @@
     <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <UseWindowsForms>true</UseWindowsForms>
-    <Version>2.0.0</Version>
-    <Authors>Vectron</Authors>
-    <Company>Vectron</Company>
     <Description>Common Winforms Controls/Functions</Description>
-    <Copyright>Vectron</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
   </PropertyGroup>
+    
   <ItemGroup>
     <Compile Update="Line.cs">
       <SubType>Component</SubType>
@@ -19,12 +14,8 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
+    
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
 </Project>

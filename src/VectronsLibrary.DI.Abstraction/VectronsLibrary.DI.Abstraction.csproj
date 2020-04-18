@@ -1,15 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Vectron</Authors>
-        <Copyright>Vectron</Copyright>
-        <Version>1.0.2</Version>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
+        <Description>Abstraction project for auto dependency injection</Description>
     </PropertyGroup>
-
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
 </Project>

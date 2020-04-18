@@ -1,12 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Vectron</Authors>
-        <Copyright>Vectron</Copyright>
-        <Version>1.3.0</Version>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
-        <AssemblyVersion>1.3.0.0</AssemblyVersion>
+        <Description>Automatice container building by scanning all libraries</Description>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,9 +14,4 @@
     <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <ProjectReference Include="..\VectronsLibrary.DI.Abstraction\VectronsLibrary.DI.Abstraction.csproj" />  
     </ItemGroup>
-
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
 </Project>

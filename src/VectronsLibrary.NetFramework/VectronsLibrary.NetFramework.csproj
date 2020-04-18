@@ -2,25 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <OutputType>Library</OutputType>
-    <Version>1.1.0</Version>
-    <Authors>Vectron</Authors>
-    <Company>Vectron</Company>
     <Description>Common net framework functions</Description>
-    <Copyright>Vectron</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
   </PropertyGroup>
+    
   <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
+    
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
-      <Version>2.2.0</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.0.0"/>
   </ItemGroup>
-
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="PostBuildRelease" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
 </Project>

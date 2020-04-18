@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Ethernet", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Logging", "src\VectronsLibrary.Logging\VectronsLibrary.Logging.csproj", "{F2E40B3E-ED93-4E89-8B83-94C8CF8BD2C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectronsLibrary.NetFramework", "src\VectronsLibrary.NetFramework\VectronsLibrary.NetFramework.csproj", "{3F098AA9-1674-43F4-95B7-DD699562A06C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.NetFramework", "src\VectronsLibrary.NetFramework\VectronsLibrary.NetFramework.csproj", "{3F098AA9-1674-43F4-95B7-DD699562A06C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectronsLibrary.TextBlockLogger", "src\VectronsLibrary.TextBlockLogger\VectronsLibrary.TextBlockLogger.csproj", "{19BF785B-810C-4C44-AE63-234AA28433A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.TextBlockLogger", "src\VectronsLibrary.TextBlockLogger\VectronsLibrary.TextBlockLogger.csproj", "{19BF785B-810C-4C44-AE63-234AA28433A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectronsLibrary.Winform", "src\VectronsLibrary.Winform\VectronsLibrary.Winform.csproj", "{3D986CB7-8D1E-47AE-A15E-30315CD13F7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Winform", "src\VectronsLibrary.Winform\VectronsLibrary.Winform.csproj", "{3D986CB7-8D1E-47AE-A15E-30315CD13F7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectronsLibrary.Wpf", "src\VectronsLibrary.Wpf\VectronsLibrary.Wpf.csproj", "{4CAB732A-0596-4CD2-80A3-39507EADF4FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Wpf", "src\VectronsLibrary.Wpf\VectronsLibrary.Wpf.csproj", "{4CAB732A-0596-4CD2-80A3-39507EADF4FC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Ethernet.Tests", "test\VectronsLibrary.Ethernet.Tests\VectronsLibrary.Ethernet.Tests.csproj", "{E313E10C-198F-415C-8815-73E0FB8F4C82}"
 EndProject
@@ -32,6 +32,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.DI.TestsAssembly", "test\VectronsLibrary.DI.TestsAssembly\VectronsLibrary.DI.TestsAssembly.csproj", "{E3B227EF-D5CF-44FA-8BD5-6042E96061FB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Tests", "test\VectronsLibrary.Tests\VectronsLibrary.Tests.csproj", "{B334C74C-BCDD-411A-9D15-8BC08E1C12E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{98E647CF-4811-4332-A411-4732CCF69FA4}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
