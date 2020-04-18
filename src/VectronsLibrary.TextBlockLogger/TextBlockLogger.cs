@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
 using System;
 using System.Text;
 using System.Windows.Controls;
@@ -64,7 +63,7 @@ namespace VectronsLibrary.TextBlockLogger
             set;
         }
 
-        public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? NullScope.Instance;
+        public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? EmptyDisposable.Instance;
 
         public bool IsEnabled(LogLevel logLevel)
         {
@@ -265,6 +264,29 @@ namespace VectronsLibrary.TextBlockLogger
             public Brush Foreground
             {
                 get;
+            }
+        }
+
+        private class EmptyDisposable : IDisposable
+        {
+            // Explicit static constructor to tell C# compiler
+            // not to mark type as beforefieldinit
+            static EmptyDisposable()
+            {
+                Instance = new EmptyDisposable();
+            }
+
+            private EmptyDisposable()
+            {
+            }
+
+            public static EmptyDisposable Instance
+            {
+                get;
+            }
+
+            public void Dispose()
+            {
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +16,7 @@ namespace VectronsLibrary.DI
         }
 
         public IDisposable BeginScope<TState>(TState state)
-            => NullScope.Instance;
+            => EmptyDisposable.Instance;
 
         public bool IsEnabled(LogLevel logLevel)
             => true;
@@ -52,6 +51,29 @@ namespace VectronsLibrary.DI
 
             public void Log(ILogger logger)
                 => logger.Log(logLevel, eventId, state, exception, formatter);
+        }
+
+        private class EmptyDisposable : IDisposable
+        {
+            // Explicit static constructor to tell C# compiler
+            // not to mark type as beforefieldinit
+            static EmptyDisposable()
+            {
+                Instance = new EmptyDisposable();
+            }
+
+            private EmptyDisposable()
+            {
+            }
+
+            public static EmptyDisposable Instance
+            {
+                get;
+            }
+
+            public void Dispose()
+            {
+            }
         }
     }
 }
