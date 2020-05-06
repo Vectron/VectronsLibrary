@@ -1,8 +1,0 @@
-{
-    "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
-    "version": "1.1-beta",
-    "publicReleaseRefSpec": [
-        "^refs/tags/VectronsLibrary.DI.Abstraction-v\\d+(?:\\.\\d+)?$"
-    ],
-    "inherit": true // optional. Set to true in secondary version.json files used to tweak settings for subsets of projects.
-}
