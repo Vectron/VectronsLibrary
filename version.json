@@ -4,8 +4,5 @@
         "^refs/heads/master$",
         "^refs/heads/.*-v\\d+\\.\\d+"
     ],
-    "pathFilters": [
-        "."
-    ],
     "inherit": false
 }
