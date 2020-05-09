@@ -10,8 +10,8 @@ namespace VectronsLibrary.DI
 {
     public static class IServiceCollectionExtension
     {
-        private const string AddMessage = "Adding contract type: {0}, with implementation type: {1} as {3}";
-        private const string GenericAddMessage = "Adding contract type: {0}, with generic implementation type: {1} as {3}";
+        private const string AddMessage = "Adding contract type: {0}, with implementation type: {1} as {2}";
+        private const string GenericAddMessage = "Adding contract type: {0}, with generic implementation type: {1} as {2}";
         private const string IgnoreMessage = "Ignoring contract type: {0}, with implementation type: {1}";
         private static ILogger logger = NullLogger.Instance;
 
