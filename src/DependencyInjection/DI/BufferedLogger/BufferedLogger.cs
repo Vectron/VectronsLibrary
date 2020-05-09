@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace VectronsLibrary.DI
 {
     [Ignore]
-    public class BufferedLogger : ILogger
+    public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
     {
         private readonly Queue<IBufferItem> bufferItems = new Queue<IBufferItem>();
 

@@ -8,17 +8,17 @@ namespace VectronsLibrary.DI
     [Ignore]
     public class BufferedLoggerFactory
     {
-        private readonly Dictionary<Type, BufferedLogger> loggers = new Dictionary<Type, BufferedLogger>();
+        private readonly Dictionary<Type, IBufferedLogger> loggers = new Dictionary<Type, IBufferedLogger>();
 
-        public ILogger CreateLogger<T>()
+        public ILogger<T> CreateLogger<T>()
         {
             if (!loggers.TryGetValue(typeof(T), out var logger))
             {
-                logger = new BufferedLogger();
+                logger = new BufferedLogger<T>();
                 loggers.Add(typeof(T), logger);
             }
 
-            return logger;
+            return (ILogger<T>)logger;
         }
 
         public void LogAll(IServiceProvider serviceProvider)
