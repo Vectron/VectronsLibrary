@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace VectronsLibrary.DI
 {
     [Ignore]
-    public class BufferedLoggerFactory
+    public class BufferedLoggerFactory : IBufferedLoggerFactory
     {
         private readonly Dictionary<Type, IBufferedLogger> loggers = new Dictionary<Type, IBufferedLogger>();
 

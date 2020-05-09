@@ -8,6 +8,7 @@ namespace VectronsLibrary.DI
     public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
     {
         private readonly Queue<IBufferItem> bufferItems = new Queue<IBufferItem>();
+        private ILogger newLogger = null;
 
         [Ignore]
         private interface IBufferItem
@@ -16,16 +17,29 @@ namespace VectronsLibrary.DI
         }
 
         public IDisposable BeginScope<TState>(TState state)
-            => EmptyDisposable.Instance;
+            => newLogger == null
+            ? EmptyDisposable.Instance
+            : newLogger.BeginScope(state);
 
         public bool IsEnabled(LogLevel logLevel)
-            => true;
+            => newLogger == null
+            ? true
+            : newLogger.IsEnabled(logLevel);
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-            => bufferItems.Enqueue(new BufferItem<TState>(logLevel, eventId, state, exception, formatter));
+        {
+            if (newLogger != null)
+            {
+                newLogger.Log(logLevel, eventId, state, exception, formatter);
+                return;
+            }
+
+            bufferItems.Enqueue(new BufferItem<TState>(logLevel, eventId, state, exception, formatter));
+        }
 
         public void WriteItems(ILogger logger)
         {
+            newLogger = logger;
             while (bufferItems.Count > 0)
             {
                 bufferItems.Dequeue().Log(logger);
