@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace VectronsLibrary.DI.Abstraction
+namespace VectronsLibrary.DI.Factory
 {
     public interface IFactory<T>
         where T : class
