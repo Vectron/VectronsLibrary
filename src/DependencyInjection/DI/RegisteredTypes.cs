@@ -13,7 +13,8 @@ namespace VectronsLibrary.DI
             Items = serviceCollection
              .Where(x => x.ServiceType == typeof(T) || x.ServiceType.GetInterfaces().Contains(typeof(T)))
              .Select(x => x.ImplementationType)
-             .Where(x => x != null);
+             .Where(x => x != null)
+             .Distinct();
         }
 
         public IEnumerable<Type> Items

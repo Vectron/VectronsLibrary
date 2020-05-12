@@ -11,14 +11,21 @@ namespace VectronsLibrary.DI.Tests
         {
         }
 
+        private interface ITestInterface2 : ITestInterface
+        {
+        }
+
         [TestMethod]
         public void ReturnsAllRequestedTypes()
         {
             // Arrange
             var provider = new ServiceCollection()
                 .AddSingleton<ITestInterface, TestClass1>()
+                .AddSingleton<ITestInterface2, TestClass1>()
                 .AddSingleton<ITestInterface, TestClass2>()
-                .AddSingleton<ITestInterface, TestClass2>()
+                .AddSingleton<ITestInterface, TestClass3>()
+                .AddSingleton<ITestInterface, TestClass3>()
+                .AddSingleton<ITestInterface, TestClass3>()
                 .AddRegisteredTypes()
                 .BuildServiceProvider();
 
@@ -29,7 +36,7 @@ namespace VectronsLibrary.DI.Tests
             Assert.AreEqual(3, implementations.Items.Count());
         }
 
-        private class TestClass1 : ITestInterface
+        private class TestClass1 : ITestInterface2
         {
             public TestClass1()
             {
