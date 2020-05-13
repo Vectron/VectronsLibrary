@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -15,12 +16,17 @@ namespace VectronsLibrary.NetFramework
         private const string ClassName = "PortableSettingsProvider";
         private const string SettingsFolder = "Settings";
         private const string SETTINGSROOT = "Settings";
-        private readonly ILogger<PortableSettingsProvider> logger;
 
         // XML Root Node
         private SettingsContext context;
 
+        private ILogger logger;
         private XmlDocument settingsXML = null;
+
+        public PortableSettingsProvider()
+            : this(NullLogger<PortableSettingsProvider>.Instance)
+        {
+        }
 
         public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
         {
@@ -74,12 +80,12 @@ namespace VectronsLibrary.NetFramework
                         {
                             // Create new document
                             XmlDeclaration dec = settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
-                            settingsXML.AppendChild(dec);
+                            _ = settingsXML.AppendChild(dec);
 
                             var nodeRoot = default(XmlNode);
 
                             nodeRoot = settingsXML.CreateNode(XmlNodeType.Element, SETTINGSROOT, string.Empty);
-                            settingsXML.AppendChild(nodeRoot);
+                            _ = settingsXML.AppendChild(nodeRoot);
                         }
                         else
                         {
@@ -108,11 +114,9 @@ namespace VectronsLibrary.NetFramework
             return machinename;
         }
 
-        public virtual string GetAppSettingsFilename()
-        {
+        public virtual string GetAppSettingsFilename() =>
             // Used to determine the filename to store the settings
-            return context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".")) + ".settings";
-        }
+            context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".")) + ".settings";
 
         public virtual string GetAppSettingsPath()
         {
@@ -123,7 +127,7 @@ namespace VectronsLibrary.NetFramework
             string settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
             if (!Directory.Exists(settingsDir))
             {
-                Directory.CreateDirectory(settingsDir);
+                _ = Directory.CreateDirectory(settingsDir);
                 string oldFile = Path.Combine(fi.DirectoryName, productName + ".settings");
                 if (File.Exists(oldFile))
                 {
@@ -164,9 +168,7 @@ namespace VectronsLibrary.NetFramework
         }
 
         public override void Initialize(string name, NameValueCollection col)
-        {
-            base.Initialize(ApplicationName, col);
-        }
+            => base.Initialize(ApplicationName, col);
 
         public void Reset(SettingsContext context)
         {
@@ -175,6 +177,9 @@ namespace VectronsLibrary.NetFramework
 
             SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
         }
+
+        public void SetLogger(ILogger logger)
+            => this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection propvals)
         {
@@ -199,15 +204,13 @@ namespace VectronsLibrary.NetFramework
         }
 
         public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
-        {
-            this.context = context;
-        }
+            => this.context = context;
 
         private static bool IsValidXmlString(string text)
         {
             try
             {
-                XmlConvert.VerifyXmlChars(text);
+                _ = XmlConvert.VerifyXmlChars(text);
                 return true;
             }
             catch
@@ -224,47 +227,25 @@ namespace VectronsLibrary.NetFramework
 
         private string GetValue(SettingsProperty setting)
         {
-            string ret = string.Empty;
-
+            string ret;
             try
             {
                 string node = string.Empty;
-                if (IsRoaming(setting))
-                {
-                    node = SETTINGSROOT + "/" + setting.Name;
-                }
-                else
-                {
-                    node = SETTINGSROOT + "/" + AlteredMachineName() + "/" + setting.Name;
-                }
+                node = IsRoaming(setting)
+                    ? SETTINGSROOT + "/" + setting.Name
+                    : SETTINGSROOT + "/" + AlteredMachineName() + "/" + setting.Name;
 
-                if (SettingsXML.SelectSingleNode(node) != null)
-                {
-                    ret = SettingsXML.SelectSingleNode(node).InnerText;
-                }
-                else
-                {
-                    if (setting.DefaultValue != null)
-                    {
-                        ret = setting.DefaultValue.ToString();
-                    }
-                    else
-                    {
-                        ret = string.Empty;
-                    }
-                }
+                ret = SettingsXML.SelectSingleNode(node) != null
+                    ? SettingsXML.SelectSingleNode(node).InnerText
+                    : setting.DefaultValue != null
+                        ? setting.DefaultValue.ToString()
+                        : string.Empty;
             }
             catch (Exception ex)
             {
-                if (setting.DefaultValue != null)
-                {
-                    ret = setting.DefaultValue.ToString();
-                }
-                else
-                {
-                    ret = string.Empty;
-                }
-
+                ret = setting.DefaultValue != null
+                    ? setting.DefaultValue.ToString()
+                    : string.Empty;
                 logger.LogError(ex, "Failed to get value");
             }
 
@@ -277,7 +258,7 @@ namespace VectronsLibrary.NetFramework
             foreach (DictionaryEntry d in prop.Attributes)
             {
                 var a = (Attribute)d.Value;
-                if (a is System.Configuration.SettingsManageabilityAttribute)
+                if (a is SettingsManageabilityAttribute)
                 {
                     return true;
                 }
@@ -288,22 +269,16 @@ namespace VectronsLibrary.NetFramework
 
         private void SetValue(SettingsPropertyValue propVal)
         {
-            var machineNode = default(XmlElement);
-            var settingNode = default(XmlElement);
+            XmlElement settingNode;
 
             // Determine if the setting is roaming.
             // If roaming then the value is stored as an element under the root
             // Otherwise it is stored under a machine name node
             try
             {
-                if (IsRoaming(propVal.Property))
-                {
-                    settingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name);
-                }
-                else
-                {
-                    settingNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName() + "/" + propVal.Name);
-                }
+                settingNode = IsRoaming(propVal.Property)
+                    ? (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name)
+                    : (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName() + "/" + propVal.Name);
             }
             catch (Exception ex)
             {
@@ -323,10 +298,11 @@ namespace VectronsLibrary.NetFramework
                     // Store the value as an element of the Settings Root Node
                     settingNode = SettingsXML.CreateElement(propVal.Name);
                     settingNode.InnerText = propVal.SerializedValue.ToString();
-                    SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(settingNode);
+                    _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(settingNode);
                 }
                 else
                 {
+                    XmlElement machineNode;
                     // Its machine specific, store as an element of the machine name node,
                     // creating a new machine name node if one doesnt exist.
                     try
@@ -336,19 +312,19 @@ namespace VectronsLibrary.NetFramework
                     catch (Exception ex)
                     {
                         machineNode = SettingsXML.CreateElement(AlteredMachineName());
-                        SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
+                        _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
                         logger.LogError(ex, "Failed to set value");
                     }
 
                     if (machineNode == null)
                     {
                         machineNode = SettingsXML.CreateElement(AlteredMachineName());
-                        SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
+                        _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
                     }
 
                     settingNode = SettingsXML.CreateElement(propVal.Name);
                     settingNode.InnerText = propVal.SerializedValue.ToString();
-                    machineNode.AppendChild(settingNode);
+                    _ = machineNode.AppendChild(settingNode);
                 }
             }
         }
