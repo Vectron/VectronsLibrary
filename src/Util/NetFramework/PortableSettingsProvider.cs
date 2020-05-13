@@ -16,10 +16,7 @@ namespace VectronsLibrary.NetFramework
         private const string ClassName = "PortableSettingsProvider";
         private const string SettingsFolder = "Settings";
         private const string SETTINGSROOT = "Settings";
-
-        // XML Root Node
         private SettingsContext context;
-
         private ILogger logger;
         private XmlDocument settingsXML = null;
 
@@ -114,14 +111,21 @@ namespace VectronsLibrary.NetFramework
             return machinename;
         }
 
-        public virtual string GetAppSettingsFilename() =>
-            // Used to determine the filename to store the settings
-            context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".")) + ".settings";
+        // Used to determine the filename to store the settings
+        public virtual string GetAppSettingsFilename()
+            => context == null
+            ? "default.settings"
+            : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".")) + ".settings";
 
         public virtual string GetAppSettingsPath()
         {
+            var codebaseLocation = Assembly.GetEntryAssembly().CodeBase;
+            var location = codebaseLocation.Contains("://")
+                ? new Uri(codebaseLocation).LocalPath
+                : codebaseLocation;
+
             // Used to determine where to store the settings
-            var fi = new FileInfo(Assembly.GetEntryAssembly().CodeBase);
+            var fi = new FileInfo(location);
             var productName = ApplicationName;
 
             string settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
