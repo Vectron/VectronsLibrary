@@ -51,4 +51,25 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="{x:Type ctr:LabeledControll}" TargetType="{x:Type ctr:LabeledControll}">
+        <Setter Property="ItemsControl.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctr:LabeledControll}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Labels" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="3,0,3,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, Path=Label}" />
+                        <ContentPresenter Grid.Column="1" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
