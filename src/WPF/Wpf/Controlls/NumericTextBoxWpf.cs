@@ -6,10 +6,10 @@ namespace VectronsLibrary.Wpf.Controlls
 {
     public class NumericTextBox : TextBox
     {
-        public static readonly DependencyProperty DecimalProperty = DependencyProperty
+        public static readonly DependencyProperty AllowDecimalProperty = DependencyProperty
             .Register(nameof(AllowDecimal), typeof(bool), typeof(NumericTextBox), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-        public static readonly DependencyProperty MinusProperty = DependencyProperty
+        public static readonly DependencyProperty AllowNegativeProperty = DependencyProperty
             .Register(nameof(AllowNegative), typeof(bool), typeof(NumericTextBox), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         static NumericTextBox()
@@ -29,14 +29,14 @@ namespace VectronsLibrary.Wpf.Controlls
 
         public bool AllowDecimal
         {
-            get => (bool)GetValue(DecimalProperty);
-            set => SetValue(DecimalProperty, value);
+            get => (bool)GetValue(AllowDecimalProperty);
+            set => SetValue(AllowDecimalProperty, value);
         }
 
         public bool AllowNegative
         {
-            get => (bool)GetValue(MinusProperty);
-            set => SetValue(MinusProperty, value);
+            get => (bool)GetValue(AllowNegativeProperty);
+            set => SetValue(AllowNegativeProperty, value);
         }
 
         protected override void OnDragOver(DragEventArgs e)
