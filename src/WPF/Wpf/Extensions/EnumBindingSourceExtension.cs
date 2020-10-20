@@ -4,7 +4,7 @@ using System.Windows.Markup;
 namespace VectronsLibrary.Wpf.Extensions
 {
     // http://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/
-    internal class EnumBindingSourceExtension : MarkupExtension
+    public class EnumBindingSourceExtension : MarkupExtension
     {
         private Type enumType;
 
