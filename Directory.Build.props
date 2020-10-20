@@ -17,7 +17,7 @@
         <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
         <Deterministic>true</Deterministic>
     </PropertyGroup>
-    
+
     <!--Remove when SDK version 3.1.300 hits-->
     <ItemGroup>
         <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
@@ -33,9 +33,21 @@
     </ItemGroup>
 
     <!-- Enables automatic NuGet push after packaging in Release mode. -->
+    <Target Name="GetPackageFolder"
+      AfterTargets="Pack"
+      Condition="'$(Configuration)' == 'Release'">
+        <CreateProperty Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot;))">
+            <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+        </CreateProperty>
+        <CreateProperty Condition="Exists($(FullPackagePath)) == false" Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)\$(PackageId).$(PackageVersion).nupkg&quot;))">
+            <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+        </CreateProperty>
+        <Error Condition="Exists($(FullPackagePath)) == false" Text="Package not found: $(FullPackagePath)" />
+    </Target>
+    
     <Target Name="PostBuildRelease"
-            AfterTargets="Pack"
+            AfterTargets="GetPackageFolder"
             Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
+        <Exec Command="dotnet nuget push &quot;$(FullPackagePath)&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
     </Target>
 </Project>
