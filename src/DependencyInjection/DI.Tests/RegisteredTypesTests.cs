@@ -30,7 +30,7 @@ namespace VectronsLibrary.DI.Tests
                 .BuildServiceProvider();
 
             // Act
-            var implementations = provider.GetService<IRegisteredTypes<ITestInterface>>();
+            var implementations = provider.GetRequiredService<IRegisteredTypes<ITestInterface>>();
 
             // Assert
             Assert.AreEqual(3, implementations.Items.Count());

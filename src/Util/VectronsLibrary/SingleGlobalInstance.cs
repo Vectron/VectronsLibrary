@@ -104,12 +104,19 @@ namespace VectronsLibrary
         {
             var mutexName = string.IsNullOrWhiteSpace(gui) ? GetApplicationGui() : gui;
             var mutexId = string.Format(CultureInfo.InvariantCulture, @"Global\{{{0}}}", mutexName);
-            var mutex = new Mutex(true, mutexId);
 
-            var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
-            var securitySettings = new MutexSecurity();
-            securitySettings.AddAccessRule(allowEveryoneRule);
-            mutex.SetAccessControl(securitySettings);
+            if (!Mutex.TryOpenExisting(mutexId, out var mutex))
+            {
+                mutex = new Mutex(true, mutexId);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
+                    var securitySettings = new MutexSecurity();
+                    securitySettings.AddAccessRule(allowEveryoneRule);
+                    mutex.SetAccessControl(securitySettings);
+                }
+            }
+
             return mutex;
         }
     }

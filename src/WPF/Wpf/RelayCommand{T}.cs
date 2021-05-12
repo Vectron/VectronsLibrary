@@ -33,7 +33,7 @@ namespace VectronsLibrary.Wpf
         }
 
         /// <inheritdoc/>
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add
             {
@@ -51,7 +51,7 @@ namespace VectronsLibrary.Wpf
         private event EventHandler? CanExecuteChangedInternal;
 
         /// <inheritdoc/>
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return parameter == null
             ? CanExecute((T?)parameter)
@@ -79,7 +79,7 @@ namespace VectronsLibrary.Wpf
         }
 
         /// <inheritdoc/>
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             if (parameter == null)
             {

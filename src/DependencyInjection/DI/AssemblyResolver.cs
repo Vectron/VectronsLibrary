@@ -64,7 +64,7 @@ namespace VectronsLibrary.DI
         /// <param name="sender">The source of the event.</param>
         /// <param name="args">The event data.</param>
         /// <returns>The loaded <see cref="Assembly"/>.</returns>
-        public virtual Assembly? CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
+        public virtual Assembly? CurrentDomainAssemblyResolve(object? sender, ResolveEventArgs args)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace VectronsLibrary.DI
 
                 logger.LogDebug("Resolving Assembly: " + fullname);
                 var wantedDLL = fullname.Name + ".dll";
-                var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var rootDir = Helper.AssemblyDirectory;
                 var directoriesToSearch = new List<string>(extraDirectories) { rootDir };
                 directoriesToSearch.AddRange(Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories));
                 Assembly? foundAssembly = null;

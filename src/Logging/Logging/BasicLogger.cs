@@ -70,7 +70,7 @@ namespace VectronsLibrary.Logging
             try
             {
                 var logFormat = DateTime.Now.ToLongTimeString().ToString() + Arrow;
-                var programmName = Assembly.GetCallingAssembly().GetName().Name;
+                var programmName = Assembly.GetCallingAssembly().GetName().Name ?? string.Empty;
                 var pathName = Path.Combine(LogDirectory, programmName);
 
                 programmName = programmName.Replace(' ', Underscore);

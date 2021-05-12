@@ -29,11 +29,16 @@ namespace VectronsLibrary.DI
         public void LogAll(IServiceProvider serviceProvider)
         {
             using var scope = serviceProvider.CreateScope();
+            var generic = typeof(ILogger<>);
             foreach (var kv in loggers)
             {
-                var generic = typeof(ILogger<>);
                 var fullType = generic.MakeGenericType(kv.Key);
-                var target = (ILogger)serviceProvider.GetService(fullType);
+                if (serviceProvider.GetService(fullType) is not ILogger target)
+                {
+                    // No logger was added to the service collection;
+                    return;
+                }
+
                 kv.Value.WriteItems(target);
             }
         }

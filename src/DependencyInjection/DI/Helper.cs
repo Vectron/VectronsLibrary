@@ -19,15 +19,15 @@ namespace VectronsLibrary.DI
         {
             get
             {
-                var codeBase = Assembly.GetEntryAssembly()?.CodeBase;
+                var codeBase = Assembly.GetEntryAssembly()?.Location;
                 if (string.IsNullOrEmpty(codeBase))
                 {
-                    codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                    codeBase = Assembly.GetExecutingAssembly().Location;
                 }
 
                 var uri = new UriBuilder(codeBase);
                 var path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                return Path.GetDirectoryName(path) ?? string.Empty;
             }
         }
 
@@ -60,6 +60,11 @@ namespace VectronsLibrary.DI
 
                 foreach (var item in reflectionTypeLoadException.LoaderExceptions)
                 {
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
                     _ = builder.AppendLine("\t\t" + item.Message);
                 }
 

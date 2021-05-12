@@ -8,14 +8,14 @@ namespace VectronsLibrary.Wpf
     /// </summary>
     public class RelayCommand : ICommand
     {
-        private Predicate<object> canExecute;
-        private Action<object> execute;
+        private Predicate<object?> canExecute;
+        private Action<object?> execute;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RelayCommand"/> class.
         /// </summary>
         /// <param name="execute">The Action that needs to be executed when command is triggered.</param>
-        public RelayCommand(Action<object> execute)
+        public RelayCommand(Action<object?> execute)
             : this(execute, DefaultCanExecute)
         {
         }
@@ -25,14 +25,14 @@ namespace VectronsLibrary.Wpf
         /// </summary>
         /// <param name="execute">The Action that needs to be executed when command is triggered.</param>
         /// <param name="canExecute">The action to check if the command can be executed.</param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
+        public RelayCommand(Action<object?> execute, Predicate<object?> canExecute)
         {
             this.execute = execute ?? throw new ArgumentNullException(nameof(execute));
             this.canExecute = canExecute ?? throw new ArgumentNullException(nameof(canExecute));
         }
 
         /// <inheritdoc/>
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add
             {
@@ -56,7 +56,7 @@ namespace VectronsLibrary.Wpf
             => new RelayCommand(_ => { });
 
         /// <inheritdoc/>
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return canExecute != null && canExecute(parameter);
         }
@@ -74,7 +74,7 @@ namespace VectronsLibrary.Wpf
         }
 
         /// <inheritdoc/>
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             execute(parameter);
         }
@@ -87,7 +87,7 @@ namespace VectronsLibrary.Wpf
             CanExecuteChangedInternal?.Invoke(this, EventArgs.Empty);
         }
 
-        private static bool DefaultCanExecute(object parameter)
+        private static bool DefaultCanExecute(object? parameter)
         {
             return true;
         }

@@ -50,9 +50,13 @@ namespace VectronsLibrary.DI.Factory
                 throw new ArgumentException("Can't resolve item without name", nameof(name));
             }
 
-            var foundType = registeredTypes.Items.Where(x => x.Name == name).First() ??
-                throw new ArgumentException($"{name} is not found", nameof(name));
-            return (T)serviceProvider.GetService(foundType);
+            var foundType = registeredTypes.Items.Where(x => x.Name == name).FirstOrDefault();
+            if (foundType != null && serviceProvider.GetService(foundType) is T implementation)
+            {
+                return implementation;
+            }
+
+            throw new ArgumentException($"{name} is not found", nameof(name));
         }
     }
 }

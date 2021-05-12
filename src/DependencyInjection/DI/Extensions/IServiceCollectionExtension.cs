@@ -43,7 +43,7 @@ namespace VectronsLibrary.DI
                 return serviceDescriptors;
             }
 
-            serviceDescriptors.Add(ServiceDescriptor.Describe(contractType, x => x.GetService(implementation), serviceLifetime));
+            serviceDescriptors.Add(ServiceDescriptor.Describe(contractType, x => x.GetRequiredService(implementation), serviceLifetime));
             serviceDescriptors.Add(ServiceDescriptor.Describe(implementation, implementation, serviceLifetime));
             return serviceDescriptors;
         }
@@ -190,7 +190,7 @@ namespace VectronsLibrary.DI
             return contractType == implementation
                 ? serviceDescriptors.TryAdd(ServiceDescriptor.Describe(contractType, implementation, serviceLifetime))
                 : serviceDescriptors
-                    .TryAdd(ServiceDescriptor.Describe(contractType, x => x.GetService(implementation), serviceLifetime))
+                    .TryAdd(ServiceDescriptor.Describe(contractType, x => x.GetRequiredService(implementation), serviceLifetime))
                     .TryAdd(ServiceDescriptor.Describe(implementation, implementation, serviceLifetime));
         }
 
