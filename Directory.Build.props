@@ -1,46 +1,69 @@
-﻿<Project>
-    <PropertyGroup>
-        <Authors>Vectron</Authors>
-        <Copyright>Vectron</Copyright>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
-    </PropertyGroup>
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors></WarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
 
-    <!--Microsoft.SourceLink.GitHub settings-->
-    <PropertyGroup>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
-        <Deterministic>true</Deterministic>
-    </PropertyGroup>
+  <!--Package settings-->
+  <PropertyGroup>
+    <Authors>Vectron</Authors>
+    <Copyright>Vectron</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-        <PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="All" />
-    </ItemGroup>
+  <!--Settings to move the bin en output folders to the root folder-->
+  <PropertyGroup>
+    <RepositoryRootDirectory>$(MSBuildThisFileDirectory)</RepositoryRootDirectory>
+    <BinDir>$(RepositoryRootDirectory)bin</BinDir>
+    <OutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\$(Configuration)'))\$(MSBuildProjectName)</OutputPath>
+    <!--Cant be used because it breaks on framework targets-->
+    <!--<BaseIntermediateOutputPath>$([System.IO.Path]::GetFullPath('$(RepositoryRootDirectory)bin\obj\$(MSBuildProjectName)'))\</BaseIntermediateOutputPath>-->
+  </PropertyGroup>
 
-    <ItemGroup>
-        <None Include="$(SolutionDir)\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
-    </ItemGroup>
+  <!--Microsoft.SourceLink.GitHub settings-->
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
 
-    <!-- Enables automatic NuGet push after packaging in Release mode. -->
-    <Target Name="GetPackageFolder"
-      AfterTargets="Pack"
-      Condition="'$(Configuration)' == 'Release'">
-        <CreateProperty Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot;))">
-            <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
-        </CreateProperty>
-        <CreateProperty Condition="Exists($(FullPackagePath)) == false" Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)\$(PackageId).$(PackageVersion).nupkg&quot;))">
-            <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
-        </CreateProperty>
-        <Error Condition="Exists($(FullPackagePath)) == false" Text="Package not found: $(FullPackagePath)" />
-    </Target>
-    
-    <Target Name="PostBuildRelease"
-            AfterTargets="GetPackageFolder"
-            Condition="'$(Configuration)' == 'Release'">
-        <Exec Command="dotnet nuget push &quot;$(FullPackagePath)&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
-    </Target>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.1.91" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-Beta.*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+  </ItemGroup>
+
+  <!-- Enables automatic NuGet push after packaging in Release mode. -->
+  <Target Name="GetPackageFolder"
+    AfterTargets="Pack"
+    Condition="'$(Configuration)' == 'Release'">
+    <CreateProperty Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot;))">
+      <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+    </CreateProperty>
+    <CreateProperty Condition="Exists($(FullPackagePath)) == false" Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)\$(PackageId).$(PackageVersion).nupkg&quot;))">
+      <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+    </CreateProperty>
+    <Error Condition="Exists($(FullPackagePath)) == false" Text="Package not found: $(FullPackagePath)" />
+  </Target>
+
+  <Target Name="PostBuildRelease"
+          AfterTargets="GetPackageFolder"
+          Condition="'$(Configuration)' == 'Release'">
+    <Exec Command="dotnet nuget push &quot;$(FullPackagePath)&quot; -s &quot;https://api.nuget.org/v3/index.json&quot; --skip-duplicate" />
+  </Target>
 </Project>

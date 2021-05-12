@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Configuration;
@@ -8,28 +6,41 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace VectronsLibrary.NetFramework
 {
+    /// <summary>
+    /// A settings provieder that stores the settings in the executable directory.
+    /// </summary>
     public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
     {
         private const string ClassName = "PortableSettingsProvider";
         private const string SettingsFolder = "Settings";
         private const string SETTINGSROOT = "Settings";
-        private SettingsContext context;
+        private SettingsContext? context;
         private ILogger logger;
-        private XmlDocument settingsXML = null;
+        private XmlDocument? settingsXML;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
+        /// </summary>
         public PortableSettingsProvider()
             : this(NullLogger<PortableSettingsProvider>.Instance)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
+        /// </summary>
+        /// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
         public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
         {
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public override string ApplicationName
         {
             get
@@ -38,7 +49,7 @@ namespace VectronsLibrary.NetFramework
 
                 if (assembly != null)
                 {
-                    object[] customAttributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+                    var customAttributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
 
                     if ((customAttributes != null) && (customAttributes.Length > 0))
                     {
@@ -57,6 +68,7 @@ namespace VectronsLibrary.NetFramework
             }
         }
 
+        /// <inheritdoc/>
         public override string Name => ClassName;
 
         private XmlDocument SettingsXML
@@ -71,12 +83,12 @@ namespace VectronsLibrary.NetFramework
 
                     try
                     {
-                        string file = Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename());
+                        var file = Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename());
 
                         if (!File.Exists(file))
                         {
                             // Create new document
-                            XmlDeclaration dec = settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
+                            var dec = settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
                             _ = settingsXML.AppendChild(dec);
 
                             var nodeRoot = default(XmlNode);
@@ -86,7 +98,9 @@ namespace VectronsLibrary.NetFramework
                         }
                         else
                         {
-                            settingsXML.Load(file);
+                            var fileStream = File.OpenRead(file);
+                            XmlReader reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
+                            settingsXML.Load(reader);
                         }
                     }
                     catch (Exception ex)
@@ -99,9 +113,13 @@ namespace VectronsLibrary.NetFramework
             }
         }
 
-        public string AlteredMachineName()
+        /// <summary>
+        /// Create a unique name from the <see cref="Environment.MachineName"/>.
+        /// </summary>
+        /// <returns>Returns a vallid XML machine name.</returns>
+        public static string AlteredMachineName()
         {
-            string machinename = "M" + Environment.MachineName;
+            var machinename = "M" + Environment.MachineName;
 
             if (IsValidXmlString(machinename))
             {
@@ -111,12 +129,21 @@ namespace VectronsLibrary.NetFramework
             return machinename;
         }
 
-        // Used to determine the filename to store the settings
+        /// <summary>
+        /// Used to determine the filename to store the settings.
+        /// </summary>
+        /// <returns>File name.</returns>
         public virtual string GetAppSettingsFilename()
-            => context == null
-            ? "default.settings"
-            : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".")) + ".settings";
+        {
+            return context == null
+                ? "default.settings"
+                : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".", StringComparison.OrdinalIgnoreCase)) + ".settings";
+        }
 
+        /// <summary>
+        /// Get the storage path for the settings file.
+        /// </summary>
+        /// <returns>Storage path for the settings.</returns>
         public virtual string GetAppSettingsPath()
         {
             var codebaseLocation = Assembly.GetEntryAssembly().CodeBase;
@@ -128,11 +155,11 @@ namespace VectronsLibrary.NetFramework
             var fi = new FileInfo(location);
             var productName = ApplicationName;
 
-            string settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
+            var settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
             if (!Directory.Exists(settingsDir))
             {
                 _ = Directory.CreateDirectory(settingsDir);
-                string oldFile = Path.Combine(fi.DirectoryName, productName + ".settings");
+                var oldFile = Path.Combine(fi.DirectoryName, productName + ".settings");
                 if (File.Exists(oldFile))
                 {
                     File.Move(oldFile, settingsDir + "\\" + productName + ".settings");
@@ -142,6 +169,7 @@ namespace VectronsLibrary.NetFramework
             return settingsDir;
         }
 
+        /// <inheritdoc/>
         public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
         {
             this.context = context;
@@ -150,7 +178,8 @@ namespace VectronsLibrary.NetFramework
             return new SettingsPropertyValue(property);
         }
 
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection props)
+        /// <inheritdoc/>
+        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
         {
             this.context = context;
 
@@ -158,12 +187,12 @@ namespace VectronsLibrary.NetFramework
             var values = new SettingsPropertyValueCollection();
 
             // Iterate through the settings to be retrieved
-            foreach (SettingsProperty setting in props)
+            foreach (SettingsProperty setting in collection)
             {
                 var value = new SettingsPropertyValue(setting)
                 {
                     IsDirty = false,
-                    SerializedValue = GetValue(setting)
+                    SerializedValue = GetValue(setting),
                 };
                 values.Add(value);
             }
@@ -171,9 +200,13 @@ namespace VectronsLibrary.NetFramework
             return values;
         }
 
-        public override void Initialize(string name, NameValueCollection col)
-            => base.Initialize(ApplicationName, col);
+        /// <inheritdoc/>
+        public override void Initialize(string name, NameValueCollection config)
+        {
+            base.Initialize(ApplicationName, config);
+        }
 
+        /// <inheritdoc/>
         public void Reset(SettingsContext context)
         {
             this.context = context;
@@ -182,16 +215,23 @@ namespace VectronsLibrary.NetFramework
             SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
         }
 
+        /// <summary>
+        /// Set the <see cref="ILogger"/> instance to use.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> instance.</param>
         public void SetLogger(ILogger logger)
-            => this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        {
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
-        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection propvals)
+        /// <inheritdoc/>
+        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
         {
             this.context = context;
 
             // Iterate through the settings to be stored
             // Only dirty settings are included in propvals, and only ones relevant to this provider
-            foreach (SettingsPropertyValue propval in propvals)
+            foreach (SettingsPropertyValue propval in collection)
             {
                 SetValue(propval);
             }
@@ -207,8 +247,26 @@ namespace VectronsLibrary.NetFramework
             }
         }
 
+        /// <inheritdoc/>
         public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
-            => this.context = context;
+        {
+            this.context = context;
+        }
+
+        private static bool IsRoaming(SettingsProperty prop)
+        {
+            // Determine if the setting is marked as Roaming
+            foreach (DictionaryEntry d in prop.Attributes)
+            {
+                var a = (Attribute)d.Value;
+                if (a is SettingsManageabilityAttribute)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         private static bool IsValidXmlString(string text)
         {
@@ -234,7 +292,7 @@ namespace VectronsLibrary.NetFramework
             string ret;
             try
             {
-                string node = string.Empty;
+                var node = string.Empty;
                 node = IsRoaming(setting)
                     ? SETTINGSROOT + "/" + setting.Name
                     : SETTINGSROOT + "/" + AlteredMachineName() + "/" + setting.Name;
@@ -256,24 +314,9 @@ namespace VectronsLibrary.NetFramework
             return ret;
         }
 
-        private bool IsRoaming(SettingsProperty prop)
-        {
-            // Determine if the setting is marked as Roaming
-            foreach (DictionaryEntry d in prop.Attributes)
-            {
-                var a = (Attribute)d.Value;
-                if (a is SettingsManageabilityAttribute)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private void SetValue(SettingsPropertyValue propVal)
         {
-            XmlElement settingNode;
+            XmlElement? settingNode;
 
             // Determine if the setting is roaming.
             // If roaming then the value is stored as an element under the root
@@ -307,6 +350,7 @@ namespace VectronsLibrary.NetFramework
                 else
                 {
                     XmlElement machineNode;
+
                     // Its machine specific, store as an element of the machine name node,
                     // creating a new machine name node if one doesnt exist.
                     try

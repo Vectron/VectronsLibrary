@@ -1,5 +1,5 @@
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests
@@ -22,27 +22,27 @@ namespace VectronsLibrary.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.NullReferenceException))]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ForEachThrowsExceptionIfActionIsNull()
         {
             // Arrange
-            List<int> items = null;
+            IEnumerable<int> items = new List<int>();
 
             // Act
-            items.ForEach(x => { });
+            items.ForEach(null!);
 
             // Assert
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.NullReferenceException))]
+        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ForEachThrowsExceptionIfEnumarableIsNull()
         {
             // Arrange
-            List<int> items = null;
+            IEnumerable<int>? items = null;
 
             // Act
-            items.ForEach(null);
+            items!.ForEach(x => { });
 
             // Assert
         }
@@ -54,8 +54,11 @@ namespace VectronsLibrary.Tests
             var items = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expectedResult = "0,1,2,3,4,5,6,7,8,9";
 
+#pragma warning disable 612, 618
+
             // Act
             var result = items.ToCSV();
+#pragma warning restore 612, 618
 
             // Assert
             Assert.AreEqual(expectedResult, result);
@@ -68,8 +71,11 @@ namespace VectronsLibrary.Tests
             var items = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var expectedResult = "0;1;2;3;4;5;6;7;8;9";
 
+#pragma warning disable 612, 618
+
             // Act
             var result = items.ToCSV(';');
+#pragma warning restore 612, 618
 
             // Assert
             Assert.AreEqual(expectedResult, result);

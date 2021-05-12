@@ -5,25 +5,31 @@ using System.Windows.Markup;
 
 namespace VectronsLibrary.Wpf.Converters
 {
+    /// <summary>
+    /// Provides a type converter to convert to reverse other converters.
+    /// </summary>
     [ContentProperty("Converter")]
     public class ReverseConverter : IValueConverter
     {
-        public IValueConverter Converter
+        /// <summary>
+        /// Gets or sets he underlying <see cref="IValueConverter"/> to use when converting.
+        /// </summary>
+        public IValueConverter? Converter
         {
             get;
             set;
         }
 
-        public object Convert(
-            object value, Type targetType, object parameter, CultureInfo culture)
+        /// <inheritdoc/>
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Converter.ConvertBack(value, targetType, parameter, culture);
+            return Converter?.ConvertBack(value, targetType, parameter, culture);
         }
 
-        public object ConvertBack(
-            object value, Type targetType, object parameter, CultureInfo culture)
+        /// <inheritdoc/>
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Converter.Convert(value, targetType, parameter, culture);
+            return Converter?.Convert(value, targetType, parameter, culture);
         }
     }
 }

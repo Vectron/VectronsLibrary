@@ -6,60 +6,88 @@ using System.Windows.Forms;
 
 namespace VectronsLibrary.Winform
 {
+    /// <summary>
+    /// The 3D line style to use when drawing a line.
+    /// </summary>
     public enum Line3DStyle
     {
+        /// <summary>
+        /// A flat line style.
+        /// </summary>
         Flat,
-        Inset,
-        Outset
-    }
-
-    public enum LineOrientation
-    {
-        Horizontal,
-        Vertical,
-        DiagonalUp,
-        DiagonalDown
-    }
-
-    /// <seealso cref="http://beta.unclassified.de/code/dotnet/line/"/>
-    //   [Designer(typeof(LineDesigner))]
-    public class Line : Control
-    {
-        private Color borderColor = SystemColors.ControlText;
 
         /// <summary>
-        /// Erforderliche Designervariable.
+        /// A inset line style.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        Inset,
 
+        /// <summary>
+        /// A outset line style.
+        /// </summary>
+        Outset,
+    }
+
+    /// <summary>
+    /// The orientation of the line.
+    /// </summary>
+    public enum LineOrientation
+    {
+        /// <summary>
+        /// Line will be drawn horizontal.
+        /// </summary>
+        Horizontal,
+
+        /// <summary>
+        /// Line will be drawn vertical.
+        /// </summary>
+        Vertical,
+
+        /// <summary>
+        /// Line will be drawn from bottom left to upper right corner.
+        /// </summary>
+        DiagonalUp,
+
+        /// <summary>
+        /// Line will be drawn from right corner to upper bottom left.
+        /// </summary>
+        DiagonalDown,
+    }
+
+    /// <summary>
+    /// A line control.
+    /// http://beta.unclassified.de/code/dotnet/line/.
+    /// </summary>
+    public class Line : Control
+    {
+        private readonly IContainer components;
+        private Color borderColor = SystemColors.ControlText;
         private DashStyle dashStyle = DashStyle.Solid;
-
-        private bool internalResizing = false;
-
+        private bool internalResizing;
         private Line3DStyle line3DStyle = Line3DStyle.Flat;
-
         private LineOrientation orientation = LineOrientation.Horizontal;
+        private Pen pen1;
+        private Pen pen2;
+        private int prevHeight;
+        private int prevWidth;
 
-        private Pen pen1, pen2;
-
-        private int prevWidth, prevHeight;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Line"/> class.
+        /// </summary>
         public Line()
         {
-            InitializeComponent();
-
+            components = new Container();
             TabStop = false;
-
             pen1 = new Pen(borderColor, 2);
             pen2 = new Pen(borderColor, 2);
             prevWidth = Width;
             prevHeight = Height;
-            //  Orientation = LineOrientation.Horizontal;
-
-            //    this.SizeChanged += new EventHandler(Line_SizeChanged);
         }
 
-        [Description("Border color for solid border style"), Category("Appearance")]
+        /// <summary>
+        /// Gets or sets the color used when drawing the border.
+        /// </summary>
+        [Description("Border color for solid border style")]
+        [Category("Appearance")]
         public Color BorderColor
         {
             get => borderColor;
@@ -73,7 +101,11 @@ namespace VectronsLibrary.Winform
             }
         }
 
-        [Description("Border color for solid border style"), Category("Appearance")]
+        /// <summary>
+        /// Gets or sets the style used for dashed lines.
+        /// </summary>
+        [Description("The line dash style")]
+        [Category("Appearance")]
         public DashStyle DashStyle
         {
             get => pen1.DashStyle;
@@ -87,6 +119,7 @@ namespace VectronsLibrary.Winform
             }
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public override Font Font
         {
@@ -94,6 +127,7 @@ namespace VectronsLibrary.Winform
             set => base.Font = value;
         }
 
+        /// <inheritdoc/>
         [Browsable(false)]
         public override Color ForeColor
         {
@@ -101,8 +135,12 @@ namespace VectronsLibrary.Winform
             set => base.ForeColor = value;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Line3DStyle"/> for this <see cref="Line"/>.
+        /// </summary>
         [DefaultValue(Line3DStyle.Flat)]
-        [Description("Border style"), Category("Appearance")]
+        [Description("Border style")]
+        [Category("Appearance")]
         public Line3DStyle Line3DStyle
         {
             get => line3DStyle;
@@ -114,35 +152,39 @@ namespace VectronsLibrary.Winform
                 {
                     pen1 = new Pen(borderColor, 1)
                     {
-                        DashStyle = dashStyle
+                        DashStyle = dashStyle,
                     };
                 }
                 else if (line3DStyle == Line3DStyle.Inset)
                 {
                     pen1 = new Pen(SystemColors.ControlLightLight, 1)
                     {
-                        DashStyle = dashStyle
+                        DashStyle = dashStyle,
                     };
                     pen2 = new Pen(SystemColors.ControlDark, 1)
                     {
-                        DashStyle = dashStyle
+                        DashStyle = dashStyle,
                     };
                 }
                 else if (line3DStyle == Line3DStyle.Outset)
                 {
                     pen1 = new Pen(SystemColors.ControlDark, 1)
                     {
-                        DashStyle = dashStyle
+                        DashStyle = dashStyle,
                     };
                     pen2 = new Pen(SystemColors.ControlLightLight, 1)
                     {
-                        DashStyle = dashStyle
+                        DashStyle = dashStyle,
                     };
                 }
+
                 UpdateSize();
             }
         }
 
+        /// <summary>
+        /// Gets or sets the thickness of the line.
+        /// </summary>
         public float LineWith
         {
             get => pen1.Width;
@@ -155,8 +197,12 @@ namespace VectronsLibrary.Winform
             }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="LineOrientation"/>.
+        /// </summary>
         [DefaultValue(LineOrientation.Horizontal)]
-        [Description("Line orientation"), Category("Appearance")]
+        [Description("Line orientation")]
+        [Category("Appearance")]
         public LineOrientation Orientation
         {
             get => orientation;
@@ -170,6 +216,9 @@ namespace VectronsLibrary.Winform
             }
         }
 
+        /// <summary>
+        ///  Gets or sets the tab index of this control.
+        /// </summary>
         [Browsable(false)]
         public new int TabIndex
         {
@@ -177,6 +226,10 @@ namespace VectronsLibrary.Winform
             set => base.TabIndex = value;
         }
 
+        /// <summary>
+        ///  Gets or sets a value indicating whether the user can give the focus to this control using the TAB
+        ///  key. This property is read-only.
+        /// </summary>
         [Browsable(false)]
         public new bool TabStop
         {
@@ -184,6 +237,7 @@ namespace VectronsLibrary.Winform
             set => base.TabStop = value;
         }
 
+        /// <inheritdoc />
         [Browsable(false)]
         public override string Text
         {
@@ -191,22 +245,21 @@ namespace VectronsLibrary.Winform
             set => base.Text = value;
         }
 
+        /// <inheritdoc />
         protected override CreateParams CreateParams
         {
             get
             {
-                CreateParams cp = base.CreateParams;
+                var cp = base.CreateParams;
                 cp.ExStyle |= 0x20 /* WS_EX_TRANSPARENT */;
                 return cp;
             }
         }
 
-        protected override Size DefaultSize => new Size(100, 2);
+        /// <inheritdoc />
+        protected override Size DefaultSize => new(100, 2);
 
-        /// <summary>
-        /// Verwendete Ressourcen bereinigen.
-        /// </summary>
-        /// <param name="disposing">True, wenn verwaltete Ressourcen gelÃ¶scht werden sollen; andernfalls False.</param>
+        /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -215,89 +268,87 @@ namespace VectronsLibrary.Winform
                 {
                     components.Dispose();
                 }
+
                 if (pen1 != null)
                 {
-                    this.pen1.Dispose();
+                    pen1.Dispose();
                 }
+
                 if (pen2 != null)
                 {
-                    this.pen2.Dispose();
+                    pen2.Dispose();
                 }
             }
+
             base.Dispose(disposing);
         }
 
-        protected override void OnPaint(PaintEventArgs pe)
+        /// <inheritdoc />
+        protected override void OnPaint(PaintEventArgs e)
         {
             if (line3DStyle == Line3DStyle.Flat)
             {
                 if (orientation == LineOrientation.Horizontal)
                 {
-                    pe.Graphics.DrawLine(pen1, 0, 0, Width - 1, 0);
+                    e.Graphics.DrawLine(pen1, 0, 0, Width - 1, 0);
                 }
                 else if (orientation == LineOrientation.Vertical)
                 {
-                    pe.Graphics.DrawLine(pen1, 0, 0, 0, Height - 1);
+                    e.Graphics.DrawLine(pen1, 0, 0, 0, Height - 1);
                 }
                 else if (orientation == LineOrientation.DiagonalUp)
                 {
-                    pe.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    pe.Graphics.DrawLine(pen1, 0, Height - 1, Width - 1, 0);
+                    e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    e.Graphics.DrawLine(pen1, 0, Height - 1, Width - 1, 0);
                 }
                 else if (orientation == LineOrientation.DiagonalDown)
                 {
-                    pe.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    pe.Graphics.DrawLine(pen1, 0, 0, Width - 1, Height - 1);
+                    e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    e.Graphics.DrawLine(pen1, 0, 0, Width - 1, Height - 1);
                 }
             }
-            else   // 3D - colours are set in the Line3DStyle_Set property
+            else
             {
+                // 3D - colours are set in the Line3DStyle_Set property
                 if (orientation == LineOrientation.Horizontal)
                 {
-                    pe.Graphics.DrawLine(pen2, 0, 0, Width - 1, 0);
-                    pe.Graphics.DrawLine(pen1, 0, 1, Width - 1, 1);
+                    e.Graphics.DrawLine(pen2, 0, 0, Width - 1, 0);
+                    e.Graphics.DrawLine(pen1, 0, 1, Width - 1, 1);
                 }
                 else if (orientation == LineOrientation.Vertical)
                 {
-                    pe.Graphics.DrawLine(pen2, 0, 0, 0, Height - 1);
-                    pe.Graphics.DrawLine(pen1, 1, 0, 1, Height - 1);
+                    e.Graphics.DrawLine(pen2, 0, 0, 0, Height - 1);
+                    e.Graphics.DrawLine(pen1, 1, 0, 1, Height - 1);
                 }
                 else if (orientation == LineOrientation.DiagonalUp)
                 {
-                    pe.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    pe.Graphics.DrawLine(pen2, 0, Height - 2, Width - 2, 0);
-                    pe.Graphics.DrawLine(pen1, 1, Height - 1, Width - 1, 1);
+                    e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    e.Graphics.DrawLine(pen2, 0, Height - 2, Width - 2, 0);
+                    e.Graphics.DrawLine(pen1, 1, Height - 1, Width - 1, 1);
                 }
                 else if (orientation == LineOrientation.DiagonalDown)
                 {
-                    pe.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                    pe.Graphics.DrawLine(pen2, 1, 0, Width - 1, Height - 2);
-                    pe.Graphics.DrawLine(pen1, 0, 1, Width - 2, Height - 1);
+                    e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                    e.Graphics.DrawLine(pen2, 1, 0, Width - 1, Height - 2);
+                    e.Graphics.DrawLine(pen1, 0, 1, Width - 2, Height - 1);
                 }
             }
 
-            // OnPaint-Basisklasse wird aufgerufen
-            base.OnPaint(pe);
+            base.OnPaint(e);
         }
 
+        /// <inheritdoc />
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         {
             base.SetBoundsCore(x, y, width, height, specified);
         }
 
-        /// <summary>
-        /// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung.
-        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            components = new System.ComponentModel.Container();
-        }
-
         private void Line_SizeChanged(object sender, EventArgs e)
         {
             if (internalResizing)
+            {
                 return;
+            }
 
             // Only remember the currently alterable dimensions
             if (orientation == LineOrientation.Horizontal)
@@ -318,7 +369,7 @@ namespace VectronsLibrary.Winform
         private void UpdateSize()
         {
             internalResizing = true;
-            int lineWidth = (line3DStyle != Line3DStyle.Flat) ? 2 : (int)pen1.Width;
+            var lineWidth = (line3DStyle != Line3DStyle.Flat) ? 2 : (int)pen1.Width;
             if (orientation == LineOrientation.Horizontal)
             {
                 Width = prevWidth;
@@ -337,9 +388,10 @@ namespace VectronsLibrary.Winform
             {
                 Width = prevWidth;
                 Height = prevHeight;
-                MaximumSize = new Size();
+                MaximumSize = default;
                 MinimumSize = MaximumSize;
             }
+
             internalResizing = false;
             Invalidate();
         }

@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using VectronsLibrary.DI.TestsAssembly;
 
 namespace VectronsLibrary.DI.Tests
@@ -17,7 +17,7 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.AddAssemblyResolver();
+            _ = collection.AddAssemblyResolver();
 
             // Assert
             Assert.AreEqual(2, collection.Count);
@@ -35,11 +35,11 @@ namespace VectronsLibrary.DI.Tests
                 typeof(NoAttributeClass),
                 typeof(SingletonClass),
                 typeof(ScopedClass),
-                typeof(TransientClass)
+                typeof(TransientClass),
             };
 
             // Act
-            collection.AddByAttribute(typeof(IAttributeClass), items);
+            _ = collection.AddByAttribute(typeof(IAttributeClass), items);
 
             // Assert
             Assert.AreEqual(8, collection.Count);
@@ -60,15 +60,15 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.AddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
-            collection.AddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
-            collection.AddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
-            collection.AddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
+            _ = collection.AddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            _ = collection.AddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            _ = collection.AddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            _ = collection.AddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
-            collection.AddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
-            collection.AddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
-            collection.AddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
-            collection.AddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
+            _ = collection.AddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
+            _ = collection.AddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
+            _ = collection.AddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
+            _ = collection.AddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
 
             // Assert
             Assert.AreEqual(12, collection.Count);
@@ -94,11 +94,11 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
             var assemblies = new List<string>()
             {
-                "VectronsLibrary.DI.TestsAssembly.dll"
+                "VectronsLibrary.DI.TestsAssembly.dll",
             };
 
             // Act
-            collection.AddFromAssemblies(assemblies);
+            _ = collection.AddFromAssemblies(assemblies);
 
             // Assert
             Assert.AreEqual(10, collection.Count);
@@ -111,13 +111,15 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.AddNonGenericLoggerError();
+            _ = collection.AddNonGenericLoggerError();
             var provider = collection.BuildServiceProvider();
 
             // Assert
             Assert.AreEqual(1, collection.Count);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             ValidateServiceDescriptor(collection[0], ServiceLifetime.Singleton, typeof(ILogger), null);
-            Assert.ThrowsException<NotImplementedException>(() => provider.GetService<ILogger>());
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            _ = Assert.ThrowsException<NotImplementedException>(() => provider.GetService<ILogger>());
         }
 
         [TestMethod]
@@ -127,7 +129,7 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.AddRegisteredTypes();
+            _ = collection.AddRegisteredTypes();
 
             // Assert
             Assert.AreEqual(2, collection.Count);
@@ -184,6 +186,7 @@ namespace VectronsLibrary.DI.Tests
             Assert.AreSame(first, third, "first and third");
             Assert.AreSame(first, fourth, "first and fourth");
             Assert.AreSame(first, notByInterface, "first and notByInterface");
+            Assert.AreSame(first, notByInterfaceScoped, "first and notByInterface scoped");
         }
 
         [TestMethod]
@@ -223,25 +226,25 @@ namespace VectronsLibrary.DI.Tests
             var collection = new ServiceCollection();
 
             // Act
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
-            collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
-            collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
-            collection.TryAddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
-            collection.TryAddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
+            _ = collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
+            _ = collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
+            _ = collection.TryAddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
+            _ = collection.TryAddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
 
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
-            collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(NoAttributeClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(SingletonClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(ScopedClass));
+            _ = collection.TryAddByAttribute(typeof(IAttributeClass), typeof(TransientClass));
 
-            collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
-            collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
-            collection.TryAddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
-            collection.TryAddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
+            _ = collection.TryAddByAttribute(typeof(NoAttributeClass2), typeof(NoAttributeClass2));
+            _ = collection.TryAddByAttribute(typeof(SingletonClass2), typeof(SingletonClass2));
+            _ = collection.TryAddByAttribute(typeof(ScopedClass2), typeof(ScopedClass2));
+            _ = collection.TryAddByAttribute(typeof(TransientClass2), typeof(TransientClass2));
 
             // Assert
             Assert.AreEqual(9, collection.Count);
@@ -257,14 +260,14 @@ namespace VectronsLibrary.DI.Tests
             ValidateServiceDescriptor(collection[8], ServiceLifetime.Transient, typeof(TransientClass2), typeof(TransientClass2));
         }
 
-        private void ValidateServiceDescriptor(ServiceDescriptor descriptor, ServiceLifetime lifetime, Type serviceType, Type ImplementationType)
+        private static void ValidateServiceDescriptor(ServiceDescriptor descriptor, ServiceLifetime lifetime, Type serviceType, Type implementationType)
         {
             Assert.IsTrue(descriptor.Lifetime == lifetime);
             Assert.AreEqual(serviceType, descriptor.ServiceType);
 
             if (descriptor.ImplementationFactory == null)
             {
-                Assert.AreEqual(ImplementationType, descriptor.ImplementationType);
+                Assert.AreEqual(implementationType, descriptor.ImplementationType);
             }
             else
             {

@@ -4,12 +4,18 @@ using System.Windows.Input;
 
 namespace VectronsLibrary.Wpf.Controlls
 {
-    [TemplatePart(Name = IPInput.ElementFirstIPPartTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = IPInput.ElementSecondIPPartTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = IPInput.ElementThirdIPPartTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = IPInput.ElementFourthIPPartTextBox, Type = typeof(TextBox))]
+    /// <summary>
+    /// An Ip adress input controll.
+    /// </summary>
+    [TemplatePart(Name = ElementFirstIPPartTextBox, Type = typeof(TextBox))]
+    [TemplatePart(Name = ElementSecondIPPartTextBox, Type = typeof(TextBox))]
+    [TemplatePart(Name = ElementThirdIPPartTextBox, Type = typeof(TextBox))]
+    [TemplatePart(Name = ElementFourthIPPartTextBox, Type = typeof(TextBox))]
     public class IPInput : Control
     {
+        /// <summary>
+        /// Identifies the <see cref="IPAddress"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty IPAddressProperty = DependencyProperty
             .Register(nameof(IPAddress), typeof(string), typeof(IPInput), new FrameworkPropertyMetadata("127.0.0.1", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, IpAdressChanged));
 
@@ -17,22 +23,26 @@ namespace VectronsLibrary.Wpf.Controlls
         private const string ElementFourthIPPartTextBox = "PART_FourthIPPartTextBox";
         private const string ElementSecondIPPartTextBox = "PART_SecondIPPartTextBox";
         private const string ElementThirdIPPartTextBox = "PART_ThirdIPPartTextBox";
-        private TextBox firstIPPartTextBox;
-        private TextBox fourthIPPartTextBox;
-        private TextBox secondIPPartTextBox;
-        private TextBox thirdIPPartTextBox;
+        private TextBox? firstIPPartTextBox;
+        private TextBox? fourthIPPartTextBox;
+        private TextBox? secondIPPartTextBox;
+        private TextBox? thirdIPPartTextBox;
 
         static IPInput()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(IPInput), new FrameworkPropertyMetadata(typeof(IPInput)));
         }
 
+        /// <summary>
+        /// Gets or sets the Ip adress.
+        /// </summary>
         public string IPAddress
         {
             get => (string)GetValue(IPAddressProperty);
             set => SetValue(IPAddressProperty, value);
         }
 
+        /// <inheritdoc/>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -44,6 +54,7 @@ namespace VectronsLibrary.Wpf.Controlls
             UpdateTextBoxes();
         }
 
+        /// <inheritdoc/>
         protected override void OnKeyUp(KeyEventArgs e)
         {
             base.OnKeyUp(e);
@@ -54,7 +65,7 @@ namespace VectronsLibrary.Wpf.Controlls
 
             var frameworkElement = e.OriginalSource as FrameworkElement;
 
-            if (!(frameworkElement is TextBox textBox))
+            if (frameworkElement is not TextBox textBox)
             {
                 return;
             }
@@ -67,9 +78,15 @@ namespace VectronsLibrary.Wpf.Controlls
                 _ = frameworkElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             }
 
+            if (firstIPPartTextBox == null || secondIPPartTextBox == null || thirdIPPartTextBox == null || fourthIPPartTextBox == null)
+            {
+                return;
+            }
+
             IPAddress = $"{firstIPPartTextBox.Text}.{secondIPPartTextBox.Text}.{thirdIPPartTextBox.Text}.{fourthIPPartTextBox.Text}";
         }
 
+        /// <inheritdoc/>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
@@ -77,9 +94,10 @@ namespace VectronsLibrary.Wpf.Controlls
             {
                 throw new System.ArgumentNullException(nameof(e));
             }
+
             var frameworkElement = e.OriginalSource as FrameworkElement;
 
-            if (!(frameworkElement is TextBox textBox))
+            if (frameworkElement is not TextBox textBox)
             {
                 return;
             }

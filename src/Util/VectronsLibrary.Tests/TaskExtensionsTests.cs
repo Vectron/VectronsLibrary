@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Threading.Tasks;
 using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests
@@ -14,48 +14,50 @@ namespace VectronsLibrary.Tests
         [ExpectedException(typeof(AggregateException))]
         public void DoesNotThrowException()
         {
-            //Arrange
+            // Arrange
             var logger = GetLoggerMock<TaskExtensionsTests>();
 
-            //Act
-            Task.Run(() => throw new NullReferenceException())
-                 //.LogExceptionsAsync(logger.Object)
+            // Act
+            Task.Run(() => throw new InvalidOperationException())
                  .Wait();
 
-            //Assert
-            logger.Verify(x => x.Log(It.IsAny<LogLevel>(),
+            // Assert
+            logger.Verify(
+                x => x.Log(
+                    It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),
                     It.IsAny<object>(),
                     It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()), Times.Once);
+                    It.IsAny<Func<object, Exception, string>>()),
+                Times.Once);
         }
 
         [TestMethod]
         [ExpectedException(typeof(AggregateException))]
         public void RunsActionOnSpecificException()
         {
-            //Arrange
+            // Arrange
             var logger = GetLoggerMock<TaskExtensionsTests>();
 
-            //Act
-            Task.Run(() => throw new NullReferenceException())
+            // Act
+            Task.Run(() => throw new InvalidOperationException())
                  .LogExceptionsAsync<NullReferenceException>(logger.Object, x => Assert.IsInstanceOfType(x, typeof(NullReferenceException)))
                  .Wait();
 
-            //Assert
+            // Assert
             logger.VerifyAll();
         }
 
         protected static Mock<ILogger<T>> GetLoggerMock<T>()
         {
             var mock = new Mock<ILogger<T>>();
-            mock.Setup(x => x.Log(
-                    It.IsAny<LogLevel>(),
-                    It.IsAny<EventId>(),
-                    It.IsAny<object>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()))
-                .Callback<LogLevel, EventId, object, Exception, Func<object, Exception, string>>((l, e, s, ex, f) =>
+            _ = mock.Setup(x => x.Log(
+                      It.IsAny<LogLevel>(),
+                      It.IsAny<EventId>(),
+                      It.IsAny<object>(),
+                      It.IsAny<Exception>(),
+                      It.IsAny<Func<object, Exception, string>>()))
+                .Callback<LogLevel, EventId, object, Exception, Func<object, Exception?, string>>((l, e, s, ex, f) =>
                 {
                     if (ex != null)
                     {

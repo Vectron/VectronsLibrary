@@ -5,7 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Description>Common Winforms Controls/Functions</Description>
   </PropertyGroup>
-    
+
   <ItemGroup>
     <Compile Update="Line.cs">
       <SubType>Component</SubType>
@@ -14,7 +14,7 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-    
+
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>

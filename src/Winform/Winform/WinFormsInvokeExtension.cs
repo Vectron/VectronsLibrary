@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace VectronsLibrary.Winform
 {
+    /// <summary>
+    /// Extensions for <see cref="Form"/>.
+    /// </summary>
     public static class WinFormsInvokeExtension
     {
         /// <summary>
@@ -14,7 +17,7 @@ namespace VectronsLibrary.Winform
         {
             if (form.InvokeRequired)
             {
-                form.Invoke(method);
+                _ = form.Invoke(method);
             }
             else
             {
@@ -26,21 +29,14 @@ namespace VectronsLibrary.Winform
         /// Executes the specified delegate on the thread that owns the control's underlying window handle, returning a
         /// value.
         /// </summary>
-        /// <typeparam name="TResult">The Return Type of the Delegate</typeparam>
+        /// <typeparam name="TResult">The Return Type of the Delegate.</typeparam>
         /// <param name="form">The control whose window handle the delegate should be invoked on.</param>
         /// <param name="method">A delegate that contains a method to be called in the control's thread context and
         /// that returns a value.</param>
         /// <returns>The return value from the delegate being invoked.</returns>
         public static TResult Invoke<TResult>(this Form form, Func<TResult> method)
         {
-            if (form.InvokeRequired)
-            {
-                return (TResult)form.Invoke(method);
-            }
-            else
-            {
-                return method();
-            }
+            return form.InvokeRequired ? (TResult)form.Invoke(method) : method();
         }
     }
 }

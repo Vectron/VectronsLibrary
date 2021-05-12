@@ -1,160 +1,207 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <inheritdoc cref="ServiceCollectionDescriptorExtensions"/>
     public static class IServiceCollectionExtensionWrapper
     {
-        public static IServiceCollection TryAdd(this IServiceCollection serviceDescriptors, IEnumerable<ServiceDescriptor> descriptors)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAdd(IServiceCollection, IEnumerable{ServiceDescriptor})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAdd(this IServiceCollection collection, IEnumerable<ServiceDescriptor> descriptors)
         {
-            ServiceCollectionDescriptorExtensions.TryAdd(serviceDescriptors, descriptors);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAdd(collection, descriptors);
+            return collection;
         }
 
-        public static IServiceCollection TryAdd(this IServiceCollection serviceDescriptors, ServiceDescriptor descriptor)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAdd(IServiceCollection, ServiceDescriptor)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAdd(this IServiceCollection collection, ServiceDescriptor descriptor)
         {
-            ServiceCollectionDescriptorExtensions.TryAdd(serviceDescriptors, descriptor);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAdd(collection, descriptor);
+            return collection;
         }
 
-        public static IServiceCollection TryAddEnumerable(this IServiceCollection serviceDescriptors, IEnumerable<ServiceDescriptor> descriptors)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddEnumerable(IServiceCollection, IEnumerable{ServiceDescriptor})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddEnumerable(this IServiceCollection collection, IEnumerable<ServiceDescriptor> descriptors)
         {
-            ServiceCollectionDescriptorExtensions.TryAddEnumerable(serviceDescriptors, descriptors);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddEnumerable(collection, descriptors);
+            return collection;
         }
 
-        public static IServiceCollection TryAddEnumerable(this IServiceCollection serviceDescriptors, ServiceDescriptor descriptor)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddEnumerable(IServiceCollection, ServiceDescriptor)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddEnumerable(this IServiceCollection collection, ServiceDescriptor descriptor)
         {
-            ServiceCollectionDescriptorExtensions.TryAddEnumerable(serviceDescriptors, descriptor);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddEnumerable(collection, descriptor);
+            return collection;
         }
 
-        public static IServiceCollection TryAddScoped<TService>(this IServiceCollection serviceDescriptors, Func<IServiceProvider, TService> implementationFactory)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped{TService}(IServiceCollection, Func{IServiceProvider, TService})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped<TService>(this IServiceCollection collection, Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddScoped(serviceDescriptors, implementationFactory);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddScoped(collection, implementationFactory);
+            return collection;
         }
 
-        public static IServiceCollection TryAddScoped<TService, TImplementation>(this IServiceCollection serviceDescriptors)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            ServiceCollectionDescriptorExtensions.TryAddScoped<TService, TImplementation>(serviceDescriptors);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddScoped(this IServiceCollection serviceDescriptors, Type service, Func<IServiceProvider, object> implementationFactory)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddScoped(serviceDescriptors, service, implementationFactory);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddScoped<TService>(this IServiceCollection serviceDescriptors)
-            where TService : class
-        {
-            ServiceCollectionDescriptorExtensions.TryAddScoped<TService>(serviceDescriptors);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddScoped(this IServiceCollection serviceDescriptors, Type service)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddScoped(serviceDescriptors, service);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddScoped(this IServiceCollection serviceDescriptors, Type service, Type implementationType)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddScoped(serviceDescriptors, service, implementationType);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddSingleton(this IServiceCollection serviceDescriptors, Type service)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton(serviceDescriptors, service);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddSingleton(this IServiceCollection serviceDescriptors, Type service, Type implementationType)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton(serviceDescriptors, service, implementationType);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddSingleton(this IServiceCollection serviceDescriptors, Type service, Func<IServiceProvider, object> implementationFactory)
-        {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton(serviceDescriptors, service, implementationFactory);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection serviceDescriptors)
-            where TService : class
-        {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton<TService>(serviceDescriptors);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddSingleton<TService, TImplementation>(this IServiceCollection serviceDescriptors)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped{TService, TImplementation}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped<TService, TImplementation>(this IServiceCollection collection)
             where TService : class
             where TImplementation : class, TService
         {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton<TService, TImplementation>(serviceDescriptors);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddScoped<TService, TImplementation>(collection);
+            return collection;
         }
 
-        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection serviceDescriptors, TService instance)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped(IServiceCollection, Type, Func{IServiceProvider, object})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped(this IServiceCollection collection, Type service, Func<IServiceProvider, object> implementationFactory)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddScoped(collection, service, implementationFactory);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped{TService}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped<TService>(this IServiceCollection collection)
             where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton(serviceDescriptors, instance);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddScoped<TService>(collection);
+            return collection;
         }
 
-        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection serviceDescriptors, Func<IServiceProvider, TService> implementationFactory)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped(IServiceCollection, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped(this IServiceCollection collection, Type service)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddScoped(collection, service);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddScoped(IServiceCollection, Type, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddScoped(this IServiceCollection collection, Type service, Type implementationType)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddScoped(collection, service, implementationType);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton(this IServiceCollection collection, Type service)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddSingleton(collection, service);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton(this IServiceCollection collection, Type service, Type implementationType)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddSingleton(collection, service, implementationType);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton(IServiceCollection, Type, Func{IServiceProvider, object})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton(this IServiceCollection collection, Type service, Func<IServiceProvider, object> implementationFactory)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddSingleton(collection, service, implementationFactory);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TService}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection collection)
             where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddSingleton(serviceDescriptors, implementationFactory);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddSingleton<TService>(collection);
+            return collection;
         }
 
-        public static IServiceCollection TryAddTransient<TService>(this IServiceCollection serviceDescriptors, Func<IServiceProvider, TService> implementationFactory)
-            where TService : class
-        {
-            ServiceCollectionDescriptorExtensions.TryAddTransient(serviceDescriptors, implementationFactory);
-            return serviceDescriptors;
-        }
-
-        public static IServiceCollection TryAddTransient<TService, TImplementation>(this IServiceCollection serviceDescriptors)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TService, TImplementation}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton<TService, TImplementation>(this IServiceCollection collection)
             where TService : class
             where TImplementation : class, TService
         {
-            ServiceCollectionDescriptorExtensions.TryAddTransient<TService, TImplementation>(serviceDescriptors);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddSingleton<TService, TImplementation>(collection);
+            return collection;
         }
 
-        public static IServiceCollection TryAddTransient<TService>(this IServiceCollection serviceDescriptors)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TService}(IServiceCollection, TService)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection collection, TService instance)
             where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddTransient<TService>(serviceDescriptors);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddSingleton(collection, instance);
+            return collection;
         }
 
-        public static IServiceCollection TryAddTransient(this IServiceCollection serviceDescriptors, Type service, Func<IServiceProvider, object> implementationFactory)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddSingleton{TService}(IServiceCollection, Func{IServiceProvider, TService})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddSingleton<TService>(this IServiceCollection collection, Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddTransient(serviceDescriptors, service, implementationFactory);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddSingleton(collection, implementationFactory);
+            return collection;
         }
 
-        public static IServiceCollection TryAddTransient(this IServiceCollection serviceDescriptors, Type service, Type implementationType)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient{TService}(IServiceCollection, Func{IServiceProvider, TService})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient<TService>(this IServiceCollection collection, Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
         {
-            ServiceCollectionDescriptorExtensions.TryAddTransient(serviceDescriptors, service, implementationType);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddTransient(collection, implementationFactory);
+            return collection;
         }
 
-        public static IServiceCollection TryAddTransient(this IServiceCollection serviceDescriptors, Type service)
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient{TService, TImplementation}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient<TService, TImplementation>(this IServiceCollection collection)
+            where TService : class
+            where TImplementation : class, TService
         {
-            ServiceCollectionDescriptorExtensions.TryAddTransient(serviceDescriptors, service);
-            return serviceDescriptors;
+            ServiceCollectionDescriptorExtensions.TryAddTransient<TService, TImplementation>(collection);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient{TService}(IServiceCollection)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient<TService>(this IServiceCollection collection)
+            where TService : class
+        {
+            ServiceCollectionDescriptorExtensions.TryAddTransient<TService>(collection);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type, Func{IServiceProvider, object})"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient(this IServiceCollection collection, Type service, Func<IServiceProvider, object> implementationFactory)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddTransient(collection, service, implementationFactory);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient(this IServiceCollection collection, Type service, Type implementationType)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddTransient(collection, service, implementationType);
+            return collection;
+        }
+
+        /// <inheritdoc cref="ServiceCollectionDescriptorExtensions.TryAddTransient(IServiceCollection, Type)"/>
+        /// <returns>A reference to this instance after the operation has completed.</returns>
+        public static IServiceCollection TryAddTransient(this IServiceCollection collection, Type service)
+        {
+            ServiceCollectionDescriptorExtensions.TryAddTransient(collection, service);
+            return collection;
         }
     }
 }

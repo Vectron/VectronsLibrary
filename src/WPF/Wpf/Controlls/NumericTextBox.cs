@@ -4,11 +4,20 @@ using System.Windows.Input;
 
 namespace VectronsLibrary.Wpf.Controlls
 {
+    /// <summary>
+    /// A numeric only <see cref="TextBox"/>.
+    /// </summary>
     public class NumericTextBox : TextBox
     {
+        /// <summary>
+        /// Identifies the <see cref="Label"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AllowDecimalProperty = DependencyProperty
             .Register(nameof(AllowDecimal), typeof(bool), typeof(NumericTextBox), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+        /// <summary>
+        /// Identifies the <see cref="Label"/> dependency property.
+        /// </summary>
         public static readonly DependencyProperty AllowNegativeProperty = DependencyProperty
             .Register(nameof(AllowNegative), typeof(bool), typeof(NumericTextBox), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -27,18 +36,25 @@ namespace VectronsLibrary.Wpf.Controlls
             EventManager.RegisterClassHandler(typeof(NumericTextBox), DataObject.PastingEvent, handler);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether decimal values are allowed in the <see cref="NumericTextBox"/>.
+        /// </summary>
         public bool AllowDecimal
         {
             get => (bool)GetValue(AllowDecimalProperty);
             set => SetValue(AllowDecimalProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether negative values are allowed in the <see cref="NumericTextBox"/>.
+        /// </summary>
         public bool AllowNegative
         {
             get => (bool)GetValue(AllowNegativeProperty);
             set => SetValue(AllowNegativeProperty, value);
         }
 
+        /// <inheritdoc/>
         protected override void OnDragOver(DragEventArgs e)
         {
             if (!IsDataValid(e.Data))
@@ -50,12 +66,14 @@ namespace VectronsLibrary.Wpf.Controlls
             OnDragEnter(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnDrop(DragEventArgs e)
         {
             e.Handled = !IsDataValid(e.Data);
             base.OnDrop(e);
         }
 
+        /// <inheritdoc/>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if ((e.Key < Key.D0 || e.Key > Key.D9) // Key is not a decimal key
@@ -71,18 +89,18 @@ namespace VectronsLibrary.Wpf.Controlls
 
         private static bool IsDataValid(IDataObject data)
         {
-            bool isValid = false;
+            var isValid = false;
             if (data != null)
             {
-                string text = data.GetData(DataFormats.Text) as string;
+                var text = data.GetData(DataFormats.Text) as string;
 
                 if (!string.IsNullOrEmpty(text?.Trim()))
                 {
-                    if (int.TryParse(text, out int intResult))
+                    if (int.TryParse(text, out _))
                     {
                         isValid = true;
                     }
-                    else if (double.TryParse(text, out double doubleResult))
+                    else if (double.TryParse(text, out _))
                     {
                         isValid = true;
                     }

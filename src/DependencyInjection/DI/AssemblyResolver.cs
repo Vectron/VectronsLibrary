@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace VectronsLibrary.DI
 {
+    /// <summary>
+    /// Default implementation of <see cref="IAssemblyResolver"/>.
+    /// </summary>
     [Singleton]
     public class AssemblyResolver : IAssemblyResolver
     {
@@ -14,24 +17,54 @@ namespace VectronsLibrary.DI
         private readonly IEnumerable<string> ignoredAssemblies;
         private readonly ILogger logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
+        /// </summary>
         public AssemblyResolver()
-            : this(Microsoft.Extensions.Logging.Abstractions.NullLogger<AssemblyResolver>.Instance) { }
+            : this(Microsoft.Extensions.Logging.Abstractions.NullLogger<AssemblyResolver>.Instance)
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> used for logging data.</param>
         public AssemblyResolver(ILogger<AssemblyResolver> logger)
-            : this(logger, new string[0]) { }
+            : this(logger, Array.Empty<string>())
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> used for logging data.</param>
+        /// <param name="ignoredAssemblies">A <see cref="IEnumerable{T}"/> with names of assemblies to ignore when resolving.</param>
         public AssemblyResolver(ILogger<AssemblyResolver> logger, IEnumerable<string> ignoredAssemblies)
-            : this(logger, ignoredAssemblies, new string[0]) { }
+            : this(logger, ignoredAssemblies, Array.Empty<string>())
+        {
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> used for logging data.</param>
+        /// <param name="ignoredAssemblies">A <see cref="IEnumerable{T}"/> with names of assemblies to ignore when resolving.</param>
+        /// <param name="extraDirectories">A <see cref="IEnumerable{T}"/> with folders to search for the missing assembly.</param>
         public AssemblyResolver(ILogger<AssemblyResolver> logger, IEnumerable<string> ignoredAssemblies, IEnumerable<string> extraDirectories)
         {
             this.logger = logger;
             this.extraDirectories = extraDirectories;
             this.ignoredAssemblies = new List<string>(ignoredAssemblies) { "System.Reactive.Debugger" };
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainAssemblyResolve;
         }
 
-        public virtual Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        /// <summary>
+        /// Implementation of <see cref="ResolveEventHandler"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="args">The event data.</param>
+        /// <returns>The loaded <see cref="Assembly"/>.</returns>
+        public virtual Assembly? CurrentDomainAssemblyResolve(object sender, ResolveEventArgs args)
         {
             try
             {
@@ -42,7 +75,7 @@ namespace VectronsLibrary.DI
 
                 // failing to ignore queries for satellite resource assemblies or using [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
                 // in AssemblyInfo.cs will crash the program on non en-US based system cultures.
-                if (name.EndsWith(".XmlSerializers") || (name.EndsWith(".resources") && !culture.EndsWith("neutral")))
+                if (name.EndsWith(".XmlSerializers", StringComparison.OrdinalIgnoreCase) || (name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase) && !culture.EndsWith("neutral", StringComparison.OrdinalIgnoreCase)))
                 {
                     return null;
                 }
@@ -57,7 +90,7 @@ namespace VectronsLibrary.DI
                 var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var directoriesToSearch = new List<string>(extraDirectories) { rootDir };
                 directoriesToSearch.AddRange(Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories));
-                Assembly foundAssembly = null;
+                Assembly? foundAssembly = null;
                 foreach (var dir in directoriesToSearch)
                 {
                     foundAssembly = TryLoadFile(dir, wantedDLL);
@@ -83,7 +116,7 @@ namespace VectronsLibrary.DI
             }
         }
 
-        private Assembly TryLoadFile(string directory, string wantedDLL)
+        private Assembly? TryLoadFile(string directory, string wantedDLL)
         {
             try
             {

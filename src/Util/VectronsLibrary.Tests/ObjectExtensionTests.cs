@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests
@@ -11,26 +11,26 @@ namespace VectronsLibrary.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsIfClassObjectIsNull()
         {
-            //Arrange
-            string obj = null;
+            // Arrange
+            string? obj = null;
 
-            //Act
-            obj.ThrowIfNull(nameof(obj));
+            // Act
+            obj!.ThrowIfNull(nameof(obj));
 
-            //Assert
+            // Assert
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsIfStructObjectIsNull()
         {
-            //Arrange
+            // Arrange
             int? obj = null;
 
-            //Act
+            // Act
             obj.ThrowIfNull(nameof(obj));
 
-            //Assert
+            // Assert
         }
     }
 }

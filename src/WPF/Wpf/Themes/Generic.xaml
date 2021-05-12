@@ -1,8 +1,7 @@
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ctr="clr-namespace:VectronsLibrary.Wpf.Controlls"
-    xmlns:local="clr-namespace:VectronsLibrary.Wpf">
+    xmlns:ctr="clr-namespace:VectronsLibrary.Wpf.Controlls">
 
     <Style x:Key="{x:Type ctr:IPInput}" TargetType="{x:Type ctr:IPInput}">
         <Setter Property="Template">
