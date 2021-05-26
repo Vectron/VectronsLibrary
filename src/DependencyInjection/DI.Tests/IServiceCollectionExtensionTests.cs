@@ -116,9 +116,7 @@ namespace VectronsLibrary.DI.Tests
 
             // Assert
             Assert.AreEqual(1, collection.Count);
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            ValidateServiceDescriptor(collection[0], ServiceLifetime.Singleton, typeof(ILogger), null);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            ValidateServiceDescriptor(collection[0], ServiceLifetime.Singleton, typeof(ILogger), null!);
             _ = Assert.ThrowsException<NotImplementedException>(() => provider.GetService<ILogger>());
         }
 
