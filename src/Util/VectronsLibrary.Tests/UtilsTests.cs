@@ -6,6 +6,29 @@ namespace VectronsLibrary.Tests
     public class UtilsTests
     {
         [DataTestMethod]
+        [DataRow(ulong.MinValue, "0,00 B")]
+        [DataRow(1ul, "1,00 B")]
+        [DataRow(10ul, "10,00 B")]
+        [DataRow(100ul, "0,10 kB")]
+        [DataRow(1000ul, "0,98 kB")]
+        [DataRow(1000_0ul, "9,77 kB")]
+        [DataRow(1000_00ul, "97,66 kB")]
+        [DataRow(1000_000ul, "0,95 MB")]
+        [DataRow(1000_000_0ul, "9,54 MB")]
+        [DataRow(1000_000_00ul, "95,37 MB")]
+        [DataRow(1000_000_000ul, "0,93 GB")]
+        [DataRow(1000_000_000_000ul, "0,91 TB")]
+        [DataRow(1000_000_000_000_000ul, "0,89 PB")]
+        [DataRow(1000_000_000_000_000_000ul, "0,87 EB")]
+        [DataRow(1000_000_000_000_000_000_0ul, "8,67 EB")]
+        [DataRow(ulong.MaxValue, "16,00 EB")]
+        public void FormatBytesReturnsRightValue(ulong value, string expected)
+        {
+            var result = Utils.FormatBytes(value);
+            Assert.AreEqual(expected, result);
+        }
+
+        [DataTestMethod]
         [DataRow(ulong.MinValue, 0, "0,00 B")]
         [DataRow(1ul, 0, "1,00 B")]
         [DataRow(10ul, 0, "10,00 B")]
@@ -114,7 +137,7 @@ namespace VectronsLibrary.Tests
         [DataRow(ulong.MaxValue, 9, "16,00 ?B")]
         [DataRow(ulong.MaxValue, int.MinValue, "16,00 ?B")]
         [DataRow(ulong.MaxValue, int.MaxValue, "16,00 ?B")]
-        public void FormatBytesReturnsRightValue(ulong value, int start, string expected)
+        public void FormatBytesReturnsRightValueWithStart(ulong value, int start, string expected)
         {
             var result = Utils.FormatBytes(value, start);
             Assert.AreEqual(expected, result);

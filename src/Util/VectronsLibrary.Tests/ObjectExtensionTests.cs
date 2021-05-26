@@ -8,11 +8,10 @@ namespace VectronsLibrary.Tests
     public class ObjectExtensionTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ThrowsIfClassObjectIsNull()
+        public void DontThrowIfClassObjectIsNull()
         {
             // Arrange
-            string? obj = null;
+            string? obj = string.Empty;
 
             // Act
             obj!.ThrowIfNull(nameof(obj));
@@ -21,16 +20,37 @@ namespace VectronsLibrary.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ThrowsIfStructObjectIsNull()
+        public void DontThrowIfStructObjectIsNull()
         {
             // Arrange
-            int? obj = null;
+            int? obj = 1;
 
             // Act
             obj.ThrowIfNull(nameof(obj));
 
             // Assert
+        }
+
+        [TestMethod]
+        public void ThrowsIfClassObjectIsNull()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            _ = Assert.ThrowsException<ArgumentNullException>(() => ObjectExtension.ThrowIfNull<string>(null!, "Test object"));
+        }
+
+        [TestMethod]
+        public void ThrowsIfStructObjectIsNull()
+        {
+            // Arrange
+
+            // Act
+
+            // Assert
+            _ = Assert.ThrowsException<ArgumentNullException>(() => ObjectExtension.ThrowIfNull<int>(null, "Test object"));
         }
     }
 }

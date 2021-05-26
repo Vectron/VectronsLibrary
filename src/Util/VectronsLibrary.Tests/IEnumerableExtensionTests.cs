@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using VectronsLibrary.Extensions;
 
@@ -22,29 +23,26 @@ namespace VectronsLibrary.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ForEachThrowsExceptionIfActionIsNull()
         {
             // Arrange
             IEnumerable<int> items = new List<int>();
 
             // Act
-            items.ForEach(null!);
 
             // Assert
+            _ = Assert.ThrowsException<ArgumentNullException>(() => IEnumerableExtension.ForEach(items, null!));
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentNullException))]
         public void ForEachThrowsExceptionIfEnumarableIsNull()
         {
             // Arrange
-            IEnumerable<int>? items = null;
 
             // Act
-            items!.ForEach(x => { });
 
             // Assert
+            _ = Assert.ThrowsException<ArgumentNullException>(() => IEnumerableExtension.ForEach<int>(null!, _ => { }));
         }
 
         [TestMethod]
