@@ -17,21 +17,30 @@ namespace VectronsLibrary.Extensions
         /// <returns>The original <see cref="Task"/>.</returns>
         public static Task LogExceptionsAsync(this Task task, ILogger logger)
         {
-            _ = task.ContinueWith(
+            if (task is null)
+            {
+                throw new ArgumentNullException(nameof(task));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            return task.ContinueWith(
                 t =>
                 {
-                    if (t.Exception != null && logger != null)
+                    if (t.Exception != null)
                     {
                         var aggregateException = t.Exception.Flatten();
-                        foreach (var exception in aggregateException.InnerExceptions)
+                        for (var i = aggregateException.InnerExceptions.Count - 1; i >= 0; i--)
                         {
+                            var exception = aggregateException.InnerExceptions[i];
                             logger.LogError(exception, "Task Error");
                         }
                     }
                 },
                 TaskContinuationOptions.OnlyOnFaulted);
-
-            return task;
         }
 
         /// <summary>
@@ -45,14 +54,30 @@ namespace VectronsLibrary.Extensions
         public static Task LogExceptionsAsync<T>(this Task task, ILogger logger, Action<T> action)
             where T : Exception
         {
-            _ = task.ContinueWith(
+            if (task is null)
+            {
+                throw new ArgumentNullException(nameof(task));
+            }
+
+            if (logger is null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
+
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            return task.ContinueWith(
                 t =>
                 {
                     if (t.Exception != null)
                     {
                         var aggregateException = t.Exception.Flatten();
-                        foreach (var exception in aggregateException.InnerExceptions)
+                        for (var i = aggregateException.InnerExceptions.Count - 1; i >= 0; i--)
                         {
+                            var exception = aggregateException.InnerExceptions[i];
                             if (exception is T ex)
                             {
                                 action(ex);
@@ -64,8 +89,6 @@ namespace VectronsLibrary.Extensions
                     }
                 },
                 TaskContinuationOptions.OnlyOnFaulted);
-
-            return task;
         }
     }
 }
