@@ -35,8 +35,6 @@ namespace VectronsLibrary.Winform
         /// that returns a value.</param>
         /// <returns>The return value from the delegate being invoked.</returns>
         public static TResult Invoke<TResult>(this Form form, Func<TResult> method)
-        {
-            return form.InvokeRequired ? (TResult)form.Invoke(method) : method();
-        }
+            => form.InvokeRequired ? (TResult)form.Invoke(method) : method();
     }
 }

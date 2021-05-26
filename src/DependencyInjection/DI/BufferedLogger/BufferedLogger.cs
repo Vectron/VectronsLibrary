@@ -29,18 +29,14 @@ namespace VectronsLibrary.DI
 
         /// <inheritdoc/>
         public IDisposable BeginScope<TState>(TState state)
-        {
-            return newLogger == null
+            => newLogger == null
                 ? EmptyDisposable.Instance
                 : newLogger.BeginScope(state);
-        }
 
         /// <inheritdoc/>
         public bool IsEnabled(LogLevel logLevel)
-        {
-            return newLogger == null
+            => newLogger == null
                 || newLogger.IsEnabled(logLevel);
-        }
 
         /// <inheritdoc/>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -82,18 +78,14 @@ namespace VectronsLibrary.DI
             }
 
             public void Log(ILogger logger)
-            {
-                logger.Log(logLevel, eventId, state, exception, formatter);
-            }
+                => logger.Log(logLevel, eventId, state, exception, formatter);
         }
 
         private class EmptyDisposable : IDisposable
         {
             // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
             static EmptyDisposable()
-            {
-                Instance = new EmptyDisposable();
-            }
+                => Instance = new EmptyDisposable();
 
             private EmptyDisposable()
             {

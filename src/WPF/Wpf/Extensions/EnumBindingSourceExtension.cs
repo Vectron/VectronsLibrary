@@ -23,9 +23,7 @@ namespace VectronsLibrary.Wpf.Extensions
         /// </summary>
         /// <param name="enumType">The <see cref="Enum"/> that needs to be bound.</param>
         public EnumBindingSourceExtension(Type enumType)
-        {
-            EnumType = enumType;
-        }
+            => EnumType = enumType;
 
         /// <summary>
         /// Gets or sets the <see cref="Enum"/> that needs to be bound.

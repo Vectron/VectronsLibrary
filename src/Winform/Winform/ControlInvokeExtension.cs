@@ -38,8 +38,6 @@ namespace VectronsLibrary.Winform
         /// <param name="method">A delegate that contains a method to be called in the control's thread context and that returns a value.</param>
         /// <returns>The return value from the delegate being invoked.</returns>
         public static TResult Invoke<TResult>(this Control control, Func<TResult> method)
-        {
-            return control.InvokeRequired ? (TResult)control.Invoke(method) : method();
-        }
+            => control.InvokeRequired ? (TResult)control.Invoke(method) : method();
     }
 }

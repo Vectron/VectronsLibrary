@@ -69,9 +69,7 @@ namespace VectronsLibrary.Tests
 
         [TestMethod]
         public void ThrowsArgumentExceptionWhenNoGuiIsSupplied()
-        {
-            _ = Assert.ThrowsException<ArgumentException>(() => SingleGlobalInstance.GetApplicationGui());
-        }
+            => _ = Assert.ThrowsException<ArgumentException>(() => SingleGlobalInstance.GetApplicationGui());
 
         [TestMethod]
         public void ThrowsArgumentExceptionWhenNoVallidGuidGiven()

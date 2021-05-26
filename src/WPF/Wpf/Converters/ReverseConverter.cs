@@ -22,14 +22,10 @@ namespace VectronsLibrary.Wpf.Converters
 
         /// <inheritdoc/>
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Converter?.ConvertBack(value, targetType, parameter, culture);
-        }
+            => Converter?.ConvertBack(value, targetType, parameter, culture);
 
         /// <inheritdoc/>
         public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Converter?.Convert(value, targetType, parameter, culture);
-        }
+            => Converter?.Convert(value, targetType, parameter, culture);
     }
 }

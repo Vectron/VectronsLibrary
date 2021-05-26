@@ -339,9 +339,7 @@ namespace VectronsLibrary.Winform
 
         /// <inheritdoc />
         protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
-        {
-            base.SetBoundsCore(x, y, width, height, specified);
-        }
+            => base.SetBoundsCore(x, y, width, height, specified);
 
         private void Line_SizeChanged(object sender, EventArgs e)
         {

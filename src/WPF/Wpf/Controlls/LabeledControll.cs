@@ -15,9 +15,7 @@ namespace VectronsLibrary.Wpf.Controlls
             .Register(nameof(Label), typeof(string), typeof(LabeledControll), new FrameworkPropertyMetadata("Unnamed Label"));
 
         static LabeledControll()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(LabeledControll), new FrameworkPropertyMetadata(typeof(LabeledControll)));
-        }
+            => DefaultStyleKeyProperty.OverrideMetadata(typeof(LabeledControll), new FrameworkPropertyMetadata(typeof(LabeledControll)));
 
         /// <summary>
         /// Gets or sets the text of the label.

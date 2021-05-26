@@ -35,8 +35,6 @@ namespace VectronsLibrary.Wpf.Converters
 
         /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ColorConverter.ConvertFromString((string)value);
-        }
+            => ColorConverter.ConvertFromString((string)value);
     }
 }

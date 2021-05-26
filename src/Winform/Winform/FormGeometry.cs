@@ -57,13 +57,11 @@ namespace VectronsLibrary.Winform
         /// <param name="mainForm">The <see cref="Form"/> to store the geometry from.</param>
         /// <returns>A string containing all the settings for the form.</returns>
         public static string GeometryToString(Form mainForm)
-        {
-            return mainForm.Location.X.ToString(CultureInfo.InvariantCulture) + "|" +
+            => mainForm.Location.X.ToString(CultureInfo.InvariantCulture) + "|" +
                 mainForm.Location.Y.ToString(CultureInfo.InvariantCulture) + "|" +
                 mainForm.Size.Width.ToString(CultureInfo.InvariantCulture) + "|" +
                 mainForm.Size.Height.ToString(CultureInfo.InvariantCulture) + "|" +
                 mainForm.WindowState.ToString();
-        }
 
         private static bool GeometryIsBizarreLocation(Point loc, Size size)
         {
@@ -102,8 +100,6 @@ namespace VectronsLibrary.Winform
         }
 
         private static bool GeometryIsBizarreSize(Size size)
-        {
-            return size.Height <= Screen.PrimaryScreen.WorkingArea.Height && size.Width <= Screen.PrimaryScreen.WorkingArea.Width;
-        }
+            => size.Height <= Screen.PrimaryScreen.WorkingArea.Height && size.Width <= Screen.PrimaryScreen.WorkingArea.Width;
     }
 }

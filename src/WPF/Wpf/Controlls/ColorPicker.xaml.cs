@@ -27,9 +27,7 @@ namespace VectronsLibrary.Wpf.Controlls
         /// Initializes a new instance of the <see cref="ColorPicker"/> class.
         /// </summary>
         public ColorPicker()
-        {
-            InitializeComponent();
-        }
+            => InitializeComponent();
 
         /// <summary>
         /// Event when the selected value changed.

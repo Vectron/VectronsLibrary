@@ -17,13 +17,11 @@ namespace VectronsLibrary.DI
         /// </summary>
         /// <param name="serviceCollection">The <see cref="IServiceCollection"/> used to built the <see cref="IServiceProvider"/>.</param>
         public RegisteredTypes(IServiceCollection serviceCollection)
-        {
-            Items = serviceCollection
+            => Items = serviceCollection
                 .Where(x => x.ServiceType == typeof(T) || x.ServiceType.GetInterfaces().Contains(typeof(T)))
                 .Select(x => x.ImplementationType)
                 .WhereNotNull()
                 .Distinct();
-        }
 
         /// <inheritdoc />
         public IEnumerable<Type> Items

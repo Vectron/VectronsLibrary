@@ -29,9 +29,7 @@ namespace VectronsLibrary.Wpf.Controlls
         private TextBox? thirdIPPartTextBox;
 
         static IPInput()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(IPInput), new FrameworkPropertyMetadata(typeof(IPInput)));
-        }
+            => DefaultStyleKeyProperty.OverrideMetadata(typeof(IPInput), new FrameworkPropertyMetadata(typeof(IPInput)));
 
         /// <summary>
         /// Gets or sets the Ip adress.

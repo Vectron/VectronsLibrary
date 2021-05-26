@@ -35,22 +35,24 @@ namespace VectronsLibrary.Tests
         public void ThrowsIfClassObjectIsNull()
         {
             // Arrange
+            string? value = null;
 
             // Act
 
             // Assert
-            _ = Assert.ThrowsException<ArgumentNullException>(() => ObjectExtension.ThrowIfNull<string>(null!, "Test object"));
+            _ = Assert.ThrowsException<ArgumentNullException>(() => value!.ThrowIfNull("Test object"));
         }
 
         [TestMethod]
         public void ThrowsIfStructObjectIsNull()
         {
             // Arrange
+            int? value = null;
 
             // Act
 
             // Assert
-            _ = Assert.ThrowsException<ArgumentNullException>(() => ObjectExtension.ThrowIfNull<int>(null, "Test object"));
+            _ = Assert.ThrowsException<ArgumentNullException>(() => value.ThrowIfNull("Test object"));
         }
     }
 }

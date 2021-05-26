@@ -54,9 +54,7 @@ namespace VectronsLibrary.DI
         /// <param name="serviceDescriptors">The <see cref="IServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IServiceCollection AddAssemblyResolver(this IServiceCollection serviceDescriptors)
-        {
-            return serviceDescriptors.TryAddByAttribute(typeof(IAssemblyResolver), typeof(AssemblyResolver));
-        }
+            => serviceDescriptors.TryAddByAttribute(typeof(IAssemblyResolver), typeof(AssemblyResolver));
 
         /// <summary>
         /// Add a service to the <see cref="IServiceCollection"/> by attribute.
@@ -140,10 +138,8 @@ namespace VectronsLibrary.DI
         /// <param name="serviceDescriptors">The <see cref="IServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IServiceCollection AddNonGenericLoggerError(this IServiceCollection serviceDescriptors)
-        {
-            return serviceDescriptors
-                       .AddSingleton<ILogger>(t => throw new NotImplementedException($"Don't use {typeof(ILogger)}, use the generic {typeof(ILogger<>)}"));
-        }
+            => serviceDescriptors
+                .AddSingleton<ILogger>(t => throw new NotImplementedException($"Don't use {typeof(ILogger)}, use the generic {typeof(ILogger<>)}"));
 
         /// <summary>
         /// Add <see cref="IRegisteredTypes{T}"/> to the <see cref="IServiceCollection"/>.
@@ -151,11 +147,9 @@ namespace VectronsLibrary.DI
         /// <param name="serviceDescriptors">The <see cref="IServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         public static IServiceCollection AddRegisteredTypes(this IServiceCollection serviceDescriptors)
-        {
-            return serviceDescriptors
+            => serviceDescriptors
                 .TryAddSingleton(serviceDescriptors)
                 .TryAddByAttribute(typeof(IRegisteredTypes<>), typeof(RegisteredTypes<>));
-        }
 
         /// <summary>
         /// Set the logger to use by the extension methods.

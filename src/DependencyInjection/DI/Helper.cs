@@ -37,9 +37,7 @@ namespace VectronsLibrary.DI
         /// <param name="assembly">The assembly name to load types from.</param>
         /// <returns>A collection of all the types found in the assembly.</returns>
         public static Type[] LoadTypesFromAssemblySafe(string assembly)
-        {
-            return LoadTypesFromAssemblySafe(assembly, NullLogger.Instance);
-        }
+            => LoadTypesFromAssemblySafe(assembly, NullLogger.Instance);
 
         /// <inheritdoc cref="LoadTypesFromAssemblySafe(string)"/>
         /// /// <param name="assembly">The assembly name to load types from.</param>

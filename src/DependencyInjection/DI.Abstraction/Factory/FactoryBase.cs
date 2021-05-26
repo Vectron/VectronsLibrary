@@ -38,9 +38,7 @@ namespace VectronsLibrary.DI.Factory
 
         /// <inheritdoc />
         public IEnumerable<string> GetItemNames()
-        {
-            return registeredTypes.Items.Select(x => x.Name);
-        }
+            => registeredTypes.Items.Select(x => x.Name);
 
         /// <inheritdoc />
         public T GetValue(string name)

@@ -33,9 +33,7 @@ namespace VectronsLibrary.Extensions
         /// <returns>A string with all values seperated by ",".</returns>
         [Obsolete("Method is deprecated please use string.Join()'")]
         public static string ToCSV<T>(this IEnumerable<T> items)
-        {
-            return items.ToCSV(',');
-        }
+            => items.ToCSV(',');
 
         /// <summary>
         /// Converts a <see cref="IEnumerable{T}"/> to a string with each value seperated by the given seperator.

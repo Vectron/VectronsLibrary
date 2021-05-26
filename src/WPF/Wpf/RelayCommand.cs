@@ -57,9 +57,7 @@ namespace VectronsLibrary.Wpf
 
         /// <inheritdoc/>
         public bool CanExecute(object? parameter)
-        {
-            return canExecute != null && canExecute(parameter);
-        }
+            => canExecute != null && canExecute(parameter);
 
         /// <summary>
         /// Destroy this <see cref="ICommand"/> so it wont trigger anymore.
@@ -75,21 +73,15 @@ namespace VectronsLibrary.Wpf
 
         /// <inheritdoc/>
         public void Execute(object? parameter)
-        {
-            execute(parameter);
-        }
+            => execute(parameter);
 
         /// <summary>
         /// Trigger event that on execute has changed.
         /// </summary>
         public void OnCanExecuteChanged()
-        {
-            CanExecuteChangedInternal?.Invoke(this, EventArgs.Empty);
-        }
+            => CanExecuteChangedInternal?.Invoke(this, EventArgs.Empty);
 
         private static bool DefaultCanExecute(object? parameter)
-        {
-            return true;
-        }
+            => true;
     }
 }

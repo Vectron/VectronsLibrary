@@ -29,9 +29,7 @@ namespace VectronsLibrary.Wpf.Dialogs
         /// <param name="parrent">The parent window.</param>
         public FontPickerDialog(Window parrent)
             : this()
-        {
-            Owner = parrent;
-        }
+            => Owner = parrent;
 
         /// <summary>
         /// Gets or sets the default font <see cref="Color"/>.
@@ -144,8 +142,6 @@ namespace VectronsLibrary.Wpf.Dialogs
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
-        }
+            => DialogResult = true;
     }
 }

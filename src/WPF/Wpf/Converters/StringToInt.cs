@@ -12,9 +12,7 @@ namespace VectronsLibrary.Wpf.Converters
     {
         /// <inheritdoc/>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value;
-        }
+            => value;
 
         /// <inheritdoc/>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

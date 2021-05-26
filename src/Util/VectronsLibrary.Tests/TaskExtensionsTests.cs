@@ -262,22 +262,24 @@ namespace VectronsLibrary.Tests
         public void ThrowIfLoggerIsNull()
         {
             // Arrange
+            ILogger? logger = null;
 
             // Act
 
             // Assert
-            _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, null!));
+            _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, logger!));
         }
 
         [TestMethod]
         public void ThrowIfLoggerIsNullGeneric()
         {
             // Arrange
+            ILogger? logger = null;
 
             // Act
 
             // Assert
-            _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, null!, dummyAction));
+            _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, logger!, dummyAction));
         }
 
         [TestMethod]

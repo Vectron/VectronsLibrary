@@ -41,27 +41,21 @@ namespace VectronsLibrary.DI.Tests
         {
             [ExcludeFromCodeCoverage]
             public TestClass1()
-            {
-                Assert.Fail("Constructor should not be called");
-            }
+                => Assert.Fail("Constructor should not be called");
         }
 
         private class TestClass2 : ITestInterface
         {
             [ExcludeFromCodeCoverage]
             public TestClass2()
-            {
-                Assert.Fail("Constructor should not be called");
-            }
+                => Assert.Fail("Constructor should not be called");
         }
 
         private class TestClass3 : ITestInterface
         {
             [ExcludeFromCodeCoverage]
             public TestClass3()
-            {
-                Assert.Fail("Constructor should not be called");
-            }
+                => Assert.Fail("Constructor should not be called");
         }
     }
 }

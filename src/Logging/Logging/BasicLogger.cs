@@ -120,9 +120,7 @@ namespace VectronsLibrary.Logging
         }
 
         private static void OnStringLoggedEventHandler(LoggingEventArgs e)
-        {
-            StringLogged?.Invoke(null, e);
-        }
+            => StringLogged?.Invoke(null, e);
 
         private static void StartTaskQue()
         {

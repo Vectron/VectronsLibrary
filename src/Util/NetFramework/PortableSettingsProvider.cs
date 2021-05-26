@@ -36,9 +36,7 @@ namespace VectronsLibrary.NetFramework
         /// </summary>
         /// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
         public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
-        {
-            this.logger = logger;
-        }
+            => this.logger = logger;
 
         /// <inheritdoc/>
         public override string ApplicationName
@@ -99,7 +97,7 @@ namespace VectronsLibrary.NetFramework
                         else
                         {
                             var fileStream = File.OpenRead(file);
-                            XmlReader reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
+                            var reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
                             settingsXML.Load(reader);
                         }
                     }
@@ -134,11 +132,9 @@ namespace VectronsLibrary.NetFramework
         /// </summary>
         /// <returns>File name.</returns>
         public virtual string GetAppSettingsFilename()
-        {
-            return context == null
+            => context == null
                 ? "default.settings"
                 : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".", StringComparison.OrdinalIgnoreCase)) + ".settings";
-        }
 
         /// <summary>
         /// Get the storage path for the settings file.
@@ -202,9 +198,7 @@ namespace VectronsLibrary.NetFramework
 
         /// <inheritdoc/>
         public override void Initialize(string name, NameValueCollection config)
-        {
-            base.Initialize(ApplicationName, config);
-        }
+            => base.Initialize(ApplicationName, config);
 
         /// <inheritdoc/>
         public void Reset(SettingsContext context)
@@ -220,9 +214,7 @@ namespace VectronsLibrary.NetFramework
         /// </summary>
         /// <param name="logger">The <see cref="ILogger"/> instance.</param>
         public void SetLogger(ILogger logger)
-        {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+            => this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         /// <inheritdoc/>
         public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
@@ -249,9 +241,7 @@ namespace VectronsLibrary.NetFramework
 
         /// <inheritdoc/>
         public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
-        {
-            this.context = context;
-        }
+            => this.context = context;
 
         private static bool IsRoaming(SettingsProperty prop)
         {

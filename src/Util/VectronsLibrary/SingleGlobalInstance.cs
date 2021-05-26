@@ -23,9 +23,7 @@ namespace VectronsLibrary
         /// </summary>
         /// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
         public SingleGlobalInstance(string gui)
-        {
-            mutex = InitMutex(gui);
-        }
+            => mutex = InitMutex(gui);
 
         /// <summary>
         /// Gets the guid defined in a <see cref="GuidAttribute"/> on the assembly level.
@@ -62,9 +60,7 @@ namespace VectronsLibrary
         /// </summary>
         /// <returns>True if no other instances are running. else false.</returns>
         public bool GetMutex()
-        {
-            return GetMutex(Timeout.InfiniteTimeSpan);
-        }
+            => GetMutex(Timeout.InfiniteTimeSpan);
 
         /// <summary>
         /// Returns a value to check if we are the only instance of the mutex.

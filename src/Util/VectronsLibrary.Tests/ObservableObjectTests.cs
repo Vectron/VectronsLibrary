@@ -163,19 +163,13 @@ namespace VectronsLibrary.Tests
             }
 
             public void InvokeOnPropertyChanged(string? propertyName)
-            {
-                OnPropertyChanged(propertyName!);
-            }
+                => OnPropertyChanged(propertyName!);
 
             public void InvokeOnPropertyChanged<T>(T previousValue, T currentValue, string? propertyName)
-            {
-                OnPropertyChanged(previousValue, currentValue, propertyName!);
-            }
+                => OnPropertyChanged(previousValue, currentValue, propertyName!);
 
             public void InvokeOnPropertyChanging(string? propertyName)
-            {
-                OnPropertyChanging(propertyName!);
-            }
+                => OnPropertyChanging(propertyName!);
         }
     }
 }

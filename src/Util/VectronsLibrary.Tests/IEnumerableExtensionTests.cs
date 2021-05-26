@@ -38,11 +38,12 @@ namespace VectronsLibrary.Tests
         public void ForEachThrowsExceptionIfEnumarableIsNull()
         {
             // Arrange
+            IEnumerable<int>? enumerable = null;
 
             // Act
 
             // Assert
-            _ = Assert.ThrowsException<ArgumentNullException>(() => IEnumerableExtension.ForEach<int>(null!, _ => { }));
+            _ = Assert.ThrowsException<ArgumentNullException>(() => enumerable!.ForEach(_ => { }));
         }
 
         [TestMethod]

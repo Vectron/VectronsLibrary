@@ -73,9 +73,7 @@ namespace VectronsLibrary.Wpf.Controlls
         /// Initializes a new instance of the <see cref="FontPicker"/> class.
         /// </summary>
         public FontPicker()
-        {
-            InitializeComponent();
-        }
+            => InitializeComponent();
 
         /// <summary>
         /// Gets or sets the <see cref="Color"/> for this font.
