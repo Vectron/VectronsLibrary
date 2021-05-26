@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -38,6 +39,7 @@ namespace VectronsLibrary.DI.Tests
 
         private class TestClass1 : ITestInterface2
         {
+            [ExcludeFromCodeCoverage]
             public TestClass1()
             {
                 Assert.Fail("Constructor should not be called");
@@ -46,6 +48,7 @@ namespace VectronsLibrary.DI.Tests
 
         private class TestClass2 : ITestInterface
         {
+            [ExcludeFromCodeCoverage]
             public TestClass2()
             {
                 Assert.Fail("Constructor should not be called");
@@ -54,6 +57,7 @@ namespace VectronsLibrary.DI.Tests
 
         private class TestClass3 : ITestInterface
         {
+            [ExcludeFromCodeCoverage]
             public TestClass3()
             {
                 Assert.Fail("Constructor should not be called");
