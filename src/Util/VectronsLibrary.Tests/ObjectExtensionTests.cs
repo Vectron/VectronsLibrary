@@ -8,10 +8,10 @@ namespace VectronsLibrary.Tests
     public class ObjectExtensionTests
     {
         [TestMethod]
-        public void DontThrowIfClassObjectIsNull()
+        public void DontThrowIfClassObjectIsNotNull()
         {
             // Arrange
-            string? obj = string.Empty;
+            var obj = string.Empty;
 
             // Act
             obj!.ThrowIfNull(nameof(obj));
@@ -20,7 +20,7 @@ namespace VectronsLibrary.Tests
         }
 
         [TestMethod]
-        public void DontThrowIfStructObjectIsNull()
+        public void DontThrowIfStructObjectIsNotNull()
         {
             // Arrange
             int? obj = 1;
