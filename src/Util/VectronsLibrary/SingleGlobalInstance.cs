@@ -16,44 +16,28 @@ namespace VectronsLibrary
     public class SingleGlobalInstance : IDisposable
     {
         private readonly Mutex mutex;
-        private readonly TimeSpan timeOut;
         private bool hasHandle;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
-        /// </summary>
-        public SingleGlobalInstance()
-            : this(Timeout.InfiniteTimeSpan, string.Empty)
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
         /// </summary>
         /// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
         public SingleGlobalInstance(string gui)
-            : this(Timeout.InfiniteTimeSpan, gui)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
-        /// </summary>
-        /// <param name="timeOut">Time that we will try and wait to get the mutex.</param>
-        public SingleGlobalInstance(TimeSpan timeOut)
-            : this(timeOut, string.Empty)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
-        /// </summary>
-        /// <param name="timeOut">Time that we will try and wait to get the mutex.</param>
-        /// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
-        public SingleGlobalInstance(TimeSpan timeOut, string gui)
-        {
-            this.timeOut = timeOut;
             mutex = InitMutex(gui);
+        }
+
+        /// <summary>
+        /// Gets the guid defined in a <see cref="GuidAttribute"/> on the assembly level.
+        /// </summary>
+        /// <returns>The found gui string. </returns>
+        public static string GetApplicationGui()
+        {
+            var guidAttribute = Assembly.GetCallingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).FirstOrDefault();
+
+            return guidAttribute == null
+                ? throw new ArgumentException($"{nameof(GuidAttribute)} is not defined for this app")
+                : ((GuidAttribute)guidAttribute).Value;
         }
 
         /// <inheritdoc/>
@@ -67,16 +51,27 @@ namespace VectronsLibrary
                 }
 
                 mutex.Close();
+                mutex.Dispose();
             }
 
             GC.SuppressFinalize(this);
         }
 
         /// <summary>
-        /// Returns a value to check if we are the only instance of the mutex.
+        /// Returns a value to check if we are the only instance of the mutex. waits Infinite for the release.
         /// </summary>
         /// <returns>True if no other instances are running. else false.</returns>
         public bool GetMutex()
+        {
+            return GetMutex(Timeout.InfiniteTimeSpan);
+        }
+
+        /// <summary>
+        /// Returns a value to check if we are the only instance of the mutex.
+        /// </summary>
+        /// <param name="timeOut">Time that we will try and wait to get the mutex.</param>
+        /// <returns>True if no other instances are running. else false.</returns>
+        public bool GetMutex(TimeSpan timeOut)
         {
             try
             {
@@ -90,20 +85,14 @@ namespace VectronsLibrary
             return hasHandle;
         }
 
-        private static string GetApplicationGui()
-        {
-            var guidAttributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false);
-            var guidAttribute = guidAttributes.FirstOrDefault();
-
-            return guidAttribute == null
-                ? throw new ArgumentException($"{nameof(GuidAttribute)} is not defined for this app")
-                : ((GuidAttribute)guidAttribute).Value;
-        }
-
         private static Mutex InitMutex(string gui)
         {
-            var mutexName = string.IsNullOrWhiteSpace(gui) ? GetApplicationGui() : gui;
-            var mutexId = string.Format(CultureInfo.InvariantCulture, @"Global\{{{0}}}", mutexName);
+            if (string.IsNullOrEmpty(gui))
+            {
+                throw new ArgumentException($"'{nameof(gui)}' cannot be null or empty.", nameof(gui));
+            }
+
+            var mutexId = string.Format(CultureInfo.InvariantCulture, @"Global\{{{0}}}", gui);
 
             if (!Mutex.TryOpenExisting(mutexId, out var mutex))
             {
