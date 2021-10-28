@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,11 +12,13 @@ namespace VectronsLibrary.DI
     /// Default implementation of <see cref="IAssemblyResolver"/>.
     /// </summary>
     [Singleton]
-    public class AssemblyResolver : IAssemblyResolver
+    public class AssemblyResolver : IAssemblyResolver, IDisposable
     {
         private readonly IEnumerable<string> extraDirectories;
         private readonly IEnumerable<string> ignoredAssemblies;
         private readonly ILogger logger;
+        private readonly ConcurrentDictionary<string, Assembly?> resolvedAssemblies = new();
+        private bool disposedValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssemblyResolver"/> class.
@@ -52,87 +55,178 @@ namespace VectronsLibrary.DI
         /// <param name="extraDirectories">A <see cref="IEnumerable{T}"/> with folders to search for the missing assembly.</param>
         public AssemblyResolver(ILogger<AssemblyResolver> logger, IEnumerable<string> ignoredAssemblies, IEnumerable<string> extraDirectories)
         {
-            this.logger = logger;
-            this.extraDirectories = extraDirectories;
-            this.ignoredAssemblies = new List<string>(ignoredAssemblies) { "System.Reactive.Debugger" };
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomainAssemblyResolve;
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.extraDirectories = extraDirectories ?? throw new ArgumentNullException(nameof(extraDirectories));
+            this.ignoredAssemblies = ignoredAssemblies ?? throw new ArgumentNullException(nameof(ignoredAssemblies));
+
+#if NETSTANDARD2_0_OR_GREATER || NET
+            System.Runtime.Loader.AssemblyLoadContext.Default.Resolving += Default_Resolving;
+#else
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+#endif
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
-        /// Implementation of <see cref="ResolveEventHandler"/>.
+        /// Protected implementation of Dispose pattern.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="args">The event data.</param>
-        /// <returns>The loaded <see cref="Assembly"/>.</returns>
-        public virtual Assembly? CurrentDomainAssemblyResolve(object? sender, ResolveEventArgs args)
+        /// <param name="disposing">Value indicating if we need to cleanup managed resources.</param>
+        protected virtual void Dispose(bool disposing)
         {
-            try
+            if (!disposedValue)
             {
-                var fullname = new AssemblyName(args.Name);
-                var fields = args.Name.Split(',');
-                var name = fields[0];
-                var culture = fields.Length >= 3 ? fields[2] : string.Empty;
-
-                // failing to ignore queries for satellite resource assemblies or using [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
-                // in AssemblyInfo.cs will crash the program on non en-US based system cultures.
-                if (name.EndsWith(".XmlSerializers", StringComparison.OrdinalIgnoreCase) || (name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase) && !culture.EndsWith("neutral", StringComparison.OrdinalIgnoreCase)))
+                if (disposing)
                 {
-                    return null;
+#if NETSTANDARD2_0_OR_GREATER || NET
+                    System.Runtime.Loader.AssemblyLoadContext.Default.Resolving -= Default_Resolving;
+#else
+                    AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
+#endif
                 }
 
-                if (ignoredAssemblies.Contains(name))
-                {
-                    return null;
-                }
-
-                logger.LogDebug("Resolving Assembly: " + fullname);
-                var wantedDLL = fullname.Name + ".dll";
-                var rootDir = Helper.AssemblyDirectory;
-                var directoriesToSearch = new List<string>(extraDirectories) { rootDir };
-                directoriesToSearch.AddRange(Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories));
-                Assembly? foundAssembly = null;
-                foreach (var dir in directoriesToSearch)
-                {
-                    foundAssembly = TryLoadFile(dir, wantedDLL);
-
-                    if (foundAssembly != null)
-                    {
-                        logger.LogDebug($"Resolved {fullname} in {foundAssembly.Location}");
-                        break;
-                    }
-                }
-
-                if (foundAssembly == null)
-                {
-                    logger.LogError($"Failed to resolve assembly for {args.Name}");
-                }
-
-                return foundAssembly;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, $"Failed to resolve assembly for {args.Name}");
-                return null;
+                disposedValue = true;
             }
         }
 
-        private Assembly? TryLoadFile(string directory, string wantedDLL)
+        /// <summary>
+        /// Verifies that found assembly name matches requested to avoid security issues.
+        /// Looks only at PublicKeyToken and Version, empty matches anything.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        private static bool RequestedAssemblyNameMatchesFound(AssemblyName requestedName, AssemblyName foundName)
         {
-            try
+            var requestedPublicKey = requestedName.GetPublicKeyToken();
+            if (requestedPublicKey != null)
             {
-                var dllPath = Path.Combine(directory, wantedDLL);
-                dllPath = Environment.ExpandEnvironmentVariables(dllPath);
-
-                if (File.Exists(dllPath))
+                var foundPublicKey = foundName.GetPublicKeyToken();
+                if (foundPublicKey == null)
                 {
-                    return Assembly.LoadFile(dllPath);
+                    return false;
+                }
+
+                for (var index = 0; index < requestedPublicKey.Length; ++index)
+                {
+                    if (requestedPublicKey[index] != foundPublicKey[index])
+                    {
+                        return false;
+                    }
                 }
             }
-            catch (Exception ex)
+
+            if (requestedName.Version != null)
             {
-                logger.LogError(ex, $"Assembly resolve failed for {wantedDLL} in {directory}");
+                return requestedName.Version.Equals(foundName.Version);
             }
 
+            return true;
+        }
+
+#if NETFRAMEWORK
+        private Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
+        {
+            var fullname = new AssemblyName(args.Name);
+            return Resolve(Assembly.LoadFile, fullname);
+        }
+#endif
+
+#if NETSTANDARD2_0_OR_GREATER || NET
+
+        private Assembly? Default_Resolving(System.Runtime.Loader.AssemblyLoadContext loadContext, AssemblyName assemblyName)
+            => Resolve(loadContext.LoadFromAssemblyPath, assemblyName);
+
+#endif
+
+        private Assembly? Resolve(Func<string, Assembly> loadAssembly, AssemblyName assemblyName)
+        {
+            if (assemblyName == null || string.IsNullOrEmpty(assemblyName.Name))
+            {
+                logger.LogError("Requested is null or name is empty!");
+                return null;
+            }
+
+            logger.LogDebug("{0} Resolving Assembly", assemblyName.Name);
+
+            if (resolvedAssemblies.TryGetValue(assemblyName.Name, out var assembly))
+            {
+                logger.LogTrace("{0}: Resolved from cache.", assemblyName.Name);
+                return assembly;
+            }
+
+            // skip resource files
+            // skip xml serializers
+            // skip ignored assemblies
+            if (assemblyName.Name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase)
+                || assemblyName.Name.EndsWith(".XmlSerializers", StringComparison.OrdinalIgnoreCase)
+                || ignoredAssemblies.Contains(assemblyName.Name, StringComparer.OrdinalIgnoreCase))
+            {
+                logger.LogDebug("{0}: Skipped search!", assemblyName.Name);
+                resolvedAssemblies[assemblyName.Name] = null;
+                return null;
+            }
+
+            var wantedDLL = assemblyName.Name + ".dll";
+            var rootDir = Helper.AssemblyDirectory;
+            var searchDirectories = new List<string>(extraDirectories) { rootDir };
+            searchDirectories.AddRange(Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories));
+            foreach (var dir in searchDirectories)
+            {
+                if (string.IsNullOrEmpty(dir))
+                {
+                    continue;
+                }
+
+                logger.LogDebug("{0}: searching in {1}", assemblyName.Name, dir);
+                var assemblyPath = Path.Combine(dir, wantedDLL);
+                assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
+
+                try
+                {
+                    if (!File.Exists(assemblyPath))
+                    {
+                        logger.LogDebug("{0}: Assembly path does not exist: '{1}', continueing.", assemblyName.Name, assemblyPath);
+                        continue;
+                    }
+
+                    var foundName = AssemblyName.GetAssemblyName(assemblyPath);
+                    if (!RequestedAssemblyNameMatchesFound(assemblyName, foundName))
+                    {
+                        logger.LogDebug("{0}: File exists but version/public key is wrong. Try next.", assemblyName.Name);
+                        continue;
+                    }
+
+                    logger.LogDebug("{0}: Loading assembly '{1}'.", assemblyName.Name, assemblyPath);
+
+                    assembly = loadAssembly(assemblyPath);
+                    resolvedAssemblies[assemblyName.Name] = assembly;
+                    logger.LogDebug("{0}: Resolved assembly: {0}, from path: {1}", assemblyName.Name, assemblyPath);
+                    return assembly;
+                }
+                catch (FileLoadException ex)
+                {
+                    logger.LogError(ex, "{0}: Failed to load assembly", assemblyName.Name);
+
+                    // Re-throw FileLoadException, because this exception means that the assembly was found, but could not be loaded.
+                    // This will allow us to report a more specific error message to the user for things like access denied.
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    // For all other exceptions, try the next extension.
+                    logger.LogDebug(ex, "{0}: Failed to load assembly.");
+                }
+            }
+
+            logger.LogDebug("{0}: Failed to load assembly.", assemblyName.Name);
+            resolvedAssemblies[assemblyName.Name] = assembly;
             return null;
         }
     }
