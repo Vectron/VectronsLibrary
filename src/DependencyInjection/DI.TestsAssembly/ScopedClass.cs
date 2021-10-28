@@ -1,4 +1,6 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly;
+﻿using VectronsLibrary.DI.Attributes;
+
+namespace VectronsLibrary.DI.TestsAssembly;
 
 [Scoped]
 public class ScopedClass : IAttributeClass

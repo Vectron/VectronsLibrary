@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using VectronsLibrary.DI.Attributes;
 
-namespace VectronsLibrary.DI;
+namespace VectronsLibrary.DI.BufferedLogger;
 
 /// <summary>
 /// Default implementation for <see cref="IBufferedLogger"/>.

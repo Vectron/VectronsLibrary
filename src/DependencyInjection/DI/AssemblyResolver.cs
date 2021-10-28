@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using VectronsLibrary.DI.Attributes;
 
 namespace VectronsLibrary.DI;
 

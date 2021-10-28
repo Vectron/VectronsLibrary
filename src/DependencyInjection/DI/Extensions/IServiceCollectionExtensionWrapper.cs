@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
+
 namespace Microsoft.Extensions.DependencyInjection;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 /// <inheritdoc cref="ServiceCollectionDescriptorExtensions"/>
 public static class IServiceCollectionExtensionWrapper

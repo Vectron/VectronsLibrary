@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using VectronsLibrary.DI.Attributes;
 using VectronsLibrary.DI.Extensions;
 
 namespace VectronsLibrary.DI;

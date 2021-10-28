@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VectronsLibrary.DI;
+namespace VectronsLibrary.DI.Attributes;
 
 /// <summary>
 /// Attribute indicating the type should be skipped by autoimatic dependincy scanning.
