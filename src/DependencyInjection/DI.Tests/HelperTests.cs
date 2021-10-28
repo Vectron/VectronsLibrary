@@ -2,46 +2,45 @@
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace VectronsLibrary.DI.Tests
+namespace VectronsLibrary.DI.Tests;
+
+[TestClass]
+public class HelperTests
 {
-    [TestClass]
-    public class HelperTests
+    [TestMethod]
+    public void AssemblyDirectoryReturnsValidPath()
     {
-        [TestMethod]
-        public void AssemblyDirectoryReturnsValidPath()
-        {
-            // Arrange
+        // Arrange
 
-            // Act
-            var excists = Directory.Exists(Helper.AssemblyDirectory);
+        // Act
+        var excists = Directory.Exists(Helper.AssemblyDirectory);
 
-            // Assert
-            Assert.IsTrue(excists);
-        }
+        // Assert
+        Assert.IsTrue(excists);
+    }
 
-        [TestMethod]
-        public void LoadTypesFromAssemblySafeReturnsEmptyArray()
-        {
-            // Arrange
+    [TestMethod]
+    public void LoadTypesFromAssemblySafeReturnsEmptyArray()
+    {
+        // Arrange
 
-            // Act
-            var types = Helper.LoadTypesFromAssemblySafe(string.Empty);
+        // Act
+        var types = Helper.LoadTypesFromAssemblySafe(string.Empty);
 
-            // Assert
-            Assert.IsTrue(types.Length == 0);
-        }
+        // Assert
+        Assert.IsTrue(types.Length == 0);
+    }
 
-        [TestMethod]
-        public void LoadTypesFromAssemblySafeReturnsTypes()
-        {
-            // Arrange
-            var currentAssembly = Assembly.GetExecutingAssembly();
+    [TestMethod]
+    public void LoadTypesFromAssemblySafeReturnsTypes()
+    {
+        // Arrange
+        var currentAssembly = Assembly.GetExecutingAssembly();
 
-            // Act
-            var types = Helper.LoadTypesFromAssemblySafe(currentAssembly.GetName().Name + ".dll");
+        // Act
+        var types = Helper.LoadTypesFromAssemblySafe(currentAssembly.GetName().Name + ".dll");
 
-            // Assert
-            Assert.IsTrue(types.Length > 0);
-        }
+        // Assert
+        Assert.IsTrue(types.Length > 0);
     }
 }

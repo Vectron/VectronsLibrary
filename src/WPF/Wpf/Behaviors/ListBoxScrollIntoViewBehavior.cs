@@ -2,52 +2,51 @@
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
 
-namespace VectronsLibrary.Wpf.Behaviors
+namespace VectronsLibrary.Wpf.Behaviors;
+
+/// <summary>
+/// A <see cref="Behavior"/> that keeps the selected item in view.
+/// </summary>
+public class ListBoxScrollIntoViewBehavior : Behavior<ListBox>
 {
-    /// <summary>
-    /// A <see cref="Behavior"/> that keeps the selected item in view.
-    /// </summary>
-    public class ListBoxScrollIntoViewBehavior : Behavior<ListBox>
+    /// <inheritdoc/>
+    protected override void OnAttached()
     {
-        /// <inheritdoc/>
-        protected override void OnAttached()
+        base.OnAttached();
+        AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
+    }
+
+    /// <inheritdoc/>
+    protected override void OnDetaching()
+    {
+        base.OnDetaching();
+        AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
+    }
+
+    private static void ScrollIntoView(ListBox listBox)
+    {
+        if (listBox.SelectedItem == null)
         {
-            base.OnAttached();
-            AssociatedObject.SelectionChanged += AssociatedObject_SelectionChanged;
+            return;
         }
 
-        /// <inheritdoc/>
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            AssociatedObject.SelectionChanged -= AssociatedObject_SelectionChanged;
-        }
-
-        private static void ScrollIntoView(ListBox listBox)
-        {
-            if (listBox.SelectedItem == null)
+        _ = listBox.Dispatcher.BeginInvoke(new Action(() =>
             {
-                return;
-            }
+                listBox.UpdateLayout();
+                if (listBox.SelectedItem != null)
+                {
+                    listBox.ScrollIntoView(listBox.SelectedItem);
+                }
+            }));
+    }
 
-            _ = listBox.Dispatcher.BeginInvoke(new Action(() =>
-              {
-                  listBox.UpdateLayout();
-                  if (listBox.SelectedItem != null)
-                  {
-                      listBox.ScrollIntoView(listBox.SelectedItem);
-                  }
-              }));
-        }
-
-        private void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void AssociatedObject_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not ListBox listBox)
         {
-            if (sender is not ListBox listBox)
-            {
-                return;
-            }
-
-            ScrollIntoView(listBox);
+            return;
         }
+
+        ScrollIntoView(listBox);
     }
 }

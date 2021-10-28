@@ -1,6 +1,5 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly
+﻿namespace VectronsLibrary.DI.TestsAssembly;
+
+public class NoAttributeClass : IAttributeClass
 {
-    public class NoAttributeClass : IAttributeClass
-    {
-    }
 }

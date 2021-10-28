@@ -1,7 +1,6 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly
+﻿namespace VectronsLibrary.DI.TestsAssembly;
+
+[Transient]
+public class TransientClass : IAttributeClass
 {
-    [Transient]
-    public class TransientClass : IAttributeClass
-    {
-    }
 }

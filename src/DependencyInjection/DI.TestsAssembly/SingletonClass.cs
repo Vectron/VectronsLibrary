@@ -1,7 +1,6 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly
+﻿namespace VectronsLibrary.DI.TestsAssembly;
+
+[Singleton]
+public class SingletonClass : IAttributeClass
 {
-    [Singleton]
-    public class SingletonClass : IAttributeClass
-    {
-    }
 }

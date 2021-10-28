@@ -1,7 +1,6 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly
+﻿namespace VectronsLibrary.DI.TestsAssembly;
+
+[Scoped]
+public class ScopedClass2
 {
-    [Scoped]
-    public class ScopedClass2
-    {
-    }
 }

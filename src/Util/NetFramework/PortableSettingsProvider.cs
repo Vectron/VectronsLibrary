@@ -9,361 +9,360 @@ using System.Xml;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace VectronsLibrary.NetFramework
+namespace VectronsLibrary.NetFramework;
+
+/// <summary>
+/// A settings provieder that stores the settings in the executable directory.
+/// </summary>
+public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
 {
+    private const string ClassName = "PortableSettingsProvider";
+    private const string SettingsFolder = "Settings";
+    private const string SETTINGSROOT = "Settings";
+    private SettingsContext? context;
+    private ILogger logger;
+    private XmlDocument? settingsXML;
+
     /// <summary>
-    /// A settings provieder that stores the settings in the executable directory.
+    /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
     /// </summary>
-    public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
+    public PortableSettingsProvider()
+        : this(NullLogger<PortableSettingsProvider>.Instance)
     {
-        private const string ClassName = "PortableSettingsProvider";
-        private const string SettingsFolder = "Settings";
-        private const string SETTINGSROOT = "Settings";
-        private SettingsContext? context;
-        private ILogger logger;
-        private XmlDocument? settingsXML;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
-        /// </summary>
-        public PortableSettingsProvider()
-            : this(NullLogger<PortableSettingsProvider>.Instance)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
+    /// </summary>
+    /// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
+    public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
+        => this.logger = logger;
+
+    /// <inheritdoc/>
+    public override string ApplicationName
+    {
+        get
         {
-        }
+            var assembly = Assembly.GetEntryAssembly();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
-        /// </summary>
-        /// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
-        public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
-            => this.logger = logger;
-
-        /// <inheritdoc/>
-        public override string ApplicationName
-        {
-            get
+            if (assembly != null)
             {
-                var assembly = Assembly.GetEntryAssembly();
+                var customAttributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
 
-                if (assembly != null)
+                if ((customAttributes != null) && (customAttributes.Length > 0))
                 {
-                    var customAttributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-
-                    if ((customAttributes != null) && (customAttributes.Length > 0))
-                    {
-                        return ((AssemblyProductAttribute)customAttributes[0]).Product;
-                    }
-
-                    var fi = new FileInfo(assembly.CodeBase);
-                    return fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
+                    return ((AssemblyProductAttribute)customAttributes[0]).Product;
                 }
 
-                return string.Empty;
+                var fi = new FileInfo(assembly.CodeBase);
+                return fi.Name.Substring(0, fi.Name.Length - fi.Extension.Length);
             }
 
-            set
-            {
-            }
+            return string.Empty;
         }
 
-        /// <inheritdoc/>
-        public override string Name => ClassName;
-
-        private XmlDocument SettingsXML
+        set
         {
-            get
+        }
+    }
+
+    /// <inheritdoc/>
+    public override string Name => ClassName;
+
+    private XmlDocument SettingsXML
+    {
+        get
+        {
+            // If we dont hold an xml document, try opening one.
+            // If it doesnt exist then create a new one ready.
+            if (settingsXML == null)
             {
-                // If we dont hold an xml document, try opening one.
-                // If it doesnt exist then create a new one ready.
-                if (settingsXML == null)
+                settingsXML = new XmlDocument();
+
+                try
                 {
-                    settingsXML = new XmlDocument();
+                    var file = Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename());
 
-                    try
+                    if (!File.Exists(file))
                     {
-                        var file = Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename());
+                        // Create new document
+                        var dec = settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
+                        _ = settingsXML.AppendChild(dec);
 
-                        if (!File.Exists(file))
-                        {
-                            // Create new document
-                            var dec = settingsXML.CreateXmlDeclaration("1.0", "utf-8", string.Empty);
-                            _ = settingsXML.AppendChild(dec);
+                        var nodeRoot = default(XmlNode);
 
-                            var nodeRoot = default(XmlNode);
-
-                            nodeRoot = settingsXML.CreateNode(XmlNodeType.Element, SETTINGSROOT, string.Empty);
-                            _ = settingsXML.AppendChild(nodeRoot);
-                        }
-                        else
-                        {
-                            var fileStream = File.OpenRead(file);
-                            var reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
-                            settingsXML.Load(reader);
-                        }
+                        nodeRoot = settingsXML.CreateNode(XmlNodeType.Element, SETTINGSROOT, string.Empty);
+                        _ = settingsXML.AppendChild(nodeRoot);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        logger.LogCritical(ex, "Failed to create settings file");
+                        var fileStream = File.OpenRead(file);
+                        var reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
+                        settingsXML.Load(reader);
                     }
                 }
-
-                return settingsXML;
-            }
-        }
-
-        /// <summary>
-        /// Create a unique name from the <see cref="Environment.MachineName"/>.
-        /// </summary>
-        /// <returns>Returns a vallid XML machine name.</returns>
-        public static string AlteredMachineName()
-        {
-            var machinename = "M" + Environment.MachineName;
-
-            if (IsValidXmlString(machinename))
-            {
-                machinename = RemoveInvalidXmlChars(machinename);
-            }
-
-            return machinename;
-        }
-
-        /// <summary>
-        /// Used to determine the filename to store the settings.
-        /// </summary>
-        /// <returns>File name.</returns>
-        public virtual string GetAppSettingsFilename()
-            => context == null
-                ? "default.settings"
-                : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".", StringComparison.OrdinalIgnoreCase)) + ".settings";
-
-        /// <summary>
-        /// Get the storage path for the settings file.
-        /// </summary>
-        /// <returns>Storage path for the settings.</returns>
-        public virtual string GetAppSettingsPath()
-        {
-            var codebaseLocation = Assembly.GetEntryAssembly().CodeBase;
-            var location = codebaseLocation.Contains("://")
-                ? new Uri(codebaseLocation).LocalPath
-                : codebaseLocation;
-
-            // Used to determine where to store the settings
-            var fi = new FileInfo(location);
-            var productName = ApplicationName;
-
-            var settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
-            if (!Directory.Exists(settingsDir))
-            {
-                _ = Directory.CreateDirectory(settingsDir);
-                var oldFile = Path.Combine(fi.DirectoryName, productName + ".settings");
-                if (File.Exists(oldFile))
+                catch (Exception ex)
                 {
-                    File.Move(oldFile, settingsDir + "\\" + productName + ".settings");
+                    logger.LogCritical(ex, "Failed to create settings file");
                 }
             }
 
-            return settingsDir;
+            return settingsXML;
+        }
+    }
+
+    /// <summary>
+    /// Create a unique name from the <see cref="Environment.MachineName"/>.
+    /// </summary>
+    /// <returns>Returns a vallid XML machine name.</returns>
+    public static string AlteredMachineName()
+    {
+        var machinename = "M" + Environment.MachineName;
+
+        if (IsValidXmlString(machinename))
+        {
+            machinename = RemoveInvalidXmlChars(machinename);
         }
 
-        /// <inheritdoc/>
-        public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
+        return machinename;
+    }
+
+    /// <summary>
+    /// Used to determine the filename to store the settings.
+    /// </summary>
+    /// <returns>File name.</returns>
+    public virtual string GetAppSettingsFilename()
+        => context == null
+            ? "default.settings"
+            : context["GroupName"].ToString().Substring(0, context["GroupName"].ToString().IndexOf(".", StringComparison.OrdinalIgnoreCase)) + ".settings";
+
+    /// <summary>
+    /// Get the storage path for the settings file.
+    /// </summary>
+    /// <returns>Storage path for the settings.</returns>
+    public virtual string GetAppSettingsPath()
+    {
+        var codebaseLocation = Assembly.GetEntryAssembly().CodeBase;
+        var location = codebaseLocation.Contains("://")
+            ? new Uri(codebaseLocation).LocalPath
+            : codebaseLocation;
+
+        // Used to determine where to store the settings
+        var fi = new FileInfo(location);
+        var productName = ApplicationName;
+
+        var settingsDir = Path.Combine(fi.DirectoryName, SettingsFolder);
+        if (!Directory.Exists(settingsDir))
         {
-            this.context = context;
-
-            // do nothing
-            return new SettingsPropertyValue(property);
-        }
-
-        /// <inheritdoc/>
-        public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
-        {
-            this.context = context;
-
-            // Create new collection of values
-            var values = new SettingsPropertyValueCollection();
-
-            // Iterate through the settings to be retrieved
-            foreach (SettingsProperty setting in collection)
+            _ = Directory.CreateDirectory(settingsDir);
+            var oldFile = Path.Combine(fi.DirectoryName, productName + ".settings");
+            if (File.Exists(oldFile))
             {
-                var value = new SettingsPropertyValue(setting)
-                {
-                    IsDirty = false,
-                    SerializedValue = GetValue(setting),
-                };
-                values.Add(value);
+                File.Move(oldFile, settingsDir + "\\" + productName + ".settings");
             }
-
-            return values;
         }
 
-        /// <inheritdoc/>
-        public override void Initialize(string name, NameValueCollection config)
-            => base.Initialize(ApplicationName, config);
+        return settingsDir;
+    }
 
-        /// <inheritdoc/>
-        public void Reset(SettingsContext context)
+    /// <inheritdoc/>
+    public SettingsPropertyValue GetPreviousVersion(SettingsContext context, SettingsProperty property)
+    {
+        this.context = context;
+
+        // do nothing
+        return new SettingsPropertyValue(property);
+    }
+
+    /// <inheritdoc/>
+    public override SettingsPropertyValueCollection GetPropertyValues(SettingsContext context, SettingsPropertyCollection collection)
+    {
+        this.context = context;
+
+        // Create new collection of values
+        var values = new SettingsPropertyValueCollection();
+
+        // Iterate through the settings to be retrieved
+        foreach (SettingsProperty setting in collection)
         {
-            this.context = context;
-            ((XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT)).RemoveAll();
+            var value = new SettingsPropertyValue(setting)
+            {
+                IsDirty = false,
+                SerializedValue = GetValue(setting),
+            };
+            values.Add(value);
+        }
 
+        return values;
+    }
+
+    /// <inheritdoc/>
+    public override void Initialize(string name, NameValueCollection config)
+        => base.Initialize(ApplicationName, config);
+
+    /// <inheritdoc/>
+    public void Reset(SettingsContext context)
+    {
+        this.context = context;
+        ((XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT)).RemoveAll();
+
+        SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
+    }
+
+    /// <summary>
+    /// Set the <see cref="ILogger"/> instance to use.
+    /// </summary>
+    /// <param name="logger">The <see cref="ILogger"/> instance.</param>
+    public void SetLogger(ILogger logger)
+        => this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+    /// <inheritdoc/>
+    public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
+    {
+        this.context = context;
+
+        // Iterate through the settings to be stored
+        // Only dirty settings are included in propvals, and only ones relevant to this provider
+        foreach (SettingsPropertyValue propval in collection)
+        {
+            SetValue(propval);
+        }
+
+        try
+        {
             SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
         }
-
-        /// <summary>
-        /// Set the <see cref="ILogger"/> instance to use.
-        /// </summary>
-        /// <param name="logger">The <see cref="ILogger"/> instance.</param>
-        public void SetLogger(ILogger logger)
-            => this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-        /// <inheritdoc/>
-        public override void SetPropertyValues(SettingsContext context, SettingsPropertyValueCollection collection)
+        catch (Exception ex)
         {
-            this.context = context;
-
-            // Iterate through the settings to be stored
-            // Only dirty settings are included in propvals, and only ones relevant to this provider
-            foreach (SettingsPropertyValue propval in collection)
-            {
-                SetValue(propval);
-            }
-
-            try
-            {
-                SettingsXML.Save(Path.Combine(GetAppSettingsPath(), GetAppSettingsFilename()));
-            }
-            catch (Exception ex)
-            {
-                // Ignore if cant save, device been ejected
-                logger.LogCritical(ex, "Failed to write property");
-            }
+            // Ignore if cant save, device been ejected
+            logger.LogCritical(ex, "Failed to write property");
         }
+    }
 
-        /// <inheritdoc/>
-        public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
-            => this.context = context;
+    /// <inheritdoc/>
+    public void Upgrade(SettingsContext context, SettingsPropertyCollection properties)
+        => this.context = context;
 
-        private static bool IsRoaming(SettingsProperty prop)
+    private static bool IsRoaming(SettingsProperty prop)
+    {
+        // Determine if the setting is marked as Roaming
+        foreach (DictionaryEntry d in prop.Attributes)
         {
-            // Determine if the setting is marked as Roaming
-            foreach (DictionaryEntry d in prop.Attributes)
+            var a = (Attribute)d.Value;
+            if (a is SettingsManageabilityAttribute)
             {
-                var a = (Attribute)d.Value;
-                if (a is SettingsManageabilityAttribute)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsValidXmlString(string text)
-        {
-            try
-            {
-                _ = XmlConvert.VerifyXmlChars(text);
                 return true;
             }
-            catch
-            {
-                return false;
-            }
         }
 
-        private static string RemoveInvalidXmlChars(string text)
+        return false;
+    }
+
+    private static bool IsValidXmlString(string text)
+    {
+        try
         {
-            var validXmlChars = text.Where(ch => XmlConvert.IsXmlChar(ch)).ToArray();
-            return new string(validXmlChars);
+            _ = XmlConvert.VerifyXmlChars(text);
+            return true;
         }
-
-        private string GetValue(SettingsProperty setting)
+        catch
         {
-            string ret;
-            try
-            {
-                var node = string.Empty;
-                node = IsRoaming(setting)
-                    ? SETTINGSROOT + "/" + setting.Name
-                    : SETTINGSROOT + "/" + AlteredMachineName() + "/" + setting.Name;
+            return false;
+        }
+    }
 
-                ret = SettingsXML.SelectSingleNode(node) != null
-                    ? SettingsXML.SelectSingleNode(node).InnerText
-                    : setting.DefaultValue != null
-                        ? setting.DefaultValue.ToString()
-                        : string.Empty;
-            }
-            catch (Exception ex)
-            {
-                ret = setting.DefaultValue != null
+    private static string RemoveInvalidXmlChars(string text)
+    {
+        var validXmlChars = text.Where(ch => XmlConvert.IsXmlChar(ch)).ToArray();
+        return new string(validXmlChars);
+    }
+
+    private string GetValue(SettingsProperty setting)
+    {
+        string ret;
+        try
+        {
+            var node = string.Empty;
+            node = IsRoaming(setting)
+                ? SETTINGSROOT + "/" + setting.Name
+                : SETTINGSROOT + "/" + AlteredMachineName() + "/" + setting.Name;
+
+            ret = SettingsXML.SelectSingleNode(node) != null
+                ? SettingsXML.SelectSingleNode(node).InnerText
+                : setting.DefaultValue != null
                     ? setting.DefaultValue.ToString()
                     : string.Empty;
-                logger.LogError(ex, "Failed to get value");
-            }
-
-            return ret;
+        }
+        catch (Exception ex)
+        {
+            ret = setting.DefaultValue != null
+                ? setting.DefaultValue.ToString()
+                : string.Empty;
+            logger.LogError(ex, "Failed to get value");
         }
 
-        private void SetValue(SettingsPropertyValue propVal)
+        return ret;
+    }
+
+    private void SetValue(SettingsPropertyValue propVal)
+    {
+        XmlElement? settingNode;
+
+        // Determine if the setting is roaming.
+        // If roaming then the value is stored as an element under the root
+        // Otherwise it is stored under a machine name node
+        try
         {
-            XmlElement? settingNode;
+            settingNode = IsRoaming(propVal.Property)
+                ? (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name)
+                : (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName() + "/" + propVal.Name);
+        }
+        catch (Exception ex)
+        {
+            settingNode = null;
+            logger.LogError(ex, "Failed to set value");
+        }
 
-            // Determine if the setting is roaming.
-            // If roaming then the value is stored as an element under the root
-            // Otherwise it is stored under a machine name node
-            try
+        // Check to see if the node exists, if so then set its new value
+        if (settingNode != null)
+        {
+            settingNode.InnerText = propVal.SerializedValue.ToString();
+        }
+        else
+        {
+            if (IsRoaming(propVal.Property))
             {
-                settingNode = IsRoaming(propVal.Property)
-                    ? (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + propVal.Name)
-                    : (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName() + "/" + propVal.Name);
-            }
-            catch (Exception ex)
-            {
-                settingNode = null;
-                logger.LogError(ex, "Failed to set value");
-            }
-
-            // Check to see if the node exists, if so then set its new value
-            if (settingNode != null)
-            {
+                // Store the value as an element of the Settings Root Node
+                settingNode = SettingsXML.CreateElement(propVal.Name);
                 settingNode.InnerText = propVal.SerializedValue.ToString();
+                _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(settingNode);
             }
             else
             {
-                if (IsRoaming(propVal.Property))
+                XmlElement machineNode;
+
+                // Its machine specific, store as an element of the machine name node,
+                // creating a new machine name node if one doesnt exist.
+                try
                 {
-                    // Store the value as an element of the Settings Root Node
-                    settingNode = SettingsXML.CreateElement(propVal.Name);
-                    settingNode.InnerText = propVal.SerializedValue.ToString();
-                    _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(settingNode);
+                    machineNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName());
                 }
-                else
+                catch (Exception ex)
                 {
-                    XmlElement machineNode;
-
-                    // Its machine specific, store as an element of the machine name node,
-                    // creating a new machine name node if one doesnt exist.
-                    try
-                    {
-                        machineNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName());
-                    }
-                    catch (Exception ex)
-                    {
-                        machineNode = SettingsXML.CreateElement(AlteredMachineName());
-                        _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
-                        logger.LogError(ex, "Failed to set value");
-                    }
-
-                    if (machineNode == null)
-                    {
-                        machineNode = SettingsXML.CreateElement(AlteredMachineName());
-                        _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
-                    }
-
-                    settingNode = SettingsXML.CreateElement(propVal.Name);
-                    settingNode.InnerText = propVal.SerializedValue.ToString();
-                    _ = machineNode.AppendChild(settingNode);
+                    machineNode = SettingsXML.CreateElement(AlteredMachineName());
+                    _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
+                    logger.LogError(ex, "Failed to set value");
                 }
+
+                if (machineNode == null)
+                {
+                    machineNode = SettingsXML.CreateElement(AlteredMachineName());
+                    _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
+                }
+
+                settingNode = SettingsXML.CreateElement(propVal.Name);
+                settingNode.InnerText = propVal.SerializedValue.ToString();
+                _ = machineNode.AppendChild(settingNode);
             }
         }
     }

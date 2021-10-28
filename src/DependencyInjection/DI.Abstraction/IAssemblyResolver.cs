@@ -1,9 +1,8 @@
-﻿namespace VectronsLibrary.DI
+﻿namespace VectronsLibrary.DI;
+
+/// <summary>
+/// An assembly resolver used to resolve not loaded assemblies.
+/// </summary>
+public interface IAssemblyResolver
 {
-    /// <summary>
-    /// An assembly resolver used to resolve not loaded assemblies.
-    /// </summary>
-    public interface IAssemblyResolver
-    {
-    }
 }
