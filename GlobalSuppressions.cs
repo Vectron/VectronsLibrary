@@ -5,5 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+#pragma warning disable format
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented", Justification = "Reviewed.")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:FileMustHaveHeader", Justification = "Reviewed.")]
+#pragma warning restore format
