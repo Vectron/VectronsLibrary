@@ -37,8 +37,11 @@ public class AssemblyResolverTests
         {
             Name = string.Empty,
         };
-
+#if NET6_0_OR_GREATER
+        _ = Assert.ThrowsException<FileNotFoundException>(() => Assembly.Load(assemblyToLoad));
+#else
         _ = Assert.ThrowsException<FileLoadException>(() => Assembly.Load(assemblyToLoad));
+#endif
     }
 
     [TestMethod]

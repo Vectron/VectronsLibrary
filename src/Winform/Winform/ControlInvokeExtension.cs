@@ -22,7 +22,11 @@ public static class ControlInvokeExtension
     {
         if (control.InvokeRequired)
         {
+#if NET6_0_OR_GREATER
+            control.Invoke(method);
+#else
             _ = control.Invoke(method);
+#endif
         }
         else
         {
@@ -38,5 +42,10 @@ public static class ControlInvokeExtension
     /// <param name="method">A delegate that contains a method to be called in the control's thread context and that returns a value.</param>
     /// <returns>The return value from the delegate being invoked.</returns>
     public static TResult Invoke<TResult>(this Control control, Func<TResult> method)
+#if NET6_0_OR_GREATER
+        => control.InvokeRequired ? control.Invoke(method) : method();
+#else
         => control.InvokeRequired ? (TResult)control.Invoke(method) : method();
+
+#endif
 }
