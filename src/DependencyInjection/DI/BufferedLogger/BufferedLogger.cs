@@ -40,7 +40,7 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
             || newLogger.IsEnabled(logLevel);
 
     /// <inheritdoc/>
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
         if (newLogger != null)
         {
@@ -64,12 +64,12 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
     private class BufferItem<TState> : IBufferItem
     {
         private readonly EventId eventId;
-        private readonly Exception exception;
-        private readonly Func<TState, Exception, string> formatter;
+        private readonly Exception? exception;
+        private readonly Func<TState, Exception?, string> formatter;
         private readonly LogLevel logLevel;
         private readonly TState state;
 
-        public BufferItem(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public BufferItem(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             this.logLevel = logLevel;
             this.eventId = eventId;

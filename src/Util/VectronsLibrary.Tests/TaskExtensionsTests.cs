@@ -43,8 +43,8 @@ public class TaskExtensionsTests
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
 
@@ -73,8 +73,8 @@ public class TaskExtensionsTests
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
 
@@ -104,14 +104,14 @@ public class TaskExtensionsTests
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<NotImplementedException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
         Expression<Action<ILogger>> call2 = mockedTypeInstance
             => mockedTypeInstance.Log(
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<InvalidOperationException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.InSequence(sequence).Setup(call1).Verifiable();
         logger.InSequence(sequence).Setup(call2).Verifiable();
@@ -143,14 +143,14 @@ public class TaskExtensionsTests
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<NotImplementedException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
         Expression<Action<ILogger>> call2 = mockedTypeInstance
             => mockedTypeInstance.Log(
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<InvalidOperationException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.InSequence(sequence).Setup(call1).Verifiable();
         logger.InSequence(sequence).Setup(call2).Verifiable();
@@ -180,7 +180,7 @@ public class TaskExtensionsTests
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
 
@@ -202,8 +202,8 @@ public class TaskExtensionsTests
                 LogLevel.Error,
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
 
@@ -227,8 +227,8 @@ public class TaskExtensionsTests
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
 
@@ -316,7 +316,7 @@ public class TaskExtensionsTests
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<InvalidOperationException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
 
@@ -339,7 +339,7 @@ public class TaskExtensionsTests
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
                 It.IsAny<InvalidOperationException>(),
-                It.IsAny<Func<It.IsAnyType, Exception, string>>());
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
 
