@@ -34,15 +34,8 @@ public partial class ColorPicker : UserControl
     /// </summary>
     public event SelectionChangedEventHandler SelectionChanged
     {
-        add
-        {
-            colorCombobox.AddHandler(Selector.SelectionChangedEvent, value);
-        }
-
-        remove
-        {
-            colorCombobox.RemoveHandler(Selector.SelectionChangedEvent, value);
-        }
+        add => colorCombobox.AddHandler(Selector.SelectionChangedEvent, value);
+        remove => colorCombobox.RemoveHandler(Selector.SelectionChangedEvent, value);
     }
 
     /// <summary>
