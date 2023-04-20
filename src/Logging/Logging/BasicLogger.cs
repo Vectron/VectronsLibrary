@@ -122,12 +122,7 @@ public static class BasicLogger
         => StringLogged?.Invoke(null, e);
 
     private static void StartTaskQue()
-    {
-        if (loggingTask == null)
-        {
-            loggingTask = Task.Factory.StartNew(WriteToLog);
-        }
-    }
+        => loggingTask ??= Task.Factory.StartNew(WriteToLog);
 
     private static void WriteToLog()
     {
