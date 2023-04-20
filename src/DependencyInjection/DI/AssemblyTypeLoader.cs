@@ -10,7 +10,7 @@ namespace VectronsLibrary.DI;
 /// <summary>
 /// Helper class for getting assembly data.
 /// </summary>
-public static class Helper
+public static class AssemblyTypeLoader
 {
     /// <summary>
     /// Gets the current assembly directory.

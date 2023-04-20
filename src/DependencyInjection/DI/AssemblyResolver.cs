@@ -155,7 +155,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
         }
 
         var wantedDLL = assemblyName.Name + ".dll";
-        var rootDir = Helper.AssemblyDirectory;
+        var rootDir = AssemblyTypeLoader.AssemblyDirectory;
         var searchDirectories = new List<string>(extraDirectories) { rootDir };
         searchDirectories.AddRange(Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories));
         foreach (var dir in searchDirectories)

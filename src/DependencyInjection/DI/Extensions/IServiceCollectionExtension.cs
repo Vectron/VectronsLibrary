@@ -123,7 +123,7 @@ public static class IServiceCollectionExtension
     public static IServiceCollection AddFromAssemblies(this IServiceCollection serviceDescriptors, IEnumerable<string> assemblies)
     {
         var loadedTypes = (Assembly.GetEntryAssembly()?.GetTypes() ?? Assembly.GetExecutingAssembly()?.GetTypes() ?? Array.Empty<Type>())
-            .Concat(assemblies.SelectMany(x => Helper.LoadTypesFromAssemblySafe(x, logger)))
+            .Concat(assemblies.SelectMany(x => AssemblyTypeLoader.LoadTypesFromAssemblySafe(x, logger)))
             .Where(t => !Attribute.IsDefined(t, typeof(IgnoreAttribute)));
 
         var interfaces = loadedTypes.GetInterfaces();
