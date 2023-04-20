@@ -29,7 +29,8 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
     }
 
     /// <inheritdoc/>
-    public IDisposable BeginScope<TState>(TState state)
+    public IDisposable? BeginScope<TState>(TState state)
+        where TState : notnull
         => newLogger == null
             ? EmptyDisposable.Instance
             : newLogger.BeginScope(state);

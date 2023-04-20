@@ -60,11 +60,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
         this.extraDirectories = extraDirectories ?? throw new ArgumentNullException(nameof(extraDirectories));
         this.ignoredAssemblies = ignoredAssemblies ?? throw new ArgumentNullException(nameof(ignoredAssemblies));
 
-#if NETSTANDARD2_0_OR_GREATER || NET
         System.Runtime.Loader.AssemblyLoadContext.Default.Resolving += Default_Resolving;
-#else
-        AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-#endif
     }
 
     /// <inheritdoc/>
@@ -85,11 +81,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
         {
             if (disposing)
             {
-#if NETSTANDARD2_0_OR_GREATER || NET
                 System.Runtime.Loader.AssemblyLoadContext.Default.Resolving -= Default_Resolving;
-#else
-                AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
-#endif
             }
 
             disposedValue = true;
@@ -131,20 +123,8 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
         return true;
     }
 
-#if NETFRAMEWORK
-    private Assembly? CurrentDomain_AssemblyResolve(object? sender, ResolveEventArgs args)
-    {
-        var fullname = new AssemblyName(args.Name);
-        return Resolve(Assembly.LoadFile, fullname);
-    }
-#endif
-
-#if NETSTANDARD2_0_OR_GREATER || NET
-
     private Assembly? Default_Resolving(System.Runtime.Loader.AssemblyLoadContext loadContext, AssemblyName assemblyName)
         => Resolve(loadContext.LoadFromAssemblyPath, assemblyName);
-
-#endif
 
     private Assembly? Resolve(Func<string, Assembly> loadAssembly, AssemblyName assemblyName)
     {
