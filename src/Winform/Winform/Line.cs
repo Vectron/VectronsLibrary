@@ -7,8 +7,7 @@ using System.Windows.Forms;
 namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
-/// A line control.
-/// http://beta.unclassified.de/code/dotnet/line/.
+/// A line control. http://beta.unclassified.de/code/dotnet/line/.
 /// </summary>
 public class Line : Control
 {
@@ -170,7 +169,7 @@ public class Line : Control
     }
 
     /// <summary>
-    ///  Gets or sets the tab index of this control.
+    /// Gets or sets the tab index of this control.
     /// </summary>
     [Browsable(false)]
     public new int TabIndex
@@ -180,8 +179,8 @@ public class Line : Control
     }
 
     /// <summary>
-    ///  Gets or sets a value indicating whether the user can give the focus to this control using the TAB
-    ///  key. This property is read-only.
+    /// Gets or sets a value indicating whether the user can give the focus to this control using
+    /// the TAB key. This property is read-only.
     /// </summary>
     [Browsable(false)]
     public new bool TabStop
@@ -190,7 +189,7 @@ public class Line : Control
         set => base.TabStop = value;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     [Browsable(false)]
     public override string Text
     {
@@ -198,7 +197,7 @@ public class Line : Control
         set => base.Text = value;
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override CreateParams CreateParams
     {
         get
@@ -209,10 +208,10 @@ public class Line : Control
         }
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override Size DefaultSize => new(100, 2);
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -225,7 +224,7 @@ public class Line : Control
         base.Dispose(disposing);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void OnPaint(PaintEventArgs e)
     {
         if (line3DStyle == Line3DStyle.Flat)
@@ -279,7 +278,7 @@ public class Line : Control
         base.OnPaint(e);
     }
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     protected override void SetBoundsCore(int x, int y, int width, int height, BoundsSpecified specified)
         => base.SetBoundsCore(x, y, width, height, specified);
 
