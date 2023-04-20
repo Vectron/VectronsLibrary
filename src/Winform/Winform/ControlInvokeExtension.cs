@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace VectronsLibrary.Winform;
+namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// A set of methods that are much easier to use than the usual <see cref="Control.Invoke(Delegate)"/> versions, since they

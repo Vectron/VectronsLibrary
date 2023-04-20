@@ -50,7 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Winform", "Winform", "{B8B2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{8D9097A1-1054-4525-9C14-2CE293BB5108}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Winform", "src\Winform\Winform\VectronsLibrary.Winform.csproj", "{0FB9D3F2-290B-4EEF-A4C5-95C9783C5420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.WindowsForms", "src\Winform\Winform\VectronsLibrary.WindowsForms.csproj", "{0FB9D3F2-290B-4EEF-A4C5-95C9783C5420}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.TextBlockLogger", "src\WPF\TextBlockLogger\VectronsLibrary.TextBlockLogger.csproj", "{D8CE3CE1-AE73-41FC-B057-24AA6D3D24CD}"
 EndProject

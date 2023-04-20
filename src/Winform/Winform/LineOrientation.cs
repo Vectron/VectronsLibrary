@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.Winform;
+﻿namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// The orientation of the line.

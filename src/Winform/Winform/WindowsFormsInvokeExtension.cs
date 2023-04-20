@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace VectronsLibrary.Winform;
+namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// Extensions for <see cref="Form"/>.
 /// </summary>
-public static class WinFormsInvokeExtension
+public static class WindowsFormsInvokeExtension
 {
     /// <summary>
     /// Executes the specified delegate on the thread that owns the control's underlying window handle.
@@ -17,11 +17,7 @@ public static class WinFormsInvokeExtension
     {
         if (form.InvokeRequired)
         {
-#if NET6_0_OR_GREATER
             form.Invoke(method);
-#else
-            _ = form.Invoke(method);
-#endif
         }
         else
         {
@@ -39,10 +35,5 @@ public static class WinFormsInvokeExtension
     /// that returns a value.</param>
     /// <returns>The return value from the delegate being invoked.</returns>
     public static TResult Invoke<TResult>(this Form form, Func<TResult> method)
-#if NET6_0_OR_GREATER
         => form.InvokeRequired ? form.Invoke(method) : method();
-#else
-        => form.InvokeRequired ? (TResult)form.Invoke(method) : method();
-
-#endif
 }

@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Forms;
 
-namespace VectronsLibrary.Winform;
+namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// A numeric only <see cref="TextBox"/>.

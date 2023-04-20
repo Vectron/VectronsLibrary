@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace VectronsLibrary.Winform;
+namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// Helpers for switching localization.
