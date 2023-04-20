@@ -217,20 +217,9 @@ public class Line : Control
     {
         if (disposing)
         {
-            if (components != null)
-            {
-                components.Dispose();
-            }
-
-            if (pen1 != null)
-            {
-                pen1.Dispose();
-            }
-
-            if (pen2 != null)
-            {
-                pen2.Dispose();
-            }
+            components?.Dispose();
+            pen1?.Dispose();
+            pen2?.Dispose();
         }
 
         base.Dispose(disposing);

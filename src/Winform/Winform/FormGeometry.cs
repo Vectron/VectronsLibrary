@@ -67,8 +67,8 @@ public static class FormGeometry
     {
         var desktop_X = 0;
         var desktop_Y = 0;
-        var desktop_width = Screen.PrimaryScreen.WorkingArea.Width;
-        var desktop_height = Screen.PrimaryScreen.WorkingArea.Height;
+        var desktop_width = Screen.PrimaryScreen?.WorkingArea.Width ?? 0;
+        var desktop_height = Screen.PrimaryScreen?.WorkingArea.Height ?? 0;
 
         foreach (var screen in Screen.AllScreens)
         {
@@ -100,5 +100,5 @@ public static class FormGeometry
     }
 
     private static bool GeometryIsBizarreSize(Size size)
-        => size.Height <= Screen.PrimaryScreen.WorkingArea.Height && size.Width <= Screen.PrimaryScreen.WorkingArea.Width;
+        => size.Height <= Screen.PrimaryScreen?.WorkingArea.Height && size.Width <= Screen.PrimaryScreen?.WorkingArea.Width;
 }
