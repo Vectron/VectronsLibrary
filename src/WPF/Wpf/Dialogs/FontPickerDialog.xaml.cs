@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
-using VectronsLibrary.Wpf.Controlls;
+using VectronsLibrary.Wpf.Controls;
 
 namespace VectronsLibrary.Wpf.Dialogs;
 
@@ -15,7 +15,7 @@ public partial class FontPickerDialog : Window
     public FontPickerDialog()
     {
         InitializeComponent();
-        DefaultFontColor = (Color)FontPicker.SelectedColorProperty.DefaultMetadata.DefaultValue;
+        DefaultFontColor = (Color)FontPicker.SelectedFontColorProperty.DefaultMetadata.DefaultValue;
         DefaultFontFamily = (FontFamily)FontPicker.SelectedFontFamilyProperty.DefaultMetadata.DefaultValue;
         DefaultFontSize = (double)FontPicker.SelectedFontSizeProperty.DefaultMetadata.DefaultValue;
         DefaultFontStretch = (FontStretch)FontPicker.SelectedFontStretchProperty.DefaultMetadata.DefaultValue;
@@ -88,43 +88,43 @@ public partial class FontPickerDialog : Window
     /// <inheritdoc cref="FontPicker.SelectedFontColor"/>
     public Color SelectedFontColor
     {
-        get => fontpicker.SelectedFontColor;
-        set => fontpicker.SelectedFontColor = value;
+        get;
+        set;
     }
 
     /// <inheritdoc cref="FontPicker.SelectedFontFamily"/>
-    public FontFamily SelectedFontFamily
+    public FontFamily? SelectedFontFamily
     {
-        get => fontpicker.SelectedFontFamily;
-        set => fontpicker.SelectedFontFamily = value;
+        get;
+        set;
     }
 
     /// <inheritdoc cref="FontPicker.SelectedFontSize"/>
     public double SelectedFontSize
     {
-        get => fontpicker.SelectedFontSize;
-        set => fontpicker.SelectedFontSize = value;
+        get;
+        set;
     }
 
     /// <inheritdoc cref="FontPicker.SelectedFontStretch"/>
     public FontStretch SelectedFontStretch
     {
-        get => fontpicker.SelectedFontStretch;
-        set => fontpicker.SelectedFontStretch = value;
+        get;
+        set;
     }
 
     /// <inheritdoc cref="FontPicker.SelectedFontStyle"/>
     public FontStyle SelectedFontStyle
     {
-        get => fontpicker.SelectedFontStyle;
-        set => fontpicker.SelectedFontStyle = value;
+        get;
+        set;
     }
 
     /// <inheritdoc cref="FontPicker.SelectedFontWeight"/>
     public FontWeight SelectedFontWeight
     {
-        get => fontpicker.SelectedFontWeight;
-        set => fontpicker.SelectedFontWeight = value;
+        get;
+        set;
     }
 
     /// <summary>
