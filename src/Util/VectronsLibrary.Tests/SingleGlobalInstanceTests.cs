@@ -85,6 +85,7 @@ public class SingleGlobalInstanceTests
     [TestMethod]
     public void ThrowsArgumentExceptionWhenNoValidGuidGiven()
     {
+        _ = Assert.ThrowsException<ArgumentException>(SingleGlobalInstance.GetApplicationGui);
         _ = Assert.ThrowsException<ArgumentException>(() => new SingleGlobalInstance(string.Empty));
         _ = Assert.ThrowsException<ArgumentException>(() => new SingleGlobalInstance(null!));
     }
