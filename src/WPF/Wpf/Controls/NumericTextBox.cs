@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace VectronsLibrary.Wpf.Controlls;
+namespace VectronsLibrary.Wpf.Controls;
 
 /// <summary>
 /// A numeric only <see cref="TextBox"/>.
@@ -89,24 +89,26 @@ public class NumericTextBox : TextBox
 
     private static bool IsDataValid(IDataObject data)
     {
-        var isValid = false;
-        if (data != null)
+        if (data == null)
         {
-            var text = data.GetData(DataFormats.Text) as string;
-
-            if (!string.IsNullOrEmpty(text?.Trim()))
-            {
-                if (int.TryParse(text, out _))
-                {
-                    isValid = true;
-                }
-                else if (double.TryParse(text, out _))
-                {
-                    isValid = true;
-                }
-            }
+            return false;
         }
 
-        return isValid;
+        var text = data.GetData(DataFormats.Text) as string;
+        if (string.IsNullOrEmpty(text?.Trim()))
+        {
+            return false;
+        }
+
+        if (int.TryParse(text, out _))
+        {
+            return true;
+        }
+        else if (double.TryParse(text, out _))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -1,21 +1,21 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace VectronsLibrary.Wpf.Controlls;
+namespace VectronsLibrary.Wpf.Controls;
 
 /// <summary>
-/// Control container that adds a label infront of the control.
+/// Control container that adds a label in front of the control.
 /// </summary>
-public class LabeledControll : ContentControl
+public class LabeledControl : ContentControl
 {
     /// <summary>
     /// Identifies the <see cref="Label"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty LabelProperty = DependencyProperty
-        .Register(nameof(Label), typeof(string), typeof(LabeledControll), new FrameworkPropertyMetadata("Unnamed Label"));
+        .Register(nameof(Label), typeof(string), typeof(LabeledControl), new FrameworkPropertyMetadata("Unnamed Label"));
 
-    static LabeledControll()
-        => DefaultStyleKeyProperty.OverrideMetadata(typeof(LabeledControll), new FrameworkPropertyMetadata(typeof(LabeledControll)));
+    static LabeledControl()
+        => DefaultStyleKeyProperty.OverrideMetadata(typeof(LabeledControl), new FrameworkPropertyMetadata(typeof(LabeledControl)));
 
     /// <summary>
     /// Gets or sets the text of the label.

@@ -2,10 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace VectronsLibrary.Wpf.Controlls;
+namespace VectronsLibrary.Wpf.Controls;
 
 /// <summary>
-/// An Ip adress input controll.
+/// An Ip address input control.
 /// </summary>
 [TemplatePart(Name = ElementFirstIPPartTextBox, Type = typeof(TextBox))]
 [TemplatePart(Name = ElementSecondIPPartTextBox, Type = typeof(TextBox))]
@@ -17,7 +17,7 @@ public class IPInput : Control
     /// Identifies the <see cref="IPAddress"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty IPAddressProperty = DependencyProperty
-        .Register(nameof(IPAddress), typeof(string), typeof(IPInput), new FrameworkPropertyMetadata("127.0.0.1", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, IpAdressChanged));
+        .Register(nameof(IPAddress), typeof(string), typeof(IPInput), new FrameworkPropertyMetadata("127.0.0.1", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, IpAddressChanged));
 
     private const string ElementFirstIPPartTextBox = "PART_FirstIPPartTextBox";
     private const string ElementFourthIPPartTextBox = "PART_FourthIPPartTextBox";
@@ -32,7 +32,7 @@ public class IPInput : Control
         => DefaultStyleKeyProperty.OverrideMetadata(typeof(IPInput), new FrameworkPropertyMetadata(typeof(IPInput)));
 
     /// <summary>
-    /// Gets or sets the Ip adress.
+    /// Gets or sets the Ip address.
     /// </summary>
     public string IPAddress
     {
@@ -112,7 +112,7 @@ public class IPInput : Control
         }
     }
 
-    private static void IpAdressChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+    private static void IpAddressChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
     {
         if (dependencyObject is IPInput ipInput)
         {

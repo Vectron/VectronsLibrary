@@ -2,22 +2,22 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace VectronsLibrary.Wpf.Controlls;
+namespace VectronsLibrary.Wpf.Controls;
 
 /// <summary>
-/// Interaction logic for FontPicker.xaml.
+/// FontPicker control.
 /// </summary>
-public partial class FontPicker : UserControl
+public class FontPicker : Control
 {
     /// <summary>
     /// Identifies the <see cref="SelectedFontColor"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty SelectedColorProperty =
+    public static readonly DependencyProperty SelectedFontColorProperty =
         DependencyProperty.Register(
             nameof(SelectedFontColor),
             typeof(Color),
             typeof(FontPicker),
-            new PropertyMetadata(((SolidColorBrush)ForegroundProperty.DefaultMetadata.DefaultValue).Color));
+            new PropertyMetadata((ForegroundProperty.DefaultMetadata.DefaultValue as SolidColorBrush)?.Color ?? default));
 
     /// <summary>
     /// Identifies the <see cref="SelectedFontFamily"/> dependency property.
@@ -69,19 +69,16 @@ public partial class FontPicker : UserControl
             typeof(FontPicker),
             new PropertyMetadata(FontWeightProperty.DefaultMetadata.DefaultValue));
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FontPicker"/> class.
-    /// </summary>
-    public FontPicker()
-        => InitializeComponent();
+    static FontPicker()
+        => DefaultStyleKeyProperty.OverrideMetadata(typeof(FontPicker), new FrameworkPropertyMetadata(typeof(FontPicker)));
 
     /// <summary>
     /// Gets or sets the <see cref="Color"/> for this font.
     /// </summary>
     public Color SelectedFontColor
     {
-        get => (Color)GetValue(SelectedColorProperty);
-        set => SetValue(SelectedColorProperty, value);
+        get => (Color)GetValue(SelectedFontColorProperty);
+        set => SetValue(SelectedFontColorProperty, value);
     }
 
     /// <summary>
