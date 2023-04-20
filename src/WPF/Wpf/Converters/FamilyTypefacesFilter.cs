@@ -23,7 +23,7 @@ internal sealed class FamilyTypefacesFilter : IValueConverter
             return null;
         }
 
-        return items.Select(x => propInfo.GetValue(x)).Distinct();
+        return items.Select(propInfo.GetValue).Distinct();
     }
 
     /// <inheritdoc/>
