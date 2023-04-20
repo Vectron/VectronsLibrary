@@ -11,7 +11,7 @@
     <PackageReference Condition="'$(Configuration)' == 'Release'" Include="VectronsLibrary.DI.Abstraction" Version="1.4.*" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+  <ItemGroup>
     <ProjectReference Include="..\DI.Abstraction\VectronsLibrary.DI.Abstraction.csproj" />
   </ItemGroup>
 </Project>
