@@ -309,7 +309,7 @@ public class Line : Control
     private void UpdateSize()
     {
         internalResizing = true;
-        var lineWidth = (line3DStyle != Line3DStyle.Flat) ? 2 : (int)pen1.Width;
+        var lineWidth = line3DStyle != Line3DStyle.Flat ? 2 : (int)pen1.Width;
         if (orientation == LineOrientation.Horizontal)
         {
             Width = previousWidth;
