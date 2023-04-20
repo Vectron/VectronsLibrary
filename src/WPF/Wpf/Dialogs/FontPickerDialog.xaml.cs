@@ -26,10 +26,10 @@ public partial class FontPickerDialog : Window
     /// <summary>
     /// Initializes a new instance of the <see cref="FontPickerDialog"/> class.
     /// </summary>
-    /// <param name="parrent">The parent window.</param>
-    public FontPickerDialog(Window parrent)
+    /// <param name="parent">The parent window.</param>
+    public FontPickerDialog(Window parent)
         : this()
-        => Owner = parrent;
+        => Owner = parent;
 
     /// <summary>
     /// Gets or sets the default font <see cref="Color"/>.

@@ -7,9 +7,15 @@ using Moq;
 
 namespace VectronsLibrary.DI.Tests;
 
+/// <summary>
+/// Test methods for <see cref="AssemblyResolver"/>.
+/// </summary>
 [TestClass]
 public class AssemblyResolverTests
 {
+    /// <summary>
+    /// Test if we get <see cref="ArgumentNullException"/> when we pass <see langword="null"/> to the constructor.
+    /// </summary>
     [TestMethod]
     public void ConstructorThrowsArgumentNullException()
     {
@@ -18,6 +24,9 @@ public class AssemblyResolverTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), Array.Empty<string>(), null!));
     }
 
+    /// <summary>
+    /// Check if empty search directories are skipped.
+    /// </summary>
     [TestMethod]
     public void EmptySearchDirIsSkipped()
     {
@@ -28,8 +37,11 @@ public class AssemblyResolverTests
         Assert.IsNotNull(result);
     }
 
+    /// <summary>
+    /// Check if <see cref="FileNotFoundException"/> or <see cref="FileLoadException"/> is thrown when loading unknown assembly.
+    /// </summary>
     [TestMethod]
-    public void InvallidAssembliesShouldBeSkipped()
+    public void InvalidAssembliesThrowException()
     {
         _ = new AssemblyResolver();
 
@@ -44,6 +56,10 @@ public class AssemblyResolverTests
 #endif
     }
 
+    /// <summary>
+    /// Check if <see cref="FileNotFoundException"/> or <see cref="FileLoadException"/> is thrown when loading Serializer or resource assembly.
+    /// </summary>
+    /// <param name="assemblyName">The name of the assembly to load.</param>
     [TestMethod]
     [DataRow("test.XmlSerializers, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
     [DataRow("test.resources, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
@@ -54,13 +70,16 @@ public class AssemblyResolverTests
     [DataRow("test2, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
     [DataRow("test3, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
     [DataRow("Test1, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
-    public void SerializerResourcesAndIgnoredAssembliesShouldNotBeFound(string assemblyName)
+    public void SerializerResourcesAndIgnoredAssembliesThrowException(string assemblyName)
     {
         _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), new[] { "test1", "test2", "test3" });
 
         _ = Assert.ThrowsException<FileNotFoundException>(() => Assembly.Load(assemblyName));
     }
 
+    /// <summary>
+    /// Check if a assembly is resolved properly.
+    /// </summary>
     [TestMethod]
     public void TryResolve()
     {

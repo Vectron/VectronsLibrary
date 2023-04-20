@@ -163,7 +163,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
         }
 
         // skip resource files
-        // skip xml serializers
+        // skip xml Serializers
         // skip ignored assemblies
         if (assemblyName.Name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase)
             || assemblyName.Name.EndsWith(".XmlSerializers", StringComparison.OrdinalIgnoreCase)
@@ -193,7 +193,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
             {
                 if (!File.Exists(assemblyPath))
                 {
-                    logger.LogDebug("{AssemblyName}: Assembly path does not exist: '{Path}', continueing.", assemblyName.Name, assemblyPath);
+                    logger.LogDebug("{AssemblyName}: Assembly path does not exist: '{Path}', continuing.", assemblyName.Name, assemblyPath);
                     continue;
                 }
 

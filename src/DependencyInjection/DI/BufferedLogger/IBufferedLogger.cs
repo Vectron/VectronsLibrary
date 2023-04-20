@@ -4,7 +4,7 @@ using VectronsLibrary.DI.Attributes;
 namespace VectronsLibrary.DI.BufferedLogger;
 
 /// <summary>
-/// A logger that buffers the messages until they can be writen to the final logger setup.
+/// A logger that buffers the messages until they can be written to the final logger setup.
 /// </summary>
 [Ignore]
 public interface IBufferedLogger

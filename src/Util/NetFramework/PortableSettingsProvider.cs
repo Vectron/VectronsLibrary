@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 namespace VectronsLibrary.NetFramework;
 
 /// <summary>
-/// A settings provieder that stores the settings in the executable directory.
+/// A settings provider that stores the settings in the executable directory.
 /// </summary>
 public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
 {
@@ -73,8 +73,8 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
     {
         get
         {
-            // If we dont hold an xml document, try opening one.
-            // If it doesnt exist then create a new one ready.
+            // If we don't hold an xml document, try opening one.
+            // If it doesn't exist then create a new one ready.
             if (settingsXML == null)
             {
                 settingsXML = new XmlDocument();
@@ -114,17 +114,17 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
     /// <summary>
     /// Create a unique name from the <see cref="Environment.MachineName"/>.
     /// </summary>
-    /// <returns>Returns a vallid XML machine name.</returns>
+    /// <returns>Returns a valid XML machine name.</returns>
     public static string AlteredMachineName()
     {
-        var machinename = "M" + Environment.MachineName;
+        var machineName = "M" + Environment.MachineName;
 
-        if (IsValidXmlString(machinename))
+        if (IsValidXmlString(machineName))
         {
-            machinename = RemoveInvalidXmlChars(machinename);
+            machineName = RemoveInvalidXmlChars(machineName);
         }
 
-        return machinename;
+        return machineName;
     }
 
     /// <summary>
@@ -222,10 +222,10 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
         this.context = context;
 
         // Iterate through the settings to be stored
-        // Only dirty settings are included in propvals, and only ones relevant to this provider
-        foreach (SettingsPropertyValue propval in collection)
+        // Only dirty settings are included in property values, and only ones relevant to this provider
+        foreach (SettingsPropertyValue propertyValue in collection)
         {
-            SetValue(propval);
+            SetValue(propertyValue);
         }
 
         try
@@ -342,7 +342,7 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
                 XmlElement machineNode;
 
                 // Its machine specific, store as an element of the machine name node,
-                // creating a new machine name node if one doesnt exist.
+                // creating a new machine name node if one doesn't exist.
                 try
                 {
                     machineNode = (XmlElement)SettingsXML.SelectSingleNode(SETTINGSROOT + "/" + AlteredMachineName());

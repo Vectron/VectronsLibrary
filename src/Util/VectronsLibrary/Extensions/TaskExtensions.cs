@@ -10,7 +10,7 @@ namespace VectronsLibrary.Extensions;
 public static class TaskExtensions
 {
     /// <summary>
-    /// Log exceptions async.
+    /// Log exceptions asynchronous.
     /// </summary>
     /// <param name="task">The task to check for exceptions.</param>
     /// <param name="logger">The <see cref="ILogger"/> to log the error to.</param>

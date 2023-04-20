@@ -8,11 +8,17 @@ using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests;
 
+/// <summary>
+/// Tests for the <see cref="Extensions.TaskExtensions"/> class.
+/// </summary>
 [TestClass]
 public class TaskExtensionsTests
 {
     private readonly Action<ArgumentNullException> dummyAction = _ => { };
 
+    /// <summary>
+    /// Test if the action is called for the requested exceptions.
+    /// </summary>
     [TestMethod]
     public void ActionIsCalledForFilteredException()
     {
@@ -32,6 +38,9 @@ public class TaskExtensionsTests
         testMethod.Verify(callback, Times.Once);
     }
 
+    /// <summary>
+    /// Test if all other exceptions are logged.
+    /// </summary>
     [TestMethod]
     public void AllNonFilteredExceptionsGetLogged()
     {
@@ -62,6 +71,9 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Exactly(2));
     }
 
+    /// <summary>
+    /// Test if inherited exceptions from the filter exception are logged.
+    /// </summary>
     [TestMethod]
     public void EveryChildExceptionIsLogged()
     {
@@ -92,6 +104,9 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Exactly(2));
     }
 
+    /// <summary>
+    /// Test if inherited exceptions from the filter exception are logged in reversed order.
+    /// </summary>
     [TestMethod]
     public void EveryChildExceptionIsLoggedInReverseOrder()
     {
@@ -131,6 +146,9 @@ public class TaskExtensionsTests
         logger.Verify(call2, Times.Once);
     }
 
+    /// <summary>
+    /// Test if inherited exceptions from the filter exception are logged in reversed order.
+    /// </summary>
     [TestMethod]
     public void EveryChildExceptionIsLoggedInReverseOrderGeneric()
     {
@@ -170,6 +188,9 @@ public class TaskExtensionsTests
         logger.Verify(call2, Times.Once);
     }
 
+    /// <summary>
+    /// Test if exceptions are logged with the <see cref="LogLevel.Error"/> level.
+    /// </summary>
     [TestMethod]
     public void ExceptionsLoggedWithErrorLevel()
     {
@@ -193,6 +214,9 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Once);
     }
 
+    /// <summary>
+    /// Test if exceptions are logged with the <see cref="LogLevel.Error"/> level.
+    /// </summary>
     [TestMethod]
     public void ExceptionsLoggedWithErrorLevelGeneric()
     {
@@ -216,8 +240,11 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Once);
     }
 
+    /// <summary>
+    /// Test if the filtered exception calls the callback, rest gets logged.
+    /// </summary>
     [TestMethod]
-    public void FilteredExceptionGoesToCallbackRestGetsLogged()
+    public void FilteredExceptionGoesToCallBackRestGetsLogged()
     {
         // Arrange
         var logger = new Mock<ILogger>();
@@ -246,6 +273,9 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Once);
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Action"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowIfActionIsNullGeneric()
     {
@@ -258,6 +288,9 @@ public class TaskExtensionsTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync<Exception>(Task.CompletedTask, logger, null!));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="ILogger"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowIfLoggerIsNull()
     {
@@ -270,6 +303,9 @@ public class TaskExtensionsTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, logger!));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="ILogger"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowIfLoggerIsNullGeneric()
     {
@@ -282,6 +318,9 @@ public class TaskExtensionsTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(Task.CompletedTask, logger!, dummyAction));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Task"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowIfTaskIsNull()
     {
@@ -294,6 +333,9 @@ public class TaskExtensionsTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(null!, logger));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Task"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowIfTaskIsNullGeneric()
     {
@@ -306,6 +348,9 @@ public class TaskExtensionsTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => Extensions.TaskExtensions.LogExceptionsAsync(null!, logger, dummyAction));
     }
 
+    /// <summary>
+    /// Test if exceptions are logged.
+    /// </summary>
     [TestMethod]
     public void ThrownExceptionIsLogged()
     {
@@ -329,6 +374,9 @@ public class TaskExtensionsTests
         logger.Verify(expression, Times.Once);
     }
 
+    /// <summary>
+    /// Test if exceptions are logged.
+    /// </summary>
     [TestMethod]
     public void ThrownExceptionIsLoggedGeneric()
     {

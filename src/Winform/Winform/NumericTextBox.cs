@@ -11,16 +11,16 @@ public class NumericTextBox : TextBox
     /// <summary>
     /// Gets or sets a value indicating whether decimal values are allowed in the <see cref="NumericTextBox"/>.
     /// </summary>
-    public bool AllowdecimalSeparator
+    public bool AllowDecimalSeparator
     {
         get;
         set;
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether group seperators are allowed in the <see cref="NumericTextBox"/>.
+    /// Gets or sets a value indicating whether group separators are allowed in the <see cref="NumericTextBox"/>.
     /// </summary>
-    public bool AllowgroupSeparator
+    public bool AllowGroupSeparator
     {
         get;
         set;
@@ -29,7 +29,7 @@ public class NumericTextBox : TextBox
     /// <summary>
     /// Gets or sets a value indicating whether negative values are allowed in the <see cref="NumericTextBox"/>.
     /// </summary>
-    public bool AllownegativeSign
+    public bool AllowNegativeSign
     {
         get;
         set;
@@ -93,15 +93,15 @@ public class NumericTextBox : TextBox
         {
             // Digits are OK
         }
-        else if (keyInput.Equals(decimalSeparator, System.StringComparison.Ordinal) && AllowdecimalSeparator)
+        else if (keyInput.Equals(decimalSeparator, System.StringComparison.Ordinal) && AllowDecimalSeparator)
         {
             // Decimal separator is OK
         }
-        else if (keyInput.Equals(groupSeparator, System.StringComparison.Ordinal) && AllowgroupSeparator)
+        else if (keyInput.Equals(groupSeparator, System.StringComparison.Ordinal) && AllowGroupSeparator)
         {
             // Group separator is OK
         }
-        else if (keyInput.Equals(negativeSign, System.StringComparison.Ordinal) && AllownegativeSign)
+        else if (keyInput.Equals(negativeSign, System.StringComparison.Ordinal) && AllowNegativeSign)
         {
             // Negative Sign is OK
         }

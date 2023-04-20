@@ -13,7 +13,7 @@ public static class RuntimeLocalizer
     /// <summary>
     /// Change the current culture of a <see cref="Control"/>.
     /// </summary>
-    /// <param name="frm">The controll to change the culture off.</param>
+    /// <param name="frm">The control to change the culture off.</param>
     /// <param name="cultureCode">The culture code to change to.</param>
     public static void ChangeCulture(Control frm, string cultureCode)
     {
@@ -28,14 +28,14 @@ public static class RuntimeLocalizer
         resources.ApplyResources(frm, "$this", culture);
     }
 
-    private static void ApplyResourceToControl(ComponentResourceManager res, Control control, CultureInfo lang)
+    private static void ApplyResourceToControl(ComponentResourceManager res, Control control, CultureInfo cultureInfo)
     {
         // See if this is a menuStrip
         if (control.GetType() == typeof(MenuStrip))
         {
             var strip = (MenuStrip)control;
 
-            ApplyResourceToToolStripItemCollection(strip.Items, res, lang);
+            ApplyResourceToToolStripItemCollection(strip.Items, res, cultureInfo);
         }
 
         // Apply to all sub-controls
@@ -46,10 +46,9 @@ public static class RuntimeLocalizer
                 continue;
             }
 
-            ApplyResourceToControl(res, c, lang);
+            ApplyResourceToControl(res, c, cultureInfo);
 
-            // res.ApplyResources(c, c.Name, lang);
-            var text = res.GetString(c.Name + ".Text", lang);
+            var text = res.GetString(c.Name + ".Text", cultureInfo);
             if (text != null)
             {
                 c.Text = text;
@@ -57,15 +56,14 @@ public static class RuntimeLocalizer
         }
 
         // Apply to self
-        // res.ApplyResources(control, control.Name, lang);
-        var text2 = res.GetString(control.Name + ".Text", lang);
+        var text2 = res.GetString(control.Name + ".Text", cultureInfo);
         if (text2 != null)
         {
             control.Text = text2;
         }
     }
 
-    private static void ApplyResourceToToolStripItemCollection(ToolStripItemCollection col, ComponentResourceManager res, CultureInfo lang)
+    private static void ApplyResourceToToolStripItemCollection(ToolStripItemCollection col, ComponentResourceManager res, CultureInfo cultureInfo)
     {
         // Apply to all sub items
         for (var i = 0; i < col.Count; i++)
@@ -74,11 +72,11 @@ public static class RuntimeLocalizer
 
             if (item.GetType() == typeof(ToolStripMenuItem))
             {
-                var menuitem = (ToolStripMenuItem)item;
-                ApplyResourceToToolStripItemCollection(menuitem.DropDownItems, res, lang);
+                var menuItem = (ToolStripMenuItem)item;
+                ApplyResourceToToolStripItemCollection(menuItem.DropDownItems, res, cultureInfo);
             }
 
-            res.ApplyResources(item, item.Name, lang);
+            res.ApplyResources(item, item.Name, cultureInfo);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Windows.Markup;
 namespace VectronsLibrary.Wpf.Extensions;
 
 /// <summary>
-/// <see cref="MarkupExtension"/> that creates a bindable list of enum values.
+/// <see cref="MarkupExtension"/> that creates a bind able list of enum values.
 /// http://brianlagunas.com/a-better-way-to-data-bind-enums-in-wpf/.
 /// </summary>
 public class EnumBindingSourceExtension : MarkupExtension

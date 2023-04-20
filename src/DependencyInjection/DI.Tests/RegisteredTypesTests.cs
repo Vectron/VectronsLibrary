@@ -5,17 +5,29 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VectronsLibrary.DI.Tests;
 
+/// <summary>
+/// Tests for the <see cref="RegisteredTypes{T}"/> class.
+/// </summary>
 [TestClass]
 public class RegisteredTypesTests
 {
+    /// <summary>
+    /// An interface for testing the dependency injection registration.
+    /// </summary>
     private interface ITestInterface
     {
     }
 
+    /// <summary>
+    /// An interface for testing the dependency injection registration.
+    /// </summary>
     private interface ITestInterface2 : ITestInterface
     {
     }
 
+    /// <summary>
+    /// Test if all registered types are found.
+    /// </summary>
     [TestMethod]
     public void ReturnsAllRequestedTypes()
     {

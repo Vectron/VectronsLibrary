@@ -31,7 +31,7 @@ public abstract class ObservableObject : INotifyPropertyChanged, INotifyProperty
     /// Invoke a property changed.
     /// </summary>
     /// <typeparam name="T">Type of the property.</typeparam>
-    /// <param name="previousValue">The previous value of the propertry.</param>
+    /// <param name="previousValue">The previous value of the property.</param>
     /// <param name="currentValue">The new value of the property.</param>
     /// <param name="propertyName">Name of the property that changed.</param>
     protected void OnPropertyChanged<T>(T previousValue, T currentValue, [CallerMemberName] string propertyName = "")

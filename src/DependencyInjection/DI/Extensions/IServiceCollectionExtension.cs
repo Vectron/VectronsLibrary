@@ -118,7 +118,7 @@ public static class IServiceCollectionExtension
     /// Add all types from a assembly to the <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="serviceDescriptors">The <see cref="IServiceCollection"/> to add the service to.</param>
-    /// <param name="assemblies">A <see cref="IEnumerable{T}"/> of assemblie names to load types from.</param>
+    /// <param name="assemblies">A <see cref="IEnumerable{T}"/> of assembly names to load types from.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddFromAssemblies(this IServiceCollection serviceDescriptors, IEnumerable<string> assemblies)
     {

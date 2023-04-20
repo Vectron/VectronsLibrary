@@ -7,8 +7,4 @@
   <ItemGroup>
     <ProjectReference Include="..\DI.Abstraction\VectronsLibrary.DI.Abstraction.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(RepositoryRootDirectory)\GlobalSuppressions.cs" />
-  </ItemGroup>
 </Project>

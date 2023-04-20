@@ -16,8 +16,4 @@
   <ItemGroup>
     <ProjectReference Include="..\VectronsLibrary\VectronsLibrary.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(RepositoryRootDirectory)\GlobalSuppressions.cs" />
-  </ItemGroup>
 </Project>

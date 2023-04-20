@@ -24,7 +24,7 @@ public static class BasicLogger
     private static readonly string LogFileExtension = ".txt";
     private static readonly BlockingCollection<ErrorMessage> MessageCollection = new();
     private static readonly char Underscore = '_';
-    private static int daysBeforLogDelete;
+    private static int daysBeforeLogDelete;
     private static Task? loggingTask;
 
     /// <summary>
@@ -46,13 +46,12 @@ public static class BasicLogger
     /// <summary>
     /// Set the max age of log files.
     /// </summary>
-    /// <param name="daysBeforLogDelete">The amount of days to keep a log file.</param>
-    public static void SetLogCleanUp(int daysBeforLogDelete)
+    /// <param name="daysBeforeLogDelete">The amount of days to keep a log file.</param>
+    public static void SetLogCleanUp(int daysBeforeLogDelete)
     {
-        if (daysBeforLogDelete > 0)
+        if (daysBeforeLogDelete > 0)
         {
-            BasicLogger.daysBeforLogDelete = daysBeforLogDelete;
-
+            BasicLogger.daysBeforeLogDelete = daysBeforeLogDelete;
             CleanUpTimer.Interval = 1000 * 3600;
             CleanUpTimer.Elapsed += (e, arg) => Task.Factory.StartNew(CleanUpLogFiles);
             CleanUpTimer.Start();
@@ -60,7 +59,7 @@ public static class BasicLogger
     }
 
     /// <summary>
-    /// Write a message to the log file locate at [applicationdirectory]\log
+    /// Write a message to the log file locate at [application directory]\log
     /// File format is yy-mm-dd_[AssemblyName]
     /// message will be formatted as: uu:mm:ss ==> [Your Message].
     /// </summary>
@@ -70,17 +69,17 @@ public static class BasicLogger
         try
         {
             var logFormat = DateTime.Now.ToLongTimeString().ToString() + Arrow;
-            var programmName = Assembly.GetCallingAssembly().GetName().Name ?? string.Empty;
-            var pathName = Path.Combine(LogDirectory, programmName);
+            var programName = Assembly.GetCallingAssembly().GetName().Name ?? string.Empty;
+            var pathName = Path.Combine(LogDirectory, programName);
 
-            programmName = programmName.Replace(' ', Underscore);
+            programName = programName.Replace(' ', Underscore);
 
             var errorTime = DateTime.Now.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + Underscore;
 
             // Check if there is a log directory in the root of the exe, if not create one
             _ = Directory.CreateDirectory(pathName);
 
-            var filePath = Path.Combine(pathName, errorTime + programmName + LogFileExtension);
+            var filePath = Path.Combine(pathName, errorTime + programName + LogFileExtension);
             var newMessage = logFormat + message;
 
             StartTaskQue();
@@ -103,7 +102,7 @@ public static class BasicLogger
             {
                 foreach (var file in dir.GetFiles("*" + LogFileExtension))
                 {
-                    if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(daysBeforLogDelete))
+                    if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(daysBeforeLogDelete))
                     {
                         File.Delete(file.FullName);
                     }
@@ -140,7 +139,7 @@ public static class BasicLogger
 
                 lock (Locker)
                 {
-                    // define the streamwrite to create a log file and append to that file if the name allready excist
+                    // define the stream write to create a log file and append to that file if the name already exist
                     using (var writer = new StreamWriter(message.FilePath, true))
                     {
                         // write the message to the log file with format: uu:mm:ss ==> Log message

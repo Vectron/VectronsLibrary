@@ -18,8 +18,4 @@
     <ProjectReference Include="..\DI.TestsAssembly\VectronsLibrary.DI.TestsAssembly.csproj" />
     <ProjectReference Include="..\DI\VectronsLibrary.DI.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="$(RepositoryRootDirectory)\GlobalSuppressions.cs" />
-  </ItemGroup>
 </Project>

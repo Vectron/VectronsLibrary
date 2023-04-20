@@ -3,7 +3,7 @@
 namespace VectronsLibrary.DI.Factory;
 
 /// <summary>
-/// A Factorey that can be used to resolve implementation of <typeparamref name="T"/>.
+/// A factory that can be used to resolve implementation of <typeparamref name="T"/>.
 /// </summary>
 /// <typeparam name="T">The type this factory will create.</typeparam>
 public interface IFactory<T>

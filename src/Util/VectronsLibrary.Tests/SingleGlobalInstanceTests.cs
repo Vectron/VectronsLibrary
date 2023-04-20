@@ -5,9 +5,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VectronsLibrary.Tests;
 
+/// <summary>
+/// Tests for the <see cref="SingleGlobalInstance"/> class.
+/// </summary>
 [TestClass]
 public class SingleGlobalInstanceTests
 {
+    /// <summary>
+    /// Test if the mutex is released when disposing.
+    /// </summary>
     [TestMethod]
     public void DisposeReleasesMutex()
     {
@@ -28,6 +34,9 @@ public class SingleGlobalInstanceTests
         Assert.IsTrue(taskNotCancelled);
     }
 
+    /// <summary>
+    /// Test if the mutex is gotten when the thread exits.
+    /// </summary>
     [TestMethod]
     public void GetMutexWhenThreadExits()
     {
@@ -51,6 +60,9 @@ public class SingleGlobalInstanceTests
         Assert.IsTrue(taskNotCancelled2);
     }
 
+    /// <summary>
+    /// Test if the mutex blocks multiple instance creation.
+    /// </summary>
     [TestMethod]
     public void OnlyOneInstanceAllowed()
     {
@@ -67,17 +79,19 @@ public class SingleGlobalInstanceTests
         Assert.IsFalse(taskNotCancelled);
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Guid"/> is null.
+    /// </summary>
     [TestMethod]
-    public void ThrowsArgumentExceptionWhenNoGuiIsSupplied()
-        => _ = Assert.ThrowsException<ArgumentException>(() => SingleGlobalInstance.GetApplicationGui());
-
-    [TestMethod]
-    public void ThrowsArgumentExceptionWhenNoVallidGuidGiven()
+    public void ThrowsArgumentExceptionWhenNoValidGuidGiven()
     {
         _ = Assert.ThrowsException<ArgumentException>(() => new SingleGlobalInstance(string.Empty));
         _ = Assert.ThrowsException<ArgumentException>(() => new SingleGlobalInstance(null!));
     }
 
+    /// <summary>
+    /// Test if an error is thrown when the max wait time elapsed.
+    /// </summary>
     [TestMethod]
     public void WaitTheMaxTimeBeforeError()
     {

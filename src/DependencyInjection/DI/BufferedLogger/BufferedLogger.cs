@@ -84,7 +84,7 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
 
     private class EmptyDisposable : IDisposable
     {
-        // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit
+        // Explicit static constructor to tell C# compiler not to mark type as before field initialize
         static EmptyDisposable()
             => Instance = new EmptyDisposable();
 

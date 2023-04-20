@@ -11,7 +11,7 @@ public sealed class LoggingEventArgs : EventArgs
     /// Initializes a new instance of the <see cref="LoggingEventArgs"/> class.
     /// </summary>
     /// <param name="text">The message that was logged.</param>
-    /// <param name="file">The file path the message will be loged to.</param>
+    /// <param name="file">The file path the message will be logged to.</param>
     public LoggingEventArgs(string text, string file)
     {
         Message = text;
@@ -19,7 +19,7 @@ public sealed class LoggingEventArgs : EventArgs
     }
 
     /// <summary>
-    /// Gets the file path the message will be loged to.
+    /// Gets the file path the message will be logged to.
     /// </summary>
     public string File
     {

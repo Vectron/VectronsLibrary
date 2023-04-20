@@ -10,7 +10,7 @@ namespace VectronsLibrary.Extensions;
 public static class IEnumerableExtension
 {
     /// <summary>
-    /// Do a certain action on every item in the collection. (this will itterate the collection).
+    /// Do a certain action on every item in the collection. (this will iterate the collection).
     /// </summary>
     /// <typeparam name="T">The type of objects to enumerate.</typeparam>
     /// <param name="source">A <see cref="IEnumerable{T}"/> to apply the action on.</param>
@@ -26,33 +26,33 @@ public static class IEnumerableExtension
     }
 
     /// <summary>
-    /// Converts a <see cref="IEnumerable{T}"/> to a string with each value seperated by a ",".
+    /// Converts a <see cref="IEnumerable{T}"/> to a string with each value separated by a ",".
     /// </summary>
     /// <typeparam name="T">The type of objects to enumerate.</typeparam>
     /// <param name="items">The <see cref="IEnumerable{T}"/> to turn into a CSV string.</param>
-    /// <returns>A string with all values seperated by ",".</returns>
+    /// <returns>A string with all values separated by ",".</returns>
     [Obsolete("Method is deprecated please use string.Join()'")]
     public static string ToCSV<T>(this IEnumerable<T> items)
         => items.ToCSV(',');
 
     /// <summary>
-    /// Converts a <see cref="IEnumerable{T}"/> to a string with each value seperated by the given seperator.
+    /// Converts a <see cref="IEnumerable{T}"/> to a string with each value separated by the given separated.
     /// </summary>
     /// <typeparam name="T">The type of objects to enumerate.</typeparam>
     /// <param name="items">The <see cref="IEnumerable{T}"/> to turn into a CSV string.</param>
-    /// <param name="sepperator">the string to seperate the values.</param>
-    /// <returns>A string with all values seperated by the given seperator.</returns>
+    /// <param name="separator">the string to separated the values.</param>
+    /// <returns>A string with all values separated by the given separated.</returns>
     [Obsolete("Method is deprecated please use string.Join()")]
-    public static string ToCSV<T>(this IEnumerable<T> items, char sepperator)
+    public static string ToCSV<T>(this IEnumerable<T> items, char separator)
     {
         var builder = new StringBuilder();
 
         foreach (var item in items)
         {
             _ = builder.Append(item);
-            _ = builder.Append(sepperator);
+            _ = builder.Append(separator);
         }
 
-        return builder.ToString().TrimEnd(sepperator);
+        return builder.ToString().TrimEnd(separator);
     }
 }

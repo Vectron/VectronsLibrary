@@ -70,28 +70,28 @@ public static class FormGeometry
         var desktop_width = Screen.PrimaryScreen.WorkingArea.Width;
         var desktop_height = Screen.PrimaryScreen.WorkingArea.Height;
 
-        foreach (var scherm in Screen.AllScreens)
+        foreach (var screen in Screen.AllScreens)
         {
-            if (scherm.WorkingArea.X < desktop_X)
+            if (screen.WorkingArea.X < desktop_X)
             {
-                desktop_X = scherm.WorkingArea.X;
+                desktop_X = screen.WorkingArea.X;
             }
 
-            if (scherm.WorkingArea.Y < desktop_Y)
+            if (screen.WorkingArea.Y < desktop_Y)
             {
-                desktop_Y = scherm.WorkingArea.Y;
+                desktop_Y = screen.WorkingArea.Y;
             }
 
-            if (scherm.Primary == false)
+            if (screen.Primary == false)
             {
-                if (scherm.WorkingArea.X >= desktop_width)
+                if (screen.WorkingArea.X >= desktop_width)
                 {
-                    desktop_width += scherm.WorkingArea.Width;
+                    desktop_width += screen.WorkingArea.Width;
                 }
 
-                if (scherm.WorkingArea.Y >= desktop_height)
+                if (screen.WorkingArea.Y >= desktop_height)
                 {
-                    desktop_height += scherm.WorkingArea.Height;
+                    desktop_height += screen.WorkingArea.Height;
                 }
             }
         }

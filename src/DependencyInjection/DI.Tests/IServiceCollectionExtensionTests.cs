@@ -7,9 +7,15 @@ using VectronsLibrary.DI.TestsAssembly;
 
 namespace VectronsLibrary.DI.Tests;
 
+/// <summary>
+/// Tests for the <see cref="IServiceCollectionExtension"/>.
+/// </summary>
 [TestClass]
 public class IServiceCollectionExtensionTests
 {
+    /// <summary>
+    /// Test if AddAssemblyResolver adds the <see cref="IAssemblyResolver"/> to the collection.
+    /// </summary>
     [TestMethod]
     public void AddAssemblyResolverAddsResolverToCollection()
     {
@@ -25,6 +31,9 @@ public class IServiceCollectionExtensionTests
         ValidateServiceDescriptor(collection[1], ServiceLifetime.Singleton, typeof(AssemblyResolver), typeof(AssemblyResolver));
     }
 
+    /// <summary>
+    /// Test if assemblies are added by there attribute.
+    /// </summary>
     [TestMethod]
     public void AddByAttributeEnumerableTest()
     {
@@ -53,6 +62,9 @@ public class IServiceCollectionExtensionTests
         ValidateServiceDescriptor(collection[7], ServiceLifetime.Transient, typeof(TransientClass), typeof(TransientClass));
     }
 
+    /// <summary>
+    /// Test if assemblies are added by there attribute.
+    /// </summary>
     [TestMethod]
     public void AddByAttributeTest()
     {
@@ -87,6 +99,9 @@ public class IServiceCollectionExtensionTests
         ValidateServiceDescriptor(collection[11], ServiceLifetime.Transient, typeof(TransientClass2), typeof(TransientClass2));
     }
 
+    /// <summary>
+    /// Test if items are added from loaded assemblies.
+    /// </summary>
     [TestMethod]
     public void AddFromAssemblies()
     {
@@ -104,6 +119,9 @@ public class IServiceCollectionExtensionTests
         Assert.AreEqual(10, collection.Count);
     }
 
+    /// <summary>
+    /// Test if the AddNonGenericLoggerError is thrown when trying to resolve a <see cref="ILogger"/>.
+    /// </summary>
     [TestMethod]
     public void AddNonGenericLoggerErrorTest()
     {
@@ -120,6 +138,9 @@ public class IServiceCollectionExtensionTests
         _ = Assert.ThrowsException<NotImplementedException>(() => provider.GetService<ILogger>());
     }
 
+    /// <summary>
+    /// Test if AddAssemblyResolver adds the <see cref="IRegisteredTypes{T}"/> to the collection.
+    /// </summary>
     [TestMethod]
     public void AddRegisteredTypesTest()
     {
@@ -134,6 +155,9 @@ public class IServiceCollectionExtensionTests
         ValidateServiceDescriptor(collection[1], ServiceLifetime.Singleton, typeof(IRegisteredTypes<>), typeof(RegisteredTypes<>));
     }
 
+    /// <summary>
+    /// Test if scoped classes are resolved every scope.
+    /// </summary>
     [TestMethod]
     public void ScopedIsResolvedInEveryScope()
     {
@@ -161,6 +185,9 @@ public class IServiceCollectionExtensionTests
         Assert.AreNotSame(notByInterface, third, "notByInterface and notByInterfaceScoped");
     }
 
+    /// <summary>
+    /// Test if a singleton is only resolved once.
+    /// </summary>
     [TestMethod]
     public void SingletonOnlyResolvedOnce()
     {
@@ -187,6 +214,9 @@ public class IServiceCollectionExtensionTests
         Assert.AreSame(first, notByInterfaceScoped, "first and notByInterface scoped");
     }
 
+    /// <summary>
+    /// Check if transient is resolved every time.
+    /// </summary>
     [TestMethod]
     public void TransientIsResolvedEveryTime()
     {
@@ -217,6 +247,9 @@ public class IServiceCollectionExtensionTests
         Assert.AreNotSame(first, notByInterface, "first and notByInterface");
     }
 
+    /// <summary>
+    /// Test if assemblies are added by there attribute.
+    /// </summary>
     [TestMethod]
     public void TryAddByAttributeTest()
     {

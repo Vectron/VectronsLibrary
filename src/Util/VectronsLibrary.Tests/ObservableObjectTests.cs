@@ -6,9 +6,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VectronsLibrary.Tests;
 
+/// <summary>
+/// Tests for the <see cref="ObservableObject"/> class.
+/// </summary>
 [TestClass]
 public class ObservableObjectTests
 {
+    /// <summary>
+    /// Test if InvokeOnPropertyChanging does not throw when no property changed event handlers are registered.
+    /// </summary>
     [TestMethod]
     public void DoesNotThrowWhenNoPropertyChangedEventRegistered()
     {
@@ -16,6 +22,9 @@ public class ObservableObjectTests
         test.InvokeOnPropertyChanging(nameof(ObservableObjectTestClass.TestField));
     }
 
+    /// <summary>
+    /// Test if InvokeOnPropertyChanging does not throw when no property changing event handlers are registered.
+    /// </summary>
     [TestMethod]
     public void DoesNotThrowWhenNoPropertyChangingEventRegistered()
     {
@@ -24,6 +33,9 @@ public class ObservableObjectTests
         test.InvokeOnPropertyChanged(0, 1, nameof(ObservableObjectTestClass.TestField));
     }
 
+    /// <summary>
+    /// Test that the events don't fire when the value didn't change.
+    /// </summary>
     [TestMethod]
     public void EventsNotFiredWhenNoChange()
     {
@@ -33,6 +45,9 @@ public class ObservableObjectTests
         test.TestField = test.TestField;
     }
 
+    /// <summary>
+    /// Test if the backing field is properly updated.
+    /// </summary>
     [TestMethod]
     public void FieldIsUpdated()
     {
@@ -42,6 +57,9 @@ public class ObservableObjectTests
         Assert.AreEqual(2, test.TestField);
     }
 
+    /// <summary>
+    /// Test if <see cref="PropertyChangedEventArgs"/> contains the property name, old value and new value.
+    /// </summary>
     [TestMethod]
     public void PropertyChangedContainsPropertyNameOldValueAndNewValue()
     {
@@ -58,6 +76,9 @@ public class ObservableObjectTests
         Assert.AreEqual(nameof(ObservableObjectTestClass.TestField), recordedEvents.PropertyName);
     }
 
+    /// <summary>
+    /// Test if the property changed event is fired.
+    /// </summary>
     [TestMethod]
     public void PropertyChangedEventIsInvoked()
     {
@@ -74,6 +95,9 @@ public class ObservableObjectTests
         Assert.IsInstanceOfType(recordedEvents[1], typeof(PropertyChangedEventArgs<int>));
     }
 
+    /// <summary>
+    /// Test if the property changing event is fired.
+    /// </summary>
     [TestMethod]
     public void PropertyChangingEventIsInvoked()
     {
@@ -88,8 +112,11 @@ public class ObservableObjectTests
         Assert.AreEqual(1, recordedEvents.Count);
     }
 
+    /// <summary>
+    /// Test if the property changing event is fired before the property changed event.
+    /// </summary>
     [TestMethod]
-    public void PropertyChaningIsCalledBeforePropertyChanged()
+    public void PropertyChangingIsCalledBeforePropertyChanged()
     {
         var test = new ObservableObjectTestClass();
         var recordedEvents = new List<EventArgs>();
@@ -109,8 +136,11 @@ public class ObservableObjectTests
         Assert.IsInstanceOfType(recordedEvents[1], typeof(PropertyChangedEventArgs<int>));
     }
 
+    /// <summary>
+    /// Test if the field is updated between property changing and changed events.
+    /// </summary>
     [TestMethod]
-    public void PropertyChaningIsCalledBeforePropertyChangedFieldIsUpdatedInbetween()
+    public void PropertyChangingIsCalledBeforePropertyChangedFieldIsUpdatedInBetween()
     {
         var test = new ObservableObjectTestClass();
         var recordedEvents = new List<EventArgs>();
@@ -134,18 +164,24 @@ public class ObservableObjectTests
         Assert.IsInstanceOfType(recordedEvents[1], typeof(PropertyChangedEventArgs<int>));
     }
 
+    /// <summary>
+    /// Test if in debug mode a <see cref="ArgumentNullException"/> is thrown when the name is null.
+    /// </summary>
     [TestMethod]
     [Conditional("DEBUG")]
-    public void ThrowIfNameIsnull()
+    public void ThrowIfNameIsNull()
     {
         var test = new ObservableObjectTestClass();
         _ = Assert.ThrowsException<ArgumentNullException>(() => test.InvokeOnPropertyChanged(null));
         _ = Assert.ThrowsException<ArgumentNullException>(() => test.InvokeOnPropertyChanged(0, 1, null));
     }
 
+    /// <summary>
+    /// Test if in debug mode a <see cref="InvalidOperationException"/> is thrown when the property doesn't exist.
+    /// </summary>
     [TestMethod]
     [Conditional("DEBUG")]
-    public void ThrowsInvalidOperationExceptionIfPropertyDoesNotExcist()
+    public void ThrowsInvalidOperationExceptionIfPropertyDoesNotExist()
     {
         var test = new ObservableObjectTestClass();
         _ = Assert.ThrowsException<InvalidOperationException>(() => test.InvokeOnPropertyChanged(string.Empty));

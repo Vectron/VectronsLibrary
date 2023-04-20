@@ -5,9 +5,15 @@ using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests;
 
+/// <summary>
+/// Tests for the <see cref="CollectionExtensions"/> class.
+/// </summary>
 [TestClass]
 public class ICollectionExtensionTests
 {
+    /// <summary>
+    /// Test if add range adds all the items to the collection.
+    /// </summary>
     [TestMethod]
     public void AddRangeAddsAllItems()
     {
@@ -22,6 +28,9 @@ public class ICollectionExtensionTests
         CollectionAssert.AreEqual(items, (System.Collections.ICollection)collection);
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="ICollection{T}"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowsIfCollectionIsNull()
     {
@@ -34,6 +43,9 @@ public class ICollectionExtensionTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => ICollectionExtension.AddRange(null!, items));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="IEnumerable{T}"/> is null.
+    /// </summary>
     [TestMethod]
     public void ThrowsIfEnumerableIsNull()
     {

@@ -5,9 +5,15 @@ using VectronsLibrary.Extensions;
 
 namespace VectronsLibrary.Tests;
 
+/// <summary>
+/// Tests for the <see cref="IEnumerableExtension"/> class.
+/// </summary>
 [TestClass]
 public class IEnumerableExtensionTests
 {
+    /// <summary>
+    /// Test if the action is run on every item.
+    /// </summary>
     [TestMethod]
     public void ForEach()
     {
@@ -22,6 +28,9 @@ public class IEnumerableExtensionTests
         Assert.AreEqual(items.Length, itemsLooped);
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Action"/> is null.
+    /// </summary>
     [TestMethod]
     public void ForEachThrowsExceptionIfActionIsNull()
     {
@@ -34,8 +43,11 @@ public class IEnumerableExtensionTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => IEnumerableExtension.ForEach(items, null!));
     }
 
+    /// <summary>
+    /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="IEnumerable{T}"/> is null.
+    /// </summary>
     [TestMethod]
-    public void ForEachThrowsExceptionIfEnumarableIsNull()
+    public void ForEachThrowsExceptionIfIEnumerableIsNull()
     {
         // Arrange
         IEnumerable<int>? enumerable = null;
@@ -46,6 +58,9 @@ public class IEnumerableExtensionTests
         _ = Assert.ThrowsException<ArgumentNullException>(() => enumerable!.ForEach(_ => { }));
     }
 
+    /// <summary>
+    /// Test if the items are converted to a csv format string.
+    /// </summary>
     [Obsolete("The ToCSV function is marked as obsolete, so test is also obsolete")]
     [TestMethod]
     public void ToCSV()
@@ -61,9 +76,12 @@ public class IEnumerableExtensionTests
         Assert.AreEqual(expectedResult, result);
     }
 
+    /// <summary>
+    /// Test if the items are converted to a csv format string with a custom separator.
+    /// </summary>
     [Obsolete("The ToCSV function is marked as obsolete, so test is also obsolete")]
     [TestMethod]
-    public void ToCSVWithSepperator()
+    public void ToCSVWithSeparator()
     {
         // Arrange
         var items = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };

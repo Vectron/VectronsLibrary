@@ -20,8 +20,8 @@ public class Line : Control
     private LineOrientation orientation = LineOrientation.Horizontal;
     private Pen pen1;
     private Pen pen2;
-    private int prevHeight;
-    private int prevWidth;
+    private int previousHeight;
+    private int previousWidth;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Line"/> class.
@@ -32,8 +32,8 @@ public class Line : Control
         TabStop = false;
         pen1 = new Pen(borderColor, 2);
         pen2 = new Pen(borderColor, 2);
-        prevWidth = Width;
-        prevHeight = Height;
+        previousWidth = Width;
+        previousHeight = Height;
     }
 
     /// <summary>
@@ -163,8 +163,8 @@ public class Line : Control
         set
         {
             orientation = value;
-            prevHeight = Height;
-            prevWidth = Width;
+            previousHeight = Height;
+            previousWidth = Width;
             UpdateSize();
         }
     }
@@ -262,7 +262,7 @@ public class Line : Control
         }
         else
         {
-            // 3D - colours are set in the Line3DStyle_Set property
+            // 3D - colors are set in the Line3DStyle_Set property
             if (orientation == LineOrientation.Horizontal)
             {
                 e.Graphics.DrawLine(pen2, 0, 0, Width - 1, 0);
@@ -304,16 +304,16 @@ public class Line : Control
         // Only remember the currently alterable dimensions
         if (orientation == LineOrientation.Horizontal)
         {
-            prevWidth = Width;
+            previousWidth = Width;
         }
         else if (orientation == LineOrientation.Vertical)
         {
-            prevHeight = Height;
+            previousHeight = Height;
         }
         else
         {
-            prevWidth = Width;
-            prevHeight = Height;
+            previousWidth = Width;
+            previousHeight = Height;
         }
     }
 
@@ -323,7 +323,7 @@ public class Line : Control
         var lineWidth = (line3DStyle != Line3DStyle.Flat) ? 2 : (int)pen1.Width;
         if (orientation == LineOrientation.Horizontal)
         {
-            Width = prevWidth;
+            Width = previousWidth;
             Height = lineWidth;
             MaximumSize = new Size(0, lineWidth);
             MinimumSize = MaximumSize;
@@ -331,14 +331,14 @@ public class Line : Control
         else if (orientation == LineOrientation.Vertical)
         {
             Width = lineWidth;
-            Height = prevHeight;
+            Height = previousHeight;
             MaximumSize = new Size(lineWidth, 0);
             MinimumSize = MaximumSize;
         }
         else
         {
-            Width = prevWidth;
-            Height = prevHeight;
+            Width = previousWidth;
+            Height = previousHeight;
             MaximumSize = default;
             MinimumSize = MaximumSize;
         }
