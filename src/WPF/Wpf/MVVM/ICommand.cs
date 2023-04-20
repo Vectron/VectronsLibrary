@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace VectronsLibrary.Wpf;
+namespace VectronsLibrary.Wpf.MVVM;
 
 /// <summary>
 /// A generic <see cref="ICommand"/> implementation.
