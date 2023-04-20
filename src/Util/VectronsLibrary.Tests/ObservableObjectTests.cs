@@ -188,7 +188,7 @@ public class ObservableObjectTests
         _ = Assert.ThrowsException<InvalidOperationException>(() => test.InvokeOnPropertyChanged(0, 1, string.Empty));
     }
 
-    private class ObservableObjectTestClass : ObservableObject
+    private sealed class ObservableObjectTestClass : ObservableObject
     {
         private int testField;
 

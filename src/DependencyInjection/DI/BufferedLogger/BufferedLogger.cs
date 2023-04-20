@@ -61,7 +61,7 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
         }
     }
 
-    private class BufferItem<TState> : IBufferItem
+    private sealed class BufferItem<TState> : IBufferItem
     {
         private readonly EventId eventId;
         private readonly Exception? exception;
@@ -82,7 +82,7 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
             => logger.Log(logLevel, eventId, state, exception, formatter);
     }
 
-    private class EmptyDisposable : IDisposable
+    private sealed class EmptyDisposable : IDisposable
     {
         // Explicit static constructor to tell C# compiler not to mark type as before field initialize
         static EmptyDisposable()

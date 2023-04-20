@@ -10,7 +10,7 @@ namespace VectronsLibrary.Wpf.Converters;
 /// Provides a type converter to convert <see cref="FamilyTypefaceCollection"/> objects to and from various other representations.
 /// </summary>
 [ValueConversion(typeof(FamilyTypefaceCollection), typeof(object))]
-internal class FamilyTypefacesFilter : IValueConverter
+internal sealed class FamilyTypefacesFilter : IValueConverter
 {
     /// <inheritdoc/>
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
