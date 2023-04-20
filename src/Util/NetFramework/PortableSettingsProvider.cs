@@ -273,7 +273,7 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
 
     private static string RemoveInvalidXmlChars(string text)
     {
-        var validXmlChars = text.Where(ch => XmlConvert.IsXmlChar(ch)).ToArray();
+        var validXmlChars = text.Where(XmlConvert.IsXmlChar).ToArray();
         return new string(validXmlChars);
     }
 
