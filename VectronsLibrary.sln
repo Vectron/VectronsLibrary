@@ -22,11 +22,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "Depe
 		src\DependencyInjection\version.json = src\DependencyInjection\version.json
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ethernet", "Ethernet", "{380CBFA5-AF1A-4E30-9AF8-C579892FB526}"
-	ProjectSection(SolutionItems) = preProject
-		src\Ethernet\version.json = src\Ethernet\version.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{DE4A6821-6C9B-41C9-ABB5-26DEBE832E67}"
 	ProjectSection(SolutionItems) = preProject
 		src\Logging\version.json = src\Logging\version.json
@@ -39,10 +34,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.DI.Tests", "src\DependencyInjection\DI.Tests\VectronsLibrary.DI.Tests.csproj", "{97F1EAB5-ACB4-4C02-A85E-BF794D4A8455}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.DI.TestsAssembly", "src\DependencyInjection\DI.TestsAssembly\VectronsLibrary.DI.TestsAssembly.csproj", "{8CDCABC2-9A79-44EF-A794-75AFF5BBEAF9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Ethernet", "src\Ethernet\Ethernet\VectronsLibrary.Ethernet.csproj", "{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Ethernet.Tests", "src\Ethernet\Ethernet.Tests\VectronsLibrary.Ethernet.Tests.csproj", "{59485B32-E382-4941-95D6-869E2A303B13}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Logging", "src\Logging\Logging\VectronsLibrary.Logging.csproj", "{B8D40AE6-690A-4E4D-B752-F891B05A2171}"
 EndProject
@@ -66,9 +57,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Tests", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Tests2", "src\Util\VectronsLibrary.Tests2\VectronsLibrary.Tests2.csproj", "{BCDA4B2F-5CEC-4E49-83AF-F4010DB9BF95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Ethernet.Sandbox", "src\Ethernet\Ethernet.Sandbox\VectronsLibrary.Ethernet.Sandbox.csproj", "{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectronsLibrary.Wpf.SandBox", "src\WPF\VectronsLibrary.Wpf.SandBox\VectronsLibrary.Wpf.SandBox.csproj", "{F2456215-5594-4348-8331-77A689512D69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VectronsLibrary.Wpf.SandBox", "src\WPF\VectronsLibrary.Wpf.SandBox\VectronsLibrary.Wpf.SandBox.csproj", "{F2456215-5594-4348-8331-77A689512D69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,14 +81,6 @@ Global
 		{8CDCABC2-9A79-44EF-A794-75AFF5BBEAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CDCABC2-9A79-44EF-A794-75AFF5BBEAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CDCABC2-9A79-44EF-A794-75AFF5BBEAF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59485B32-E382-4941-95D6-869E2A303B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59485B32-E382-4941-95D6-869E2A303B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59485B32-E382-4941-95D6-869E2A303B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59485B32-E382-4941-95D6-869E2A303B13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B8D40AE6-690A-4E4D-B752-F891B05A2171}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8D40AE6-690A-4E4D-B752-F891B05A2171}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D40AE6-690A-4E4D-B752-F891B05A2171}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -132,10 +113,6 @@ Global
 		{BCDA4B2F-5CEC-4E49-83AF-F4010DB9BF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCDA4B2F-5CEC-4E49-83AF-F4010DB9BF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCDA4B2F-5CEC-4E49-83AF-F4010DB9BF95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2456215-5594-4348-8331-77A689512D69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2456215-5594-4348-8331-77A689512D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2456215-5594-4348-8331-77A689512D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -146,14 +123,11 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6A6E8823-5F79-42FF-8A1B-C6EB315EB57D} = {2C2B7794-152E-48D2-BEC9-66D9B21496CE}
-		{380CBFA5-AF1A-4E30-9AF8-C579892FB526} = {2C2B7794-152E-48D2-BEC9-66D9B21496CE}
 		{DE4A6821-6C9B-41C9-ABB5-26DEBE832E67} = {2C2B7794-152E-48D2-BEC9-66D9B21496CE}
 		{1674645E-551D-410A-B334-CCA0A2E098FD} = {6A6E8823-5F79-42FF-8A1B-C6EB315EB57D}
 		{C2AB04FE-799F-4646-A0AD-B43432F1424C} = {6A6E8823-5F79-42FF-8A1B-C6EB315EB57D}
 		{97F1EAB5-ACB4-4C02-A85E-BF794D4A8455} = {6A6E8823-5F79-42FF-8A1B-C6EB315EB57D}
 		{8CDCABC2-9A79-44EF-A794-75AFF5BBEAF9} = {6A6E8823-5F79-42FF-8A1B-C6EB315EB57D}
-		{B6CCA10E-AB9F-412B-B3FC-6BAEFA53C02F} = {380CBFA5-AF1A-4E30-9AF8-C579892FB526}
-		{59485B32-E382-4941-95D6-869E2A303B13} = {380CBFA5-AF1A-4E30-9AF8-C579892FB526}
 		{B8D40AE6-690A-4E4D-B752-F891B05A2171} = {DE4A6821-6C9B-41C9-ABB5-26DEBE832E67}
 		{B8B2A8E5-8345-4A14-9B74-544B55FAAAD7} = {2C2B7794-152E-48D2-BEC9-66D9B21496CE}
 		{8D9097A1-1054-4525-9C14-2CE293BB5108} = {2C2B7794-152E-48D2-BEC9-66D9B21496CE}
@@ -165,7 +139,6 @@ Global
 		{61798237-D959-4F2A-A52B-277BAADB7823} = {54FE4201-8624-4FED-B092-5F0FFF3443AD}
 		{B7ECA8F9-5B26-47AD-96A8-3FD4CAC6DA0C} = {54FE4201-8624-4FED-B092-5F0FFF3443AD}
 		{BCDA4B2F-5CEC-4E49-83AF-F4010DB9BF95} = {54FE4201-8624-4FED-B092-5F0FFF3443AD}
-		{E2F7C7C2-3D7D-4285-BE33-63C87F7546B4} = {380CBFA5-AF1A-4E30-9AF8-C579892FB526}
 		{F2456215-5594-4348-8331-77A689512D69} = {8D9097A1-1054-4525-9C14-2CE293BB5108}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
