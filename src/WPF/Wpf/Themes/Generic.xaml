@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/VectronsLibrary.Wpf;component/Themes/IpInput.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/VectronsLibrary.Wpf;component/Themes/LabeledControl.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/VectronsLibrary.Wpf;component/Themes/ColorSelector.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/VectronsLibrary.Wpf;component/Themes/FontPicker.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>
