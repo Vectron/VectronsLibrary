@@ -5,8 +5,8 @@
 Helper functions for some of my apps.
 
 ## Vectrons Library DI
-[![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.svg)](https://www.nuget.org/packages/VectronsLibrary.DI)  
-[![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.Abstraction.svg)](https://www.nuget.org/packages/VectronsLibrary.DI.Abstraction)  
+VectronsLibrary.DI.Abstraction: [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.Abstraction.svg)](https://www.nuget.org/packages/VectronsLibrary.DI.Abstraction)  
+VectronsLibrary.DI: [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.svg)](https://www.nuget.org/packages/VectronsLibrary.DI)  
 Helps building the DI container with reflection and attributes.
 
 ## Vectrons Library Ethernet [Archived]
