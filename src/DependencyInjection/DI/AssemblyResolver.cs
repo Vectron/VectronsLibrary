@@ -18,7 +18,7 @@ public partial class AssemblyResolver : IAssemblyResolver, IDisposable
     private readonly IEnumerable<string> extraDirectories;
     private readonly IEnumerable<string> ignoredAssemblies;
     private readonly ILogger logger;
-    private readonly ConcurrentDictionary<string, Assembly?> resolvedAssemblies = new();
+    private readonly ConcurrentDictionary<string, Assembly?> resolvedAssemblies = new(StringComparer.Ordinal);
     private bool disposedValue;
 
     /// <summary>

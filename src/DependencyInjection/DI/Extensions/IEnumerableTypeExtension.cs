@@ -39,5 +39,5 @@ internal static class IEnumerableTypeExtension
             && !string.IsNullOrWhiteSpace(c.FullName)
             && !c.FullName.StartsWith("System.", StringComparison.OrdinalIgnoreCase))
             .Distinct()
-            .OrderBy(c => c.FullName);
+            .OrderBy(c => c.FullName, StringComparer.Ordinal);
 }
