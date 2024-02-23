@@ -43,7 +43,7 @@ public class SingleGlobalInstanceTests
         var gui = Guid.NewGuid().ToString();
         void Action()
         {
-            var instance = new SingleGlobalInstance(gui);
+            using var instance = new SingleGlobalInstance(gui);
             var hasInstance = instance.GetMutex();
             Assert.IsTrue(hasInstance);
             Task.Delay(200).Wait();

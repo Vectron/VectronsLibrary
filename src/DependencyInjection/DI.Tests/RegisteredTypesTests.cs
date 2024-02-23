@@ -32,7 +32,7 @@ public class RegisteredTypesTests
     public void ReturnsAllRequestedTypes()
     {
         // Arrange
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddSingleton<ITestInterface, TestClass1>()
             .AddSingleton<ITestInterface2, TestClass1>()
             .AddSingleton<ITestInterface, TestClass2>()

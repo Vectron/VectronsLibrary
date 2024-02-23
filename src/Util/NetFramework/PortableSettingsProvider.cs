@@ -114,8 +114,8 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
                     }
                     else
                     {
-                        var fileStream = File.OpenRead(file);
-                        var reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
+                        using var fileStream = File.OpenRead(file);
+                        using var reader = XmlReader.Create(fileStream, new XmlReaderSettings() { XmlResolver = null });
                         settingsXML.Load(reader);
                     }
                 }

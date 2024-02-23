@@ -130,7 +130,7 @@ public class IServiceCollectionExtensionTests
 
         // Act
         _ = collection.AddNonGenericLoggerError();
-        var provider = collection.BuildServiceProvider();
+        using var provider = collection.BuildServiceProvider();
 
         // Assert
         Assert.AreEqual(1, collection.Count);
@@ -162,7 +162,7 @@ public class IServiceCollectionExtensionTests
     public void ScopedIsResolvedInEveryScope()
     {
         // Arrange
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddByAttribute(typeof(IAttributeClass), typeof(ScopedClass))
             .BuildServiceProvider();
 
@@ -171,7 +171,7 @@ public class IServiceCollectionExtensionTests
         var second = provider.GetService<IAttributeClass>();
         var notByInterface = provider.GetService<ScopedClass>();
 
-        var scope = provider.CreateScope();
+        using var scope = provider.CreateScope();
         var third = scope.ServiceProvider.GetService<IAttributeClass>();
         var fourth = scope.ServiceProvider.GetService<IAttributeClass>();
         var notByInterfaceScoped = scope.ServiceProvider.GetService<ScopedClass>();
@@ -192,7 +192,7 @@ public class IServiceCollectionExtensionTests
     public void SingletonOnlyResolvedOnce()
     {
         // Arrange
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddByAttribute(typeof(IAttributeClass), typeof(SingletonClass))
             .BuildServiceProvider();
 
@@ -201,7 +201,7 @@ public class IServiceCollectionExtensionTests
         var second = provider.GetService<IAttributeClass>();
         var notByInterface = provider.GetService<SingletonClass>();
 
-        var scope = provider.CreateScope();
+        using var scope = provider.CreateScope();
         var third = scope.ServiceProvider.GetService<IAttributeClass>();
         var fourth = scope.ServiceProvider.GetService<IAttributeClass>();
         var notByInterfaceScoped = provider.GetService<SingletonClass>();
@@ -221,7 +221,7 @@ public class IServiceCollectionExtensionTests
     public void TransientIsResolvedEveryTime()
     {
         // Arrange
-        var provider = new ServiceCollection()
+        using var provider = new ServiceCollection()
             .AddByAttribute(typeof(IAttributeClass), typeof(TransientClass))
             .BuildServiceProvider();
 
@@ -230,7 +230,7 @@ public class IServiceCollectionExtensionTests
         var second = provider.GetService<IAttributeClass>();
         var notByInterface = provider.GetService<TransientClass>();
 
-        var scope = provider.CreateScope();
+        using var scope = provider.CreateScope();
         var third = scope.ServiceProvider.GetService<IAttributeClass>();
         var fourth = scope.ServiceProvider.GetService<IAttributeClass>();
 
