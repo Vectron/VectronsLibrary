@@ -18,6 +18,7 @@
     <Copyright>Vectron</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Vectron/VectronsLibrary</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <!--Settings to move the bin en output folders to the root folder-->
@@ -47,7 +48,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <None Include="$(SolutionDir)\LICENSE.md" Pack="true" PackagePath="" />
+    <None Include="$(SolutionDir)\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <!-- Enables automatic NuGet push after packaging in Release mode. -->
