@@ -13,6 +13,8 @@ namespace VectronsLibrary.DI.Tests;
 [TestClass]
 public class AssemblyResolverTests
 {
+    private static readonly string[] IgnoredAssemblies = new[] { "test1", "test2", "test3" };
+
     /// <summary>
     /// Test if we get <see cref="ArgumentNullException"/> when we pass <see langword="null"/> to the constructor.
     /// </summary>
@@ -72,7 +74,7 @@ public class AssemblyResolverTests
     [DataRow("Test1, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
     public void SerializerResourcesAndIgnoredAssembliesThrowException(string assemblyName)
     {
-        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), new[] { "test1", "test2", "test3" });
+        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), IgnoredAssemblies);
 
         _ = Assert.ThrowsException<FileNotFoundException>(() => Assembly.Load(assemblyName));
     }
