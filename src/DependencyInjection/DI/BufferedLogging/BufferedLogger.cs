@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using VectronsLibrary.DI.Attributes;
 
-namespace VectronsLibrary.DI.BufferedLogger;
+namespace VectronsLibrary.DI.BufferedLogging;
 
 /// <summary>
 /// Default implementation for <see cref="IBufferedLogger"/>.

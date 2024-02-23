@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using VectronsLibrary.DI.Attributes;
 
-namespace VectronsLibrary.DI.BufferedLogger;
+namespace VectronsLibrary.DI.BufferedLogging;
 
 /// <summary>
 /// Default implementation of <see cref="IBufferedLoggerFactory"/>.

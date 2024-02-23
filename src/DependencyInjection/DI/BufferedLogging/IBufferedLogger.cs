@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using VectronsLibrary.DI.Attributes;
 
-namespace VectronsLibrary.DI.BufferedLogger;
+namespace VectronsLibrary.DI.BufferedLogging;
 
 /// <summary>
 /// A logger that buffers the messages until they can be written to the final logger setup.
