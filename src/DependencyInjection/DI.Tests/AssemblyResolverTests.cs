@@ -32,7 +32,7 @@ public class AssemblyResolverTests
     [TestMethod]
     public void EmptySearchDirIsSkipped()
     {
-        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], [string.Empty, null!]);
+        using var assemblyResolver = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], [string.Empty, null!]);
 
         var result = Assembly.Load("VectronsLibrary.DI.TestsAssembly");
 
@@ -45,7 +45,7 @@ public class AssemblyResolverTests
     [TestMethod]
     public void InvalidAssembliesThrowException()
     {
-        _ = new AssemblyResolver();
+        using var assemblyResolver = new AssemblyResolver();
 
         var assemblyToLoad = new AssemblyName("test.XmlSerializers, version=1.0.0.0, culture=neutral, publicKeyToken=null")
         {
@@ -74,7 +74,7 @@ public class AssemblyResolverTests
     [DataRow("Test1, version=1.0.0.0, culture=neutral, publicKeyToken=null")]
     public void SerializerResourcesAndIgnoredAssembliesThrowException(string assemblyName)
     {
-        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), IgnoredAssemblies);
+        using var assemblyResolver = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), IgnoredAssemblies);
 
         _ = Assert.ThrowsException<FileNotFoundException>(() => Assembly.Load(assemblyName));
     }
@@ -85,7 +85,7 @@ public class AssemblyResolverTests
     [TestMethod]
     public void TryResolve()
     {
-        _ = new AssemblyResolver();
+        using var assemblyResolver = new AssemblyResolver();
 
         var result = Assembly.Load("VectronsLibrary.DI.TestsAssembly");
 
