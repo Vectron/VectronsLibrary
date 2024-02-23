@@ -82,7 +82,7 @@ public class NumericTextBox : TextBox
         var negativeSign = numberFormatInfo.NegativeSign;
 
         // Workaround for groupSeparator equal to non-breaking space
-        if (groupSeparator == ((char)160).ToString())
+        if (string.Equals(groupSeparator, ((char)160).ToString(), System.StringComparison.Ordinal))
         {
             groupSeparator = " ";
         }

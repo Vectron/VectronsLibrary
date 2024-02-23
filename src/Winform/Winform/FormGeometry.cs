@@ -23,7 +23,7 @@ public static class FormGeometry
 
         var numbers = thisWindowGeometry.Split('|');
         var windowString = numbers[4];
-        if (windowString == "Normal")
+        if (string.Equals(windowString, "Normal", System.StringComparison.Ordinal))
         {
             var windowPoint = new Point(int.Parse(numbers[0], CultureInfo.InvariantCulture), int.Parse(numbers[1], CultureInfo.InvariantCulture));
             var windowSize = new Size(int.Parse(numbers[2], CultureInfo.InvariantCulture), int.Parse(numbers[3], CultureInfo.InvariantCulture));
@@ -43,7 +43,7 @@ public static class FormGeometry
                 formIn.Size = windowSize;
             }
         }
-        else if (windowString == "Maximized")
+        else if (string.Equals(windowString, "Maximized", System.StringComparison.Ordinal))
         {
             formIn.Location = new Point(100, 100);
             formIn.StartPosition = FormStartPosition.Manual;

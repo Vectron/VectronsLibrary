@@ -39,7 +39,7 @@ public abstract class FactoryBase<T>(IRegisteredTypes<T> registeredTypes, IServi
             throw new ArgumentException("Can't resolve item without name", nameof(name));
         }
 
-        var foundType = registeredTypes.Items.FirstOrDefault(x => x.Name == name);
+        var foundType = registeredTypes.Items.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.Ordinal));
         if (foundType != null && serviceProvider.GetService(foundType) is T implementation)
         {
             return implementation;
