@@ -21,9 +21,18 @@ public class AssemblyResolverTests
     [TestMethod]
     public void ConstructorThrowsArgumentNullException()
     {
-        _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(null!));
-        _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), null!));
-        _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], null!));
+        _ = Assert.ThrowsException<ArgumentNullException>(() =>
+        {
+            using var resolver = new AssemblyResolver(null!);
+        });
+        _ = Assert.ThrowsException<ArgumentNullException>(() =>
+        {
+            using var resolver = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), null!);
+        });
+        _ = Assert.ThrowsException<ArgumentNullException>(() =>
+        {
+            using var resolver = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], null!);
+        });
     }
 
     /// <summary>
