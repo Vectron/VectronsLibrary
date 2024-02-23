@@ -23,6 +23,27 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
     private const string ClassName = "PortableSettingsProvider";
     private const string SettingsFolder = "Settings";
     private const string SETTINGSROOT = "Settings";
+
+    private static readonly Action<ILogger, Exception> LogCreateFileFailed = LoggerMessage.Define(
+        LogLevel.Critical,
+        new EventId(2, nameof(PortableSettingsProvider)),
+        "Failed to create settings file");
+
+    private static readonly Action<ILogger, Exception> LogGetValueFailed = LoggerMessage.Define(
+        LogLevel.Critical,
+        new EventId(3, nameof(PortableSettingsProvider)),
+        "Failed to get value");
+
+    private static readonly Action<ILogger, Exception> LogSetValueFailed = LoggerMessage.Define(
+        LogLevel.Error,
+        new EventId(4, nameof(PortableSettingsProvider)),
+        "Failed to set value");
+
+    private static readonly Action<ILogger, Exception> LogWriteFailed = LoggerMessage.Define(
+        LogLevel.Critical,
+        new EventId(1, nameof(PortableSettingsProvider)),
+        "Failed to write property");
+
     private SettingsContext? context;
     private ILogger logger = logger;
     private XmlDocument? settingsXML;
@@ -100,7 +121,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
                 }
                 catch (Exception ex)
                 {
-                    logger.LogCritical(ex, "Failed to create settings file");
+                    LogCreateFileFailed(logger, ex);
                 }
             }
 
@@ -232,7 +253,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
         catch (Exception ex)
         {
             // Ignore if cant save, device been ejected
-            logger.LogCritical(ex, "Failed to write property");
+            LogWriteFailed(logger, ex);
         }
     }
 
@@ -295,7 +316,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
             ret = setting.DefaultValue != null
                 ? setting.DefaultValue.ToString()
                 : string.Empty;
-            logger.LogError(ex, "Failed to get value");
+            LogGetValueFailed(logger, ex);
         }
 
         return ret;
@@ -317,7 +338,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
         catch (Exception ex)
         {
             settingNode = null;
-            logger.LogError(ex, "Failed to set value");
+            LogSetValueFailed(logger, ex);
         }
 
         // Check to see if the node exists, if so then set its new value
@@ -348,7 +369,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
                 {
                     machineNode = SettingsXML.CreateElement(AlteredMachineName());
                     _ = SettingsXML.SelectSingleNode(SETTINGSROOT).AppendChild(machineNode);
-                    logger.LogError(ex, "Failed to set value");
+                    LogSetValueFailed(logger, ex);
                 }
 
                 if (machineNode == null)
