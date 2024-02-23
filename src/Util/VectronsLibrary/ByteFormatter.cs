@@ -65,7 +65,7 @@ public static class ByteFormatter
     /// <param name="valueInBytes">The byte to format.</param>
     /// <returns>returns a string in the new format: converted value + Suffix ex: 26.55 GB.</returns>
     public static string Format(ulong valueInBytes)
-        => Format(valueInBytes, 0);
+        => Format(valueInBytes, Start.Byte);
 
     /// <summary>
     /// Formats byte to a more readable notation
