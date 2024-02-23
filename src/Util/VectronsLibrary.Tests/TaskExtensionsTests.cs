@@ -61,7 +61,7 @@ public class TaskExtensionsTests
         Task.Factory.StartNew(
             () =>
             {
-                _ = Task.Factory.StartNew(() => throw new NotImplementedException(), TaskCreationOptions.AttachedToParent);
+                _ = Task.Factory.StartNew(() => throw new NotSupportedException(), TaskCreationOptions.AttachedToParent);
                 throw new InvalidOperationException();
             })
         .LogExceptionsAsync(logger.Object, dummyAction)
@@ -94,7 +94,7 @@ public class TaskExtensionsTests
         Task.Factory.StartNew(
             () =>
             {
-                _ = Task.Factory.StartNew(() => throw new NotImplementedException(), TaskCreationOptions.AttachedToParent);
+                _ = Task.Factory.StartNew(() => throw new NotSupportedException(), TaskCreationOptions.AttachedToParent);
                 throw new InvalidOperationException();
             })
         .LogExceptionsAsync(logger.Object)
@@ -135,7 +135,7 @@ public class TaskExtensionsTests
         Task.Factory.StartNew(
             () =>
             {
-                _ = Task.Factory.StartNew(() => throw new NotImplementedException(), TaskCreationOptions.AttachedToParent);
+                _ = Task.Factory.StartNew(() => throw new NotSupportedException(), TaskCreationOptions.AttachedToParent);
                 throw new InvalidOperationException();
             })
         .LogExceptionsAsync(logger.Object)
@@ -177,7 +177,7 @@ public class TaskExtensionsTests
         Task.Factory.StartNew(
             () =>
             {
-                _ = Task.Factory.StartNew(() => throw new NotImplementedException(), TaskCreationOptions.AttachedToParent);
+                _ = Task.Factory.StartNew(() => throw new NotSupportedException(), TaskCreationOptions.AttachedToParent);
                 throw new InvalidOperationException();
             })
         .LogExceptionsAsync(logger.Object, dummyAction)
@@ -263,10 +263,10 @@ public class TaskExtensionsTests
         Task.Factory.StartNew(
             () =>
             {
-                _ = Task.Factory.StartNew(() => throw new NotImplementedException(), TaskCreationOptions.AttachedToParent);
+                _ = Task.Factory.StartNew(() => throw new NotSupportedException(), TaskCreationOptions.AttachedToParent);
                 throw new InvalidOperationException();
             })
-        .LogExceptionsAsync<NotImplementedException>(logger.Object, x => { })
+        .LogExceptionsAsync<NotSupportedException>(logger.Object, x => { })
         .Wait();
 
         // Assert

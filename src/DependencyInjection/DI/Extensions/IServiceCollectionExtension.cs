@@ -141,7 +141,7 @@ public static partial class IServiceCollectionExtension
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddNonGenericLoggerError(this IServiceCollection serviceDescriptors)
         => serviceDescriptors
-            .AddSingleton<ILogger>(t => throw new NotImplementedException($"Don't use {typeof(ILogger)}, use the generic {typeof(ILogger<>)}"));
+            .AddSingleton<ILogger>(t => throw new NotSupportedException($"Don't use {typeof(ILogger)}, use the generic {typeof(ILogger<>)}"));
 
     /// <summary>
     /// Add <see cref="IRegisteredTypes{T}"/> to the <see cref="IServiceCollection"/>.
