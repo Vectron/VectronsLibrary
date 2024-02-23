@@ -87,7 +87,7 @@ public static class BasicLogger
         }
         catch (Exception ex)
         {
-            Trace.WriteLine(ex.Message);
+            Trace.WriteLine(ex);
         }
     }
 
@@ -113,7 +113,7 @@ public static class BasicLogger
         }
         catch (Exception ex)
         {
-            Trace.WriteLine(ex.Message);
+            Trace.WriteLine(ex);
             Trace.WriteLine("Failed to clean Log files");
         }
     }
@@ -150,7 +150,7 @@ public static class BasicLogger
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex);
             }
         }
     }
