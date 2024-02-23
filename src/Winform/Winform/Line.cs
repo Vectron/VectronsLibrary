@@ -104,6 +104,7 @@ public class Line : Control
             line3DStyle = value;
             if (line3DStyle == Line3DStyle.Flat)
             {
+                pen1?.Dispose();
                 pen1 = new Pen(borderColor, 1)
                 {
                     DashStyle = dashStyle,
@@ -111,10 +112,13 @@ public class Line : Control
             }
             else if (line3DStyle == Line3DStyle.Inset)
             {
+                pen1?.Dispose();
                 pen1 = new Pen(SystemColors.ControlLightLight, 1)
                 {
                     DashStyle = dashStyle,
                 };
+
+                pen2?.Dispose();
                 pen2 = new Pen(SystemColors.ControlDark, 1)
                 {
                     DashStyle = dashStyle,
@@ -122,10 +126,13 @@ public class Line : Control
             }
             else if (line3DStyle == Line3DStyle.Outset)
             {
+                pen1?.Dispose();
                 pen1 = new Pen(SystemColors.ControlDark, 1)
                 {
                     DashStyle = dashStyle,
                 };
+
+                pen2?.Dispose();
                 pen2 = new Pen(SystemColors.ControlLightLight, 1)
                 {
                     DashStyle = dashStyle,
