@@ -95,7 +95,7 @@ public sealed class SingleGlobalInstance(string gui) : IDisposable
         if (!Mutex.TryOpenExisting(mutexId, out var mutex))
         {
             mutex = new Mutex(true, mutexId);
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (OperatingSystem.IsWindows())
             {
                 var allowEveryoneRule = new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.FullControl, AccessControlType.Allow);
                 var securitySettings = new MutexSecurity();
