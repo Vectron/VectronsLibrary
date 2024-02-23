@@ -17,9 +17,10 @@ namespace VectronsLibrary;
 /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
 /// </remarks>
 /// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
-public class SingleGlobalInstance(string gui) : IDisposable
+public sealed class SingleGlobalInstance(string gui) : IDisposable
 {
     private readonly Mutex mutex = InitMutex(gui);
+    private bool disposed;
     private bool hasHandle;
 
     /// <summary>
@@ -38,6 +39,12 @@ public class SingleGlobalInstance(string gui) : IDisposable
     /// <inheritdoc/>
     public void Dispose()
     {
+        if (disposed)
+        {
+            return;
+        }
+
+        disposed = true;
         if (mutex != null)
         {
             if (hasHandle)
@@ -48,8 +55,6 @@ public class SingleGlobalInstance(string gui) : IDisposable
             mutex.Close();
             mutex.Dispose();
         }
-
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
