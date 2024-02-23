@@ -7,7 +7,7 @@ namespace VectronsLibrary.Extensions;
 /// <summary>
 /// Extension methods for <see cref="Task"/>.
 /// </summary>
-public static class TaskExtensions
+public static partial class TaskExtensions
 {
     /// <summary>
     /// Log exceptions asynchronous.
@@ -29,7 +29,7 @@ public static class TaskExtensions
                     for (var i = aggregateException.InnerExceptions.Count - 1; i >= 0; i--)
                     {
                         var exception = aggregateException.InnerExceptions[i];
-                        logger.LogError(exception, "Task Error");
+                        logger.LogException(exception);
                     }
                 }
             },
@@ -66,10 +66,13 @@ public static class TaskExtensions
                             continue;
                         }
 
-                        logger.LogError(exception, "Task Error");
+                        logger.LogException(exception);
                     }
                 }
             },
             TaskContinuationOptions.OnlyOnFaulted);
     }
+
+    [LoggerMessage(EventId = 0, Level = LogLevel.Error, Message = "Task Error")]
+    private static partial void LogException(this ILogger logger, Exception exception);
 }

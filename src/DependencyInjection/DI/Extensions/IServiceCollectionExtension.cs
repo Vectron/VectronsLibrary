@@ -16,11 +16,8 @@ namespace VectronsLibrary.DI;
 /// <summary>
 /// Extensions for <see cref="IServiceCollection"/>.
 /// </summary>
-public static class IServiceCollectionExtension
+public static partial class IServiceCollectionExtension
 {
-    private const string AddMessage = "Adding contract type: {ContractType}, with implementation type: {ImplementationType} as {Lifetime}";
-    private const string GenericAddMessage = "Adding contract type: {ContractType}, with generic implementation type: {ImplementationType} as {Lifetime}";
-    private const string IgnoreMessage = "Ignoring contract type: {ContractType}, with implementation type: {ImplementationType}";
     private static ILogger logger = NullLogger.Instance;
 
     /// <summary>
@@ -35,12 +32,12 @@ public static class IServiceCollectionExtension
     {
         if (implementation.IsGenericTypeDefinition)
         {
-            logger.LogDebug(GenericAddMessage, contractType.FullName, implementation.FullName, serviceLifetime);
+            logger.LogAddingGenericType(contractType.FullName, implementation.FullName, serviceLifetime);
             serviceDescriptors.Add(ServiceDescriptor.Describe(contractType, implementation, serviceLifetime));
             return serviceDescriptors;
         }
 
-        logger.LogDebug(AddMessage, contractType.FullName, implementation.FullName, serviceLifetime);
+        logger.LogAddingType(contractType.FullName, implementation.FullName, serviceLifetime);
 
         if (contractType == implementation)
         {
@@ -83,7 +80,7 @@ public static class IServiceCollectionExtension
         else if (Attribute.IsDefined(implementation, typeof(IgnoreAttribute)) ||
                     Attribute.IsDefined(contractType, typeof(IgnoreAttribute)))
         {
-            logger.LogDebug(IgnoreMessage, contractType.FullName, implementation.FullName);
+            logger.LogIgnoreType(contractType.FullName, implementation.FullName);
             return serviceDescriptors;
         }
 
@@ -108,7 +105,7 @@ public static class IServiceCollectionExtension
 
         if (noImplementations)
         {
-            logger.LogWarning("No implementation found for {ContractType}", contractType);
+            logger.LogNoImplementation(contractType.FullName);
         }
 
         return serviceDescriptors;
@@ -180,11 +177,11 @@ public static class IServiceCollectionExtension
     {
         if (implementation.IsGenericTypeDefinition)
         {
-            logger.LogDebug(GenericAddMessage, contractType.FullName, implementation.FullName, serviceLifetime);
+            logger.LogAddingGenericType(contractType.FullName, implementation.FullName, serviceLifetime);
             return serviceDescriptors.TryAdd(ServiceDescriptor.Describe(contractType, implementation, serviceLifetime));
         }
 
-        logger.LogDebug(AddMessage, contractType.FullName, implementation.FullName, serviceLifetime);
+        logger.LogAddingType(contractType.FullName, implementation.FullName, serviceLifetime);
 
         return contractType == implementation
             ? serviceDescriptors.TryAdd(ServiceDescriptor.Describe(contractType, implementation, serviceLifetime))
@@ -215,10 +212,34 @@ public static class IServiceCollectionExtension
         else if (Attribute.IsDefined(implementation, typeof(IgnoreAttribute)) ||
                  Attribute.IsDefined(contractType, typeof(IgnoreAttribute)))
         {
-            logger.LogDebug(IgnoreMessage, contractType.FullName, implementation.FullName);
+            logger.LogIgnoreType(contractType.FullName, implementation.FullName);
             return serviceDescriptors;
         }
 
         return serviceDescriptors.TryAdd(contractType, implementation, ServiceLifetime.Scoped);
     }
+
+    [LoggerMessage(
+        EventId = 1,
+        Level = LogLevel.Information,
+        Message = "Adding contract type: {ContractType}, with generic implementation type: {ImplementationType} as {Lifetime}")]
+    private static partial void LogAddingGenericType(this ILogger logger, string? contractType, string? implementationType, ServiceLifetime lifetime);
+
+    [LoggerMessage(
+        EventId = 0,
+        Level = LogLevel.Information,
+        Message = "Adding contract type: {ContractType}, with implementation type: {ImplementationType} as {Lifetime}")]
+    private static partial void LogAddingType(this ILogger logger, string? contractType, string? implementationType, ServiceLifetime lifetime);
+
+    [LoggerMessage(
+        EventId = 2,
+        Level = LogLevel.Debug,
+        Message = "Ignoring contract type: {ContractType}, with implementation type: {ImplementationType}")]
+    private static partial void LogIgnoreType(this ILogger logger, string? contractType, string? implementationType);
+
+    [LoggerMessage(
+    EventId = 3,
+    Level = LogLevel.Warning,
+    Message = "No implementation found for {ContractType}")]
+    private static partial void LogNoImplementation(this ILogger logger, string? contractType);
 }

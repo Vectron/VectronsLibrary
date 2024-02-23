@@ -13,7 +13,7 @@ namespace VectronsLibrary.DI;
 /// Default implementation of <see cref="IAssemblyResolver"/>.
 /// </summary>
 [Singleton]
-public class AssemblyResolver : IAssemblyResolver, IDisposable
+public partial class AssemblyResolver : IAssemblyResolver, IDisposable
 {
     private readonly IEnumerable<string> extraDirectories;
     private readonly IEnumerable<string> ignoredAssemblies;
@@ -130,15 +130,16 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
     {
         if (assemblyName == null || string.IsNullOrEmpty(assemblyName.Name))
         {
-            logger.LogError("Requested is null or name is empty!");
+            LogInvalidAssemblyName();
             return null;
         }
 
-        logger.LogDebug("{AssemblyName} Resolving Assembly", assemblyName.Name);
+        using var scope = logger.BeginScope(assemblyName.Name);
+        LogResolvingAssembly(assemblyName.Name);
 
         if (resolvedAssemblies.TryGetValue(assemblyName.Name, out var assembly))
         {
-            logger.LogTrace("{AssemblyName}: Resolved from cache.", assemblyName.Name);
+            LogResolvedCache(assemblyName.Name);
             return assembly;
         }
 
@@ -149,7 +150,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
             || assemblyName.Name.EndsWith(".XmlSerializers", StringComparison.OrdinalIgnoreCase)
             || ignoredAssemblies.Contains(assemblyName.Name, StringComparer.OrdinalIgnoreCase))
         {
-            logger.LogDebug("{AssemblyName}: Skipped search!", assemblyName.Name);
+            LogSkipped(assemblyName.Name);
             resolvedAssemblies[assemblyName.Name] = null;
             return null;
         }
@@ -165,7 +166,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
                 continue;
             }
 
-            logger.LogDebug("{AssemblyName}: searching in {Directory}", assemblyName.Name, dir);
+            LogSearchDirectory(assemblyName.Name, dir);
             var assemblyPath = Path.Combine(dir, wantedDLL);
             assemblyPath = Environment.ExpandEnvironmentVariables(assemblyPath);
 
@@ -173,27 +174,27 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
             {
                 if (!File.Exists(assemblyPath))
                 {
-                    logger.LogDebug("{AssemblyName}: Assembly path does not exist: '{Path}', continuing.", assemblyName.Name, assemblyPath);
+                    LogInvalidPath(assemblyName.Name, assemblyPath);
                     continue;
                 }
 
                 var foundName = AssemblyName.GetAssemblyName(assemblyPath);
                 if (!RequestedAssemblyNameMatchesFound(assemblyName, foundName))
                 {
-                    logger.LogDebug("{AssemblyName}: File exists but version/public key is wrong. Try next.", assemblyName.Name);
+                    LogWrongVersion(assemblyName.Name);
                     continue;
                 }
 
-                logger.LogDebug("{AssemblyName}: Loading assembly '{Path}'.", assemblyName.Name, assemblyPath);
+                LogLoading(assemblyName.Name, assemblyPath);
 
                 assembly = loadAssembly(assemblyPath);
                 resolvedAssemblies[assemblyName.Name] = assembly;
-                logger.LogDebug("{AssemblyName}: Resolved assembly: {AssemblyName}, from path: {AssemblyPath}", assemblyName.Name, assemblyName.Name, assemblyPath);
+                LogResolved(assemblyName.Name, assemblyPath);
                 return assembly;
             }
             catch (FileLoadException ex)
             {
-                logger.LogError(ex, "{AssemblyName}: Failed to load assembly", assemblyName.Name);
+                LogLoadFailed(ex, assemblyName.Name);
 
                 // Re-throw FileLoadException, because this exception means that the assembly was found, but could not be loaded.
                 // This will allow us to report a more specific error message to the user for things like access denied.
@@ -202,11 +203,11 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
             catch (Exception ex)
             {
                 // For all other exceptions, try the next extension.
-                logger.LogDebug(ex, "{AssemblyName}: Failed to load assembly.", assemblyName.Name);
+                LogLoadFailedContinue(ex, assemblyName.Name);
             }
         }
 
-        logger.LogDebug("{AssemblyName}: Failed to load assembly.", assemblyName.Name);
+        LogNotFound(assemblyName.Name);
         resolvedAssemblies[assemblyName.Name] = assembly;
         return null;
     }

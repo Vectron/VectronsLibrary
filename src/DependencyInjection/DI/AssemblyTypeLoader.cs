@@ -10,7 +10,7 @@ namespace VectronsLibrary.DI;
 /// <summary>
 /// Helper class for getting assembly data.
 /// </summary>
-public static class AssemblyTypeLoader
+public static partial class AssemblyTypeLoader
 {
     /// <summary>
     /// Gets the current assembly directory.
@@ -53,7 +53,6 @@ public static class AssemblyTypeLoader
         catch (ReflectionTypeLoadException reflectionTypeLoadException)
         {
             var builder = new StringBuilder();
-
             foreach (var item in reflectionTypeLoadException.LoaderExceptions)
             {
                 if (item == null)
@@ -64,13 +63,19 @@ public static class AssemblyTypeLoader
                 _ = builder.AppendLine("\t\t" + item.Message);
             }
 
-            logger?.LogWarning(reflectionTypeLoadException, "Failed to load assembly {Assembly}\t{Message}{ChildMessages}", assembly, reflectionTypeLoadException.Message, builder);
+            logger?.LogFailedToLoadAssembly(reflectionTypeLoadException, assembly, reflectionTypeLoadException.Message, builder.ToString());
         }
         catch (Exception ex)
         {
-            logger?.LogWarning(ex, "Failed to load assembly {Assembly}", assembly);
+            logger?.LogFailedToLoadAssembly(ex, assembly, ex.Message, ex.InnerException?.Message);
         }
 
         return [];
     }
+
+    [LoggerMessage(
+        EventId = 0,
+        Level = LogLevel.Warning,
+        Message = "Failed to load assembly {Assembly}\t{Message}{InnerMessages}")]
+    private static partial void LogFailedToLoadAssembly(this ILogger logger, Exception exception, string assembly, string message, string? innerMessages);
 }
