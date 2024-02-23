@@ -14,6 +14,7 @@ public class SingleGlobalInstanceTests
     /// <summary>
     /// Test if the mutex is released when disposing.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP017:Prefer using", Justification = "We want to dispose in the right spot of a test")]
     [TestMethod]
     public void DisposeReleasesMutex()
     {
