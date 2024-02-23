@@ -17,15 +17,8 @@ public static class TaskExtensions
     /// <returns>The original <see cref="Task"/>.</returns>
     public static Task LogExceptionsAsync(this Task task, ILogger logger)
     {
-        if (task is null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
-
-        if (logger is null)
-        {
-            throw new ArgumentNullException(nameof(logger));
-        }
+        ArgumentNullException.ThrowIfNull(task);
+        ArgumentNullException.ThrowIfNull(logger);
 
         return task.ContinueWith(
             t =>
@@ -54,20 +47,9 @@ public static class TaskExtensions
     public static Task LogExceptionsAsync<T>(this Task task, ILogger logger, Action<T> action)
         where T : Exception
     {
-        if (task is null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
-
-        if (logger is null)
-        {
-            throw new ArgumentNullException(nameof(logger));
-        }
-
-        if (action is null)
-        {
-            throw new ArgumentNullException(nameof(action));
-        }
+        ArgumentNullException.ThrowIfNull(task);
+        ArgumentNullException.ThrowIfNull(logger);
+        ArgumentNullException.ThrowIfNull(action);
 
         return task.ContinueWith(
             t =>

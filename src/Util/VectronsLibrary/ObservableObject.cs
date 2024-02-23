@@ -81,10 +81,7 @@ public abstract class ObservableObject : INotifyPropertyChanged, INotifyProperty
     [DebuggerStepThrough]
     private void VerifyPropertyName(string propertyName = "")
     {
-        if (propertyName is null)
-        {
-            throw new ArgumentNullException(nameof(propertyName));
-        }
+        ArgumentNullException.ThrowIfNull(propertyName);
 
         // Verify that the property name matches a real, public, instance property on this object.
         if (TypeDescriptor.GetProperties(this)[propertyName] == null)
