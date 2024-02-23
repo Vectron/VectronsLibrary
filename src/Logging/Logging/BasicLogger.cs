@@ -53,7 +53,7 @@ public static class BasicLogger
         {
             BasicLogger.daysBeforeLogDelete = daysBeforeLogDelete;
             CleanUpTimer.Interval = 1000 * 3600;
-            CleanUpTimer.Elapsed += (e, arg) => Task.Factory.StartNew(CleanUpLogFiles);
+            CleanUpTimer.Elapsed += (e, arg) => _ = Task.Factory.StartNew(CleanUpLogFiles);
             CleanUpTimer.Start();
         }
     }
