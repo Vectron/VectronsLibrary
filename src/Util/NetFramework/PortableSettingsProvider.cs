@@ -24,6 +24,7 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
     private const string SettingsFolder = "Settings";
     private const string SETTINGSROOT = "Settings";
     private SettingsContext? context;
+    private ILogger logger = logger;
     private XmlDocument? settingsXML;
 
     /// <summary>
