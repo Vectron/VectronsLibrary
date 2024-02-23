@@ -276,6 +276,10 @@ public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) 
         return false;
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "CodeSmell",
+        "ERP022:Unobserved exception in a generic exception handler",
+        Justification = "Exception means that the xml is not valid")]
     private static bool IsValidXmlString(string text)
     {
         try
