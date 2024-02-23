@@ -18,7 +18,7 @@ public class ICollectionExtensionTests
     public void AddRangeAddsAllItems()
     {
         // Arrange
-        ICollection<int> collection = new List<int>();
+        ICollection<int> collection = [];
         var items = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
         // Act
@@ -50,7 +50,7 @@ public class ICollectionExtensionTests
     public void ThrowsIfEnumerableIsNull()
     {
         // Arrange
-        ICollection<int>? collection = new List<int>();
+        ICollection<int>? collection = [];
 
         // Act
 

@@ -12,7 +12,7 @@ namespace VectronsLibrary.DI.BufferedLogging;
 [Ignore]
 public class BufferedLoggerFactory : IBufferedLoggerFactory
 {
-    private readonly Dictionary<Type, IBufferedLogger> loggers = new();
+    private readonly Dictionary<Type, IBufferedLogger> loggers = [];
 
     /// <inheritdoc/>
     public ILogger<T> CreateLogger<T>()

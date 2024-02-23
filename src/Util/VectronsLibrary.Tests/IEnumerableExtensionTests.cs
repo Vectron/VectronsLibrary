@@ -35,7 +35,7 @@ public class IEnumerableExtensionTests
     public void ForEachThrowsExceptionIfActionIsNull()
     {
         // Arrange
-        IEnumerable<int> items = new List<int>();
+        IEnumerable<int> items = [];
 
         // Act
 

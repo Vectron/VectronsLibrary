@@ -22,7 +22,7 @@ public static class BasicLogger
     private static readonly System.Timers.Timer CleanUpTimer = new();
     private static readonly object Locker = new();
     private static readonly string LogFileExtension = ".txt";
-    private static readonly BlockingCollection<ErrorMessage> MessageCollection = new();
+    private static readonly BlockingCollection<ErrorMessage> MessageCollection = [];
     private static readonly char Underscore = '_';
     private static int daysBeforeLogDelete;
     private static Task? loggingTask;

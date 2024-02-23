@@ -34,7 +34,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
     /// </summary>
     /// <param name="logger">The <see cref="ILogger"/> used for logging data.</param>
     public AssemblyResolver(ILogger<AssemblyResolver> logger)
-        : this(logger, Array.Empty<string>())
+        : this(logger, [])
     {
     }
 
@@ -44,7 +44,7 @@ public class AssemblyResolver : IAssemblyResolver, IDisposable
     /// <param name="logger">The <see cref="ILogger"/> used for logging data.</param>
     /// <param name="ignoredAssemblies">A <see cref="IEnumerable{T}"/> with names of assemblies to ignore when resolving.</param>
     public AssemblyResolver(ILogger<AssemblyResolver> logger, IEnumerable<string> ignoredAssemblies)
-        : this(logger, ignoredAssemblies, Array.Empty<string>())
+        : this(logger, ignoredAssemblies, [])
     {
     }
 

@@ -13,7 +13,7 @@ namespace VectronsLibrary.DI.Tests;
 [TestClass]
 public class AssemblyResolverTests
 {
-    private static readonly string[] IgnoredAssemblies = new[] { "test1", "test2", "test3" };
+    private static readonly string[] IgnoredAssemblies = ["test1", "test2", "test3"];
 
     /// <summary>
     /// Test if we get <see cref="ArgumentNullException"/> when we pass <see langword="null"/> to the constructor.
@@ -23,7 +23,7 @@ public class AssemblyResolverTests
     {
         _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(null!));
         _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), null!));
-        _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), Array.Empty<string>(), null!));
+        _ = Assert.ThrowsException<ArgumentNullException>(() => new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], null!));
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class AssemblyResolverTests
     [TestMethod]
     public void EmptySearchDirIsSkipped()
     {
-        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), Array.Empty<string>(), new string[] { string.Empty, null! });
+        _ = new AssemblyResolver(Mock.Of<ILogger<AssemblyResolver>>(), [], [string.Empty, null!]);
 
         var result = Assembly.Load("VectronsLibrary.DI.TestsAssembly");
 

@@ -71,6 +71,6 @@ public static class AssemblyTypeLoader
             logger?.LogWarning(ex, "Failed to load assembly {Assembly}", assembly);
         }
 
-        return Array.Empty<Type>();
+        return [];
     }
 }

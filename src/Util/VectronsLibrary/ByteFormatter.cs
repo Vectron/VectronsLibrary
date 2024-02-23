@@ -5,7 +5,7 @@ namespace VectronsLibrary;
 /// </summary>
 public static class ByteFormatter
 {
-    private static readonly string[] Suffix = { "B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+    private static readonly string[] Suffix = ["B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 
     /// <summary>
     /// The start value of the input.

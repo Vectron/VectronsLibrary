@@ -122,7 +122,7 @@ public static class IServiceCollectionExtension
     /// <returns>A reference to this instance after the operation has completed.</returns>
     public static IServiceCollection AddFromAssemblies(this IServiceCollection serviceDescriptors, IEnumerable<string> assemblies)
     {
-        var loadedTypes = (Assembly.GetEntryAssembly()?.GetTypes() ?? Assembly.GetExecutingAssembly()?.GetTypes() ?? Array.Empty<Type>())
+        var loadedTypes = (Assembly.GetEntryAssembly()?.GetTypes() ?? Assembly.GetExecutingAssembly()?.GetTypes() ?? [])
             .Concat(assemblies.SelectMany(x => AssemblyTypeLoader.LoadTypesFromAssemblySafe(x, logger)))
             .Where(t => !Attribute.IsDefined(t, typeof(IgnoreAttribute)));
 
