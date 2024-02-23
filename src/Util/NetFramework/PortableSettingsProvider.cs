@@ -14,13 +14,16 @@ namespace VectronsLibrary.NetFramework;
 /// <summary>
 /// A settings provider that stores the settings in the executable directory.
 /// </summary>
-public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsProvider
+/// <remarks>
+/// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
+/// </remarks>
+/// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
+public class PortableSettingsProvider(ILogger<PortableSettingsProvider> logger) : SettingsProvider, IApplicationSettingsProvider
 {
     private const string ClassName = "PortableSettingsProvider";
     private const string SettingsFolder = "Settings";
     private const string SETTINGSROOT = "Settings";
     private SettingsContext? context;
-    private ILogger logger;
     private XmlDocument? settingsXML;
 
     /// <summary>
@@ -30,13 +33,6 @@ public class PortableSettingsProvider : SettingsProvider, IApplicationSettingsPr
         : this(NullLogger<PortableSettingsProvider>.Instance)
     {
     }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PortableSettingsProvider"/> class.
-    /// </summary>
-    /// <param name="logger">An <see cref="ILogger"/> instance used for logging.</param>
-    public PortableSettingsProvider(ILogger<PortableSettingsProvider> logger)
-        => this.logger = logger;
 
     /// <inheritdoc/>
     public override string ApplicationName

@@ -13,17 +13,14 @@ namespace VectronsLibrary;
 /// A class that can only have a Single instance on the running system.
 /// Instantiate this class in the constructor to make sure only one instance is running.
 /// </summary>
-public class SingleGlobalInstance : IDisposable
+/// <remarks>
+/// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
+/// </remarks>
+/// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
+public class SingleGlobalInstance(string gui) : IDisposable
 {
-    private readonly Mutex mutex;
+    private readonly Mutex mutex = InitMutex(gui);
     private bool hasHandle;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SingleGlobalInstance"/> class.
-    /// </summary>
-    /// <param name="gui">The unique key used to create the mutex. Has to be the same for all instances of the application.</param>
-    public SingleGlobalInstance(string gui)
-        => mutex = InitMutex(gui);
 
     /// <summary>
     /// Gets the guid defined in a <see cref="GuidAttribute"/> on the assembly level.

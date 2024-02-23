@@ -8,23 +8,14 @@ namespace VectronsLibrary.DI.Factory;
 /// Base class for making custom factories.
 /// </summary>
 /// <typeparam name="T">The type this factory will create.</typeparam>
-public abstract class FactoryBase<T> : IFactory<T>
+/// <remarks>
+/// Initializes a new instance of the <see cref="FactoryBase{T}"/> class.
+/// </remarks>
+/// <param name="registeredTypes">The <see cref="IRegisteredTypes{T}"/> used to check what types inherit from <typeparamref name="T"/>.</param>
+/// <param name="serviceProvider">The <see cref="IServiceProvider"/> used to instantiate services.</param>
+public abstract class FactoryBase<T>(IRegisteredTypes<T> registeredTypes, IServiceProvider serviceProvider) : IFactory<T>
     where T : class
 {
-    private readonly IRegisteredTypes<T> registeredTypes;
-    private readonly IServiceProvider serviceProvider;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FactoryBase{T}"/> class.
-    /// </summary>
-    /// <param name="registeredTypes">The <see cref="IRegisteredTypes{T}"/> used to check what types inherit from <typeparamref name="T"/>.</param>
-    /// <param name="serviceProvider">The <see cref="IServiceProvider"/> used to instantiate services.</param>
-    public FactoryBase(IRegisteredTypes<T> registeredTypes, IServiceProvider serviceProvider)
-    {
-        this.registeredTypes = registeredTypes;
-        this.serviceProvider = serviceProvider;
-    }
-
     /// <inheritdoc />
     public virtual T Value => GetValue(Name);
 

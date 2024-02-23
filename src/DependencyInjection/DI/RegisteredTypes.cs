@@ -11,24 +11,20 @@ namespace VectronsLibrary.DI;
 /// The default implementation of <see cref="IRegisteredTypes{T}"/>.
 /// </summary>
 /// <typeparam name="T">The base type to look for.</typeparam>
+/// <remarks>
+/// Initializes a new instance of the <see cref="RegisteredTypes{T}"/> class.
+/// </remarks>
+/// <param name="serviceCollection">The <see cref="IServiceCollection"/> used to built the <see cref="IServiceProvider"/>.</param>
 [Singleton]
-public class RegisteredTypes<T> : IRegisteredTypes<T>
+public class RegisteredTypes<T>(IServiceCollection serviceCollection) : IRegisteredTypes<T>
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RegisteredTypes{T}"/> class.
-    /// </summary>
-    /// <param name="serviceCollection">The <see cref="IServiceCollection"/> used to built the <see cref="IServiceProvider"/>.</param>
-    public RegisteredTypes(IServiceCollection serviceCollection)
-        => Items = serviceCollection
-            .Where(x => x.ServiceType == typeof(T) || x.ServiceType.GetInterfaces().Contains(typeof(T)))
-            .Select(x => x.ImplementationType)
-            .WhereNotNull()
-            .Distinct();
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0032:Use auto property", Justification = "Auto property will fight with formatting")]
+    private readonly IEnumerable<Type> items = serviceCollection
+        .Where(x => x.ServiceType == typeof(T) || x.ServiceType.GetInterfaces().Contains(typeof(T)))
+        .Select(x => x.ImplementationType)
+        .WhereNotNull()
+        .Distinct();
 
     /// <inheritdoc />
-    public IEnumerable<Type> Items
-    {
-        get;
-        set;
-    }
+    public IEnumerable<Type> Items => items;
 }

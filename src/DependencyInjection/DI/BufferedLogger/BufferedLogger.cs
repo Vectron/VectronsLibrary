@@ -62,23 +62,14 @@ public class BufferedLogger<T> : ILogger<T>, IBufferedLogger
         }
     }
 
-    private sealed class BufferItem<TState> : IBufferItem
+    private sealed class BufferItem<TState>(
+        LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception? exception,
+        Func<TState, Exception?, string> formatter)
+        : IBufferItem
     {
-        private readonly EventId eventId;
-        private readonly Exception? exception;
-        private readonly Func<TState, Exception?, string> formatter;
-        private readonly LogLevel logLevel;
-        private readonly TState state;
-
-        public BufferItem(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
-        {
-            this.logLevel = logLevel;
-            this.eventId = eventId;
-            this.state = state;
-            this.exception = exception;
-            this.formatter = formatter;
-        }
-
         public void Log(ILogger logger)
             => logger.Log(logLevel, eventId, state, exception, formatter);
     }
