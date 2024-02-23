@@ -124,9 +124,6 @@ public partial class AssemblyResolver : IAssemblyResolver, IDisposable
     }
 
     private Assembly? Default_Resolving(System.Runtime.Loader.AssemblyLoadContext loadContext, AssemblyName assemblyName)
-        => Resolve(loadContext.LoadFromAssemblyPath, assemblyName);
-
-    private Assembly? Resolve(Func<string, Assembly> loadAssembly, AssemblyName assemblyName)
     {
         if (assemblyName == null || string.IsNullOrEmpty(assemblyName.Name))
         {
@@ -152,6 +149,18 @@ public partial class AssemblyResolver : IAssemblyResolver, IDisposable
         {
             LogSkipped(assemblyName.Name);
             resolvedAssemblies[assemblyName.Name] = null;
+            return null;
+        }
+
+        assembly = ResolveFromDisk(loadContext, assemblyName);
+        resolvedAssemblies[assemblyName.Name] = assembly;
+        return assembly;
+    }
+
+    private Assembly? ResolveFromDisk(System.Runtime.Loader.AssemblyLoadContext loadContext, AssemblyName assemblyName)
+    {
+        if (assemblyName == null || string.IsNullOrEmpty(assemblyName.Name))
+        {
             return null;
         }
 
@@ -187,7 +196,7 @@ public partial class AssemblyResolver : IAssemblyResolver, IDisposable
 
                 LogLoading(assemblyName.Name, assemblyPath);
 
-                assembly = loadAssembly(assemblyPath);
+                var assembly = loadContext.LoadFromAssemblyPath(assemblyPath);
                 resolvedAssemblies[assemblyName.Name] = assembly;
                 LogResolved(assemblyName.Name, assemblyPath);
                 return assembly;
@@ -208,7 +217,6 @@ public partial class AssemblyResolver : IAssemblyResolver, IDisposable
         }
 
         LogNotFound(assemblyName.Name);
-        resolvedAssemblies[assemblyName.Name] = assembly;
         return null;
     }
 }
