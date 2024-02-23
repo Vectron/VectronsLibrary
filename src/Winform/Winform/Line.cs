@@ -11,7 +11,7 @@ namespace VectronsLibrary.WindowsForms;
 /// </summary>
 public class Line : Control
 {
-    private readonly IContainer components;
+    private readonly Container components;
     private Color borderColor = SystemColors.ControlText;
     private DashStyle dashStyle = DashStyle.Solid;
     private bool internalResizing;
