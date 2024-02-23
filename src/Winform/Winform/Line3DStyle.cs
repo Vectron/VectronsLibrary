@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.WindowsForms;
+namespace VectronsLibrary.WindowsForms;
 
 /// <summary>
 /// The 3D line style to use when drawing a line.

@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.Logging;
+namespace VectronsLibrary.Logging;
 
 /// <summary>
 /// A error message that needs to be logged to a file.

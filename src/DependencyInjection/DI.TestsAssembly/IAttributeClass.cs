@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary.DI.TestsAssembly;
+namespace VectronsLibrary.DI.TestsAssembly;
 
 /// <summary>
 /// Test interface for testing DI attributes.

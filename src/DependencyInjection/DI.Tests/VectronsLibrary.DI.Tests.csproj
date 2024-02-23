@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -14,4 +15,5 @@
     <ProjectReference Include="..\DI.TestsAssembly\VectronsLibrary.DI.TestsAssembly.csproj" />
     <ProjectReference Include="..\DI\VectronsLibrary.DI.csproj" />
   </ItemGroup>
+  
 </Project>

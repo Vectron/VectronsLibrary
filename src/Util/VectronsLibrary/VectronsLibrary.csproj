@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <Description>Collection of usefull tools</Description>
   </PropertyGroup>
@@ -7,4 +8,5 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="System.Threading.AccessControl" Version="8.0.0" />
   </ItemGroup>
+  
 </Project>

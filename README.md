@@ -1,4 +1,4 @@
-﻿[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/Vectron/VectronsLibrary/blob/main/LICENSE.txt)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/Vectron/VectronsLibrary/blob/main/LICENSE.txt)
 
 ## Vectrons Library [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.svg)](https://www.nuget.org/packages/VectronsLibrary)  
 Helper functions for some of my apps.

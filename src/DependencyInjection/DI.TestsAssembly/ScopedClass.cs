@@ -1,4 +1,4 @@
-﻿using VectronsLibrary.DI.Attributes;
+using VectronsLibrary.DI.Attributes;
 
 namespace VectronsLibrary.DI.TestsAssembly;
 

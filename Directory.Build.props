@@ -55,10 +55,10 @@
     AfterTargets="Pack"
     Condition="'$(Configuration)' == 'Release'">
     <CreateProperty Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg&quot;))">
-      <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+      <Output PropertyName="FullPackagePath" TaskParameter="Value" />
     </CreateProperty>
     <CreateProperty Condition="Exists($(FullPackagePath)) == false" Value="$([System.IO.Path]::GetFullPath(&quot;$(OutputPath)\$(PackageId).$(PackageVersion).nupkg&quot;))">
-      <Output PropertyName="FullPackagePath" TaskParameter="Value"/>
+      <Output PropertyName="FullPackagePath" TaskParameter="Value" />
     </CreateProperty>
     <Error Condition="Exists($(FullPackagePath)) == false" Text="Package not found: $(FullPackagePath)" />
   </Target>

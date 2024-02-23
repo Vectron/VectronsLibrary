@@ -1,4 +1,4 @@
-﻿namespace VectronsLibrary;
+namespace VectronsLibrary;
 
 /// <summary>
 /// Utilities class.
