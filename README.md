@@ -3,10 +3,8 @@
 ## Vectrons Library [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.svg)](https://www.nuget.org/packages/VectronsLibrary)  
 Helper functions for some of my apps.
 
-## Vectrons Library DI
-VectronsLibrary.DI.Abstraction: [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.Abstraction.svg)](https://www.nuget.org/packages/VectronsLibrary.DI.Abstraction)  
-VectronsLibrary.DI: [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.svg)](https://www.nuget.org/packages/VectronsLibrary.DI)  
-Helps building the DI container with reflection and attributes.
+## Vectrons Library DI [Archived] [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.DI.svg)](https://www.nuget.org/packages/VectronsLibrary.DI)  
+Moved to <https://github.com/Vectron/Vectron.Extensions.DependencyInjection>
 
 ## Vectrons Library Ethernet [Archived] [![NuGet](https://img.shields.io/nuget/v/VectronsLibrary.Ethernet.svg)](https://www.nuget.org/packages/VectronsLibrary.Ethernet)  
 Moved to <https://github.com/Vectron/Vectron.Library.Ethernet>
