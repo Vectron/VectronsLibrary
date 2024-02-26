@@ -56,6 +56,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Factory.StartNew(
@@ -89,6 +90,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Factory.StartNew(
@@ -118,7 +120,7 @@ public class TaskExtensionsTests
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<NotImplementedException>(),
+                It.IsAny<NotSupportedException>(),
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
         Expression<Action<ILogger>> call2 = mockedTypeInstance
             => mockedTypeInstance.Log(
@@ -130,6 +132,7 @@ public class TaskExtensionsTests
 
         logger.InSequence(sequence).Setup(call1).Verifiable();
         logger.InSequence(sequence).Setup(call2).Verifiable();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Factory.StartNew(
@@ -160,7 +163,7 @@ public class TaskExtensionsTests
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
                 It.IsAny<It.IsAnyType>(),
-                It.IsAny<NotImplementedException>(),
+                It.IsAny<NotSupportedException>(),
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
         Expression<Action<ILogger>> call2 = mockedTypeInstance
             => mockedTypeInstance.Log(
@@ -172,6 +175,7 @@ public class TaskExtensionsTests
 
         logger.InSequence(sequence).Setup(call1).Verifiable();
         logger.InSequence(sequence).Setup(call2).Verifiable();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Factory.StartNew(
@@ -204,6 +208,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Run(() => throw new InvalidOperationException())
@@ -230,6 +235,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Run(() => throw new InvalidOperationException())
@@ -258,6 +264,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         logger.Setup(expression).Verifiable();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Factory.StartNew(
@@ -364,6 +371,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Run(() => throw new InvalidOperationException())
@@ -390,6 +398,7 @@ public class TaskExtensionsTests
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>());
 
         var logger = new Mock<ILogger>();
+        _ = logger.Setup(x => x.IsEnabled(It.IsAny<LogLevel>())).Returns(value: true);
 
         // Act
         Task.Run(() => throw new InvalidOperationException())
