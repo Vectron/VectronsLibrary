@@ -1,3 +1,6 @@
+using System;
+using System.Globalization;
+
 namespace VectronsLibrary;
 
 /// <summary>
@@ -63,9 +66,10 @@ public static class ByteFormatter
     /// ex:  B, kB, MB, GB, TB, PB, EB, ZB, YB.
     /// </summary>
     /// <param name="valueInBytes">The byte to format.</param>
+    /// <param name="formatProvider">The <see cref="IFormatProvider"/> to use.</param>
     /// <returns>returns a string in the new format: converted value + Suffix ex: 26.55 GB.</returns>
-    public static string Format(ulong valueInBytes)
-        => Format(valueInBytes, Start.Byte);
+    public static string Format(ulong valueInBytes, IFormatProvider? formatProvider = null)
+        => Format(valueInBytes, Start.Byte, formatProvider);
 
     /// <summary>
     /// Formats byte to a more readable notation
@@ -73,9 +77,11 @@ public static class ByteFormatter
     /// </summary>
     /// <param name="value">the value to format.</param>
     /// <param name="start">The <see cref="Start"/> of the <paramref name="value"/>.</param>
+    /// <param name="formatProvider">The <see cref="IFormatProvider"/> to use.</param>
     /// <returns>returns a string in the new format: converted value + Suffix ex: 26.55 GB.</returns>
-    public static string Format(ulong value, Start start)
+    public static string Format(ulong value, Start start, IFormatProvider? formatProvider = null)
     {
+        var provider = formatProvider ?? CultureInfo.CurrentCulture;
         var i = 0;
         var bytes = value;
         var dblSByte = (double)bytes;
@@ -90,7 +96,7 @@ public static class ByteFormatter
         var index = i + (uint)start;
         return index > Suffix.Length - 1
             || index < 0
-            ? $"{dblSByte:0.00} ?B"
-            : $"{dblSByte:0.00} {Suffix[index]}";
+            ? string.Create(provider, $"{dblSByte:0.00} ?B")
+            : string.Create(provider, $"{dblSByte:0.00} {Suffix[index]}");
     }
 }
