@@ -76,6 +76,11 @@ public static class RuntimeLocalizer
                 ApplyResourceToToolStripItemCollection(menuItem.DropDownItems, res, cultureInfo);
             }
 
+            if (item.Name == null)
+            {
+                continue;
+            }
+
             res.ApplyResources(item, item.Name, cultureInfo);
         }
     }
