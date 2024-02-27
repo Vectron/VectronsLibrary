@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,27 +38,24 @@ public class SingleGlobalInstanceTests
     /// <summary>
     /// Test if the mutex is gotten when the thread exits.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [TestMethod]
-    public void GetMutexWhenThreadExits()
+    public async Task GetMutexWhenThreadExitsAsync()
     {
         var gui = Guid.NewGuid().ToString();
-        void Action()
+        var task = Task.Run(() =>
         {
             using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex();
-            Assert.IsTrue(hasInstance);
-            Task.Delay(200).Wait();
-        }
+            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+            return hasInstance;
+        });
 
-        var thread1 = new Thread(new ThreadStart(Action));
-        var thread2 = new Thread(new ThreadStart(Action));
+        var result = await task;
+        Assert.IsTrue(result, "Task mutex not gotten");
 
-        thread1.Start();
-        thread2.Start();
-        var taskNotCancelled1 = thread1.Join(TimeSpan.FromSeconds(1));
-        var taskNotCancelled2 = thread2.Join(TimeSpan.FromSeconds(1));
-        Assert.IsTrue(taskNotCancelled1);
-        Assert.IsTrue(taskNotCancelled2);
+        using var instance = new SingleGlobalInstance(gui);
+        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+        Assert.IsTrue(hasInstance, "Main mutex not gotten");
     }
 
     /// <summary>
