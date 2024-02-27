@@ -1,0 +1,85 @@
+name: BuildTestDeploy
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "Logging-v[0-9]+.[0-9]+.[0-9]+"
+      - "LibraryFramework-v[0-9]+.[0-9]+.[0-9]+"
+      - "Library-v[0-9]+.[0-9]+.[0-9]+"
+      - "Winforms-v[0-9]+.[0-9]+.[0-9]+"
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.runsettings'
+      - 'LICENSE.txt'
+      - 'README.md'
+  
+  pull_request:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '.editorconfig'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.runsettings'
+      - 'LICENSE.txt'
+      - 'README.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TargetFile: VectronsLibrary.sln
+  DotnetVersions: |
+    6.0.x
+    7.0.x
+    8.0.x
+
+jobs:
+  call-build-test:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    uses: Vectron/GithubWorkflows/.github/workflows/BuildAndTest.yml@main
+    with:
+      os: ${{ matrix.os }}
+      dotnet_version: ${{ env.DotnetVersions }}
+      solution_file: ${{ env.TargetFile }}
+
+  call-deploy:
+    needs: call-build-test
+    strategy:
+      matrix:
+        include:
+          - project: ${{ env.TargetFile }}
+            condition: ${{ github.ref == 'refs/heads/main' }}
+          - project: src\Logging\Logging\VectronsLibrary.Logging.csproj
+            condition: ${{ startsWith(github.ref, 'refs/tags/Logging-v') }}
+          - project: src\Util\VectronsLibrary\VectronsLibrary.csproj
+            condition: ${{ startsWith(github.ref, 'refs/tags/Library-v') }}
+          - project: src\Util\NetFramework\VectronsLibrary.NetFramework.csproj
+            condition: ${{ startsWith(github.ref, 'refs/tags/LibraryFramework-v') }}
+          - project: src\Winform\Winform\VectronsLibrary.WindowsForms.csproj
+            condition: ${{ startsWith(github.ref, 'refs/tags/Winforms-v') }}
+      fail-fast: true
+    permissions:
+      packages: write
+    uses: Vectron/GithubWorkflows/.github/workflows/DeployNugetGithub.yml@main
+    with:
+      os: ubuntu-latest
+      dotnet_version: ${{ env.DotnetVersions }}
+      solution_file: ${{ matrix.project }}
+      run_condition: ${{ matrix.condition }}
+    secrets:
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+
+  call-release:
+    needs: call-build-test
+    permissions:
+      deployments: write
+      contents: write
+    uses: Vectron/GithubWorkflows/.github/workflows/CreateRelease.yml@main

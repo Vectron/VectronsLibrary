@@ -1,7 +1,14 @@
 {
   "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "1.0",
   "pathFilters": [
     "."
   ],
-  "inherit": true
+  "publicReleaseRefSpec": [
+    "^refs/tags/Logging-v\\d+\\.\\d+"
+  ],
+  "release": {
+    "tagName": "Logging-v{version}"
+  },
+  "inherit": false
 }

@@ -4,5 +4,11 @@
   "pathFilters": [
     "."
   ],
-  "inherit": true
+  "publicReleaseRefSpec": [
+    "^refs/tags/Winforms-v\\d+\\.\\d+"
+  ],
+  "release": {
+    "tagName": "Winforms-v{version}"
+  },
+  "inherit": false
 }

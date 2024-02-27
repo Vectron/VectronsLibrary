@@ -4,5 +4,11 @@
   "pathFilters": [
     "."
   ],
-  "inherit": true
+  "publicReleaseRefSpec": [
+    "^refs/tags/Library-v\\d+\\.\\d+"
+  ],
+  "release": {
+    "tagName": "Library-v{version}"
+  },
+  "inherit": false
 }
