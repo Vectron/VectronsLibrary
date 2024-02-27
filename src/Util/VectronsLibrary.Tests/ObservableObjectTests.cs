@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace VectronsLibrary.Tests;
@@ -168,7 +167,9 @@ public class ObservableObjectTests
     /// Test if in debug mode a <see cref="ArgumentNullException"/> is thrown when the name is null.
     /// </summary>
     [TestMethod]
-    [Conditional("DEBUG")]
+#if !Debug
+    [Ignore("Test only runs in debug.")]
+#endif
     public void ThrowIfNameIsNull()
     {
         var test = new ObservableObjectTestClass();
@@ -180,7 +181,9 @@ public class ObservableObjectTests
     /// Test if in debug mode a <see cref="InvalidOperationException"/> is thrown when the property doesn't exist.
     /// </summary>
     [TestMethod]
-    [Conditional("DEBUG")]
+#if !Debug
+    [Ignore("Test only runs in debug.")]
+#endif
     public void ThrowsInvalidOperationExceptionIfPropertyDoesNotExist()
     {
         var test = new ObservableObjectTestClass();
