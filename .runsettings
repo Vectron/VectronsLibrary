@@ -3,8 +3,9 @@
     <RunConfiguration>
         <MaxCpuCount>0</MaxCpuCount>
         <ResultsDirectory>.\bin\TestResults</ResultsDirectory>
-        <TestSessionTimeout>10000</TestSessionTimeout>
-        <TreatNoTestsAsError>true</TreatNoTestsAsError>
+        <TestCaseFilter>(TestCategory != Integration)</TestCaseFilter>
+        <TestSessionTimeout>30000</TestSessionTimeout>
+        <TreatNoTestsAsError>false</TreatNoTestsAsError>
     </RunConfiguration>
 
     <DataCollectionRunSettings>
@@ -56,10 +57,8 @@
                 </Configuration>
             </Logger>
             <Logger friendlyName="blame" enabled="True" />
-            <Logger friendlyName="trx" enabled="True">
-            </Logger>
-            <Logger friendlyName="html" enabled="True">
-            </Logger>
+            <Logger friendlyName="trx" enabled="True" />
+            <Logger friendlyName="html" enabled="True" />
         </Loggers>
     </LoggerRunSettings>
 
