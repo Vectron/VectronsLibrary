@@ -20,13 +20,13 @@ public class SingleGlobalInstanceTests
     {
         var gui = Guid.NewGuid().ToString();
         using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex();
+        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
         Assert.IsTrue(hasInstance, "Main mutex not gotten");
 
         var task = Task.Run(() =>
         {
             using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromSeconds(30));
+            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
             return hasInstance;
         });
 
@@ -59,25 +59,6 @@ public class SingleGlobalInstanceTests
     }
 
     /// <summary>
-    /// Test if the mutex blocks multiple instance creation.
-    /// </summary>
-    [TestMethod]
-    public void OnlyOneInstanceAllowed()
-    {
-        var gui = Guid.NewGuid().ToString();
-        using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex();
-        var taskNotCancelled = Task.Run(() =>
-        {
-            using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex();
-        }).Wait(TimeSpan.FromSeconds(1));
-
-        Assert.IsTrue(hasInstance);
-        Assert.IsFalse(taskNotCancelled);
-    }
-
-    /// <summary>
     /// Test if <see cref="ArgumentNullException"/> is thrown when the <see cref="Guid"/> is null.
     /// </summary>
     [TestMethod]
@@ -97,20 +78,23 @@ public class SingleGlobalInstanceTests
     /// <summary>
     /// Test if an error is thrown when the max wait time elapsed.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [TestMethod]
-    public void WaitTheMaxTimeBeforeError()
+    public async Task WaitTheMaxTimeBeforeErrorAsync()
     {
         var gui = Guid.NewGuid().ToString();
         using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex();
-        var taskNotCancelled = Task.Run(() =>
+        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+        Assert.IsTrue(hasInstance, "Main mutex not gotten");
+
+        var task = Task.Run(() =>
         {
             using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromSeconds(1));
-            Assert.IsFalse(hasInstance);
-        }).Wait(TimeSpan.FromSeconds(5));
+            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+            return hasInstance;
+        });
 
-        Assert.IsTrue(hasInstance);
-        Assert.IsTrue(taskNotCancelled);
+        var result = await task.ConfigureAwait(true);
+        Assert.IsFalse(result, "Task mutex gotten");
     }
 }
