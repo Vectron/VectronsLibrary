@@ -14,25 +14,26 @@ public class SingleGlobalInstanceTests
     /// <summary>
     /// Test if the mutex is released when disposing.
     /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP017:Prefer using", Justification = "We want to dispose in the right spot of a test")]
     [TestMethod]
-    public void DisposeReleasesMutex()
+    public async Task DisposeReleasesMutexAsync()
     {
         var gui = Guid.NewGuid().ToString();
-        var instance = new SingleGlobalInstance(gui);
+        using var instance = new SingleGlobalInstance(gui);
         var hasInstance = instance.GetMutex();
-        Assert.IsTrue(hasInstance);
+        Assert.IsTrue(hasInstance, "Main mutex not gotten");
+
         var task = Task.Run(() =>
         {
             using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex();
-            Assert.IsTrue(hasInstance);
+            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+            return hasInstance;
         });
 
         instance.Dispose();
-        var taskNotCancelled = task.Wait(TimeSpan.FromSeconds(5));
-
-        Assert.IsTrue(taskNotCancelled);
+        var result = await task.ConfigureAwait(true);
+        Assert.IsTrue(result, "Task mutex not gotten");
     }
 
     /// <summary>
