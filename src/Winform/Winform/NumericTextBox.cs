@@ -45,7 +45,7 @@ public class NumericTextBox : TextBox
     }
 
     /// <summary>
-    /// Gets the current value as a <c>Decimal</c>.
+    /// Gets the current value as a <see langword="decimal"/>.
     /// </summary>
     public decimal DecimalValue
     {
@@ -57,7 +57,7 @@ public class NumericTextBox : TextBox
     }
 
     /// <summary>
-    /// Gets the current value as a <c>int</c>.
+    /// Gets the current value as a <see langword="int"/>.
     /// </summary>
     public int IntValue
     {
