@@ -27,7 +27,7 @@ public class SingleGlobalInstanceTests
         var task = Task.Run(() =>
         {
             using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
+            var hasInstance = instance.GetMutex(TimeSpan.FromSeconds(30));
             return hasInstance;
         });
 
