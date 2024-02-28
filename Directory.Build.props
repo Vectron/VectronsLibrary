@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)\LICENSE.md" Pack="true" PackagePath="" />
-    <None Include="$(SolutionDir)\README.md" Pack="true" PackagePath="" />
+    <None Include="$(RepositoryRootDirectory)\LICENSE.md" Pack="true" PackagePath="" />
+    <None Include="$(RepositoryRootDirectory)\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 </Project>
