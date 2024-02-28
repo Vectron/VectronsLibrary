@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,48 +15,26 @@ public class SingleGlobalInstanceTests
     /// Test if the mutex is released when disposing.
     /// </summary>
     /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP017:Prefer using", Justification = "We want to dispose in the right spot of a test")]
     [TestMethod]
     public async Task DisposeReleasesMutexAsync()
     {
         var gui = Guid.NewGuid().ToString();
-        using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-        Assert.IsTrue(hasInstance, "Main mutex not gotten");
+        using var firstReset = new ManualResetEventSlim(initialState: false);
+        using var secondReset = new ManualResetEventSlim(initialState: false);
+        var firstSource = new TaskCompletionSource<bool>();
+        var secondSource = new TaskCompletionSource<bool>();
 
-        var task = Task.Run(() =>
-        {
-            using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-            return hasInstance;
-        });
+        var firstTask = Task.Run(() => GetMutex(gui, TimeSpan.FromMilliseconds(100), firstReset.WaitHandle, firstSource));
+        var result1 = await firstSource.Task.ConfigureAwait(false);
+        firstReset.Set();
+        await firstTask.ConfigureAwait(false);
+        var secondTask = Task.Run(() => GetMutex(gui, TimeSpan.FromMilliseconds(100), secondReset.WaitHandle, secondSource));
+        var result2 = await secondSource.Task.ConfigureAwait(false);
+        secondReset.Set();
+        await Task.WhenAll(firstTask, secondTask).ConfigureAwait(false);
 
-        instance.Dispose();
-        var result = await task.ConfigureAwait(true);
-        Assert.IsTrue(result, "Task mutex not gotten");
-    }
-
-    /// <summary>
-    /// Test if the mutex is gotten when the thread exits.
-    /// </summary>
-    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
-    [TestMethod]
-    public async Task GetMutexWhenThreadExitsAsync()
-    {
-        var gui = Guid.NewGuid().ToString();
-        var task = Task.Run(() =>
-        {
-            using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-            return hasInstance;
-        });
-
-        var result = await task;
-        Assert.IsTrue(result, "Task mutex not gotten");
-
-        using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-        Assert.IsTrue(hasInstance, "Main mutex not gotten");
+        Assert.IsTrue(result1, "Main mutex not gotten");
+        Assert.IsTrue(result2, "Task mutex not gotten");
     }
 
     /// <summary>
@@ -83,18 +62,34 @@ public class SingleGlobalInstanceTests
     public async Task WaitTheMaxTimeBeforeErrorAsync()
     {
         var gui = Guid.NewGuid().ToString();
+        using var firstReset = new ManualResetEventSlim(initialState: false);
+        using var secondReset = new ManualResetEventSlim(initialState: false);
+        var firstSource = new TaskCompletionSource<bool>();
+        var secondSource = new TaskCompletionSource<bool>();
+
+        var firstTask = Task.Run(() => GetMutex(gui, TimeSpan.FromMilliseconds(100), firstReset.WaitHandle, firstSource));
+        var result1 = await firstSource.Task.ConfigureAwait(false);
+        var secondTask = Task.Run(() => GetMutex(gui, TimeSpan.FromMilliseconds(10), secondReset.WaitHandle, secondSource));
+        var result2 = await secondSource.Task.ConfigureAwait(false);
+
+        firstReset.Set();
+        secondReset.Set();
+        await Task.WhenAll(firstTask, secondTask).ConfigureAwait(false);
+
+        Assert.IsTrue(result1, "Main mutex not gotten");
+        Assert.IsFalse(result2, "Task mutex gotten");
+    }
+
+    private static void GetMutex(string gui, TimeSpan timeout, WaitHandle stop, TaskCompletionSource<bool> taskCompletionSource)
+    {
         using var instance = new SingleGlobalInstance(gui);
-        var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-        Assert.IsTrue(hasInstance, "Main mutex not gotten");
-
-        var task = Task.Run(() =>
+        var hasInstance = instance.GetMutex(timeout);
+        taskCompletionSource.SetResult(hasInstance);
+        if (!hasInstance)
         {
-            using var instance = new SingleGlobalInstance(gui);
-            var hasInstance = instance.GetMutex(TimeSpan.FromMilliseconds(100));
-            return hasInstance;
-        });
+            return;
+        }
 
-        var result = await task.ConfigureAwait(true);
-        Assert.IsFalse(result, "Task mutex gotten");
+        _ = stop.WaitOne(TimeSpan.FromSeconds(1));
     }
 }
