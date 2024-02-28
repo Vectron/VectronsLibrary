@@ -53,14 +53,19 @@ jobs:
       matrix:
         include:
           - project: VectronsLibrary.sln
+            path: ""
             condition: ${{ github.ref == 'refs/heads/main' }}
-          - project: src\Logging\Logging\VectronsLibrary.Logging.csproj
+          - project: VectronsLibrary.Logging.csproj
+            path: src/Logging/Logging/
             condition: ${{ startsWith(github.ref, 'refs/tags/Logging-v') }}
-          - project: src\Util\VectronsLibrary\VectronsLibrary.csproj
+          - project: VectronsLibrary.csproj
+            path: src/Util/VectronsLibrary/
             condition: ${{ startsWith(github.ref, 'refs/tags/Library-v') }}
-          - project: src\Util\NetFramework\VectronsLibrary.NetFramework.csproj
+          - project: VectronsLibrary.NetFramework.csproj
+            path: src/Util/NetFramework/
             condition: ${{ startsWith(github.ref, 'refs/tags/LibraryFramework-v') }}
-          - project: src\Winform\Winform\VectronsLibrary.WindowsForms.csproj
+          - project: VectronsLibrary.WindowsForms.csproj
+            path: src/Winform/Winform/
             condition: ${{ startsWith(github.ref, 'refs/tags/Winforms-v') }}
       fail-fast: true
     permissions:
@@ -74,6 +79,7 @@ jobs:
         8.0.x
       solution_file: ${{ matrix.project }}
       run_condition: ${{ matrix.condition }}
+      solution_directory: ${{ matrix.path }}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
 
