@@ -82,7 +82,7 @@ public static class FormGeometry
                 desktop_Y = screen.WorkingArea.Y;
             }
 
-            if (screen.Primary == false)
+            if (!screen.Primary)
             {
                 if (screen.WorkingArea.X >= desktop_width)
                 {
